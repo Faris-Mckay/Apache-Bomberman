@@ -12,6 +12,9 @@
  */
 package com.apache;
 
+import com.apache.engine.Engine;
+import com.apache.engine.task.impl.CleanupTask;
+
 /**
  *
  * @author Faris <https://github.com/faris-mckay>
@@ -19,11 +22,32 @@ package com.apache;
 public class Launcher {
     
     /**
+     * The Engine Server of the server
+     */
+    private Engine engine;
+    
+    /**
      * Main point of entry into the program
      * @param args input to the application
      */
     public static void main(String[] args){
-        
+        new Launcher().init();
+    }
+    
+    /**
+     * Initialise the server application
+     */
+    public void init(){
+        engine = new Engine();
+        engine.submit(new CleanupTask());
+        launch();
+    }
+    
+    /**
+     * Launch the server application
+     */
+    public void launch(){
+        engine.startEngine();
     }
     
 }
