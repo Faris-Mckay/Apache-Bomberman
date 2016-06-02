@@ -37,18 +37,24 @@ public class Entity {
 	}
 
 	public void checkInput() {
-		if(input.isKeyDown(Input.KEY_UP)){
-			pos.setY((float) (pos.getY() - (0.1 * Game.gameTime)));
+		if(input != null){
+			if(input.isKeyDown(Input.KEY_UP)){
+				pos.setY((float) (pos.getY() - (0.1 * Game.gameTime)));
+			}
+			if(input.isKeyDown(Input.KEY_DOWN)){
+				pos.setY((float) (pos.getY() + (0.1 * Game.gameTime)));
+			}
+			if(input.isKeyDown(Input.KEY_RIGHT)){
+				pos.setX((float) (pos.getX() + (0.1 * Game.gameTime)));
+			}
+			if(input.isKeyDown(Input.KEY_LEFT)){
+				pos.setX((float) (pos.getX() - (0.1 * Game.gameTime)));
+			}
 		}
-		if(input.isKeyDown(Input.KEY_DOWN)){
-			pos.setY((float) (pos.getY() + (0.1 * Game.gameTime)));
-		}
-		if(input.isKeyDown(Input.KEY_RIGHT)){
-			pos.setX((float) (pos.getX() + (0.1 * Game.gameTime)));
-		}
-		if(input.isKeyDown(Input.KEY_LEFT)){
-			pos.setX((float) (pos.getX() - (0.1 * Game.gameTime)));
-		}
+	}
+
+	public Image getImage() {
+		return image;
 	}
 	
 }
