@@ -8,16 +8,16 @@ public class Entity {
 	private Position pos;
 	private Input input;
 	private Image image;
-	
-	public Entity(Position pos, Input input, Image image){
+
+	public Entity(Position pos, Input input, Image image) {
 		this.pos = pos;
 		this.input = input;
 		this.image = image;
 	}
-	
-	public void render(){
+
+	public void render() {
 		image.draw(pos.getX(), pos.getY());
-		image.rotate(1);
+		// image.rotate(1);
 	}
 
 	public Position getPos() {
@@ -36,19 +36,19 @@ public class Entity {
 		this.input = input;
 	}
 
-	public void checkInput() {
-		if(input != null){
-			if(input.isKeyDown(Input.KEY_UP)){
-				pos.setY((float) (pos.getY() - (0.1 * Game.gameTime)));
+	public void checkInput(int time) {
+		if (input != null) {
+			if (input.isKeyDown(Input.KEY_UP)) {
+				pos.setY((float) (pos.getY() - (0.1 * time)));
 			}
-			if(input.isKeyDown(Input.KEY_DOWN)){
-				pos.setY((float) (pos.getY() + (0.1 * Game.gameTime)));
+			if (input.isKeyDown(Input.KEY_DOWN)) {
+				pos.setY((float) (pos.getY() + (0.1 * time)));
 			}
-			if(input.isKeyDown(Input.KEY_RIGHT)){
-				pos.setX((float) (pos.getX() + (0.1 * Game.gameTime)));
+			if (input.isKeyDown(Input.KEY_RIGHT)) {
+				pos.setX((float) (pos.getX() + (0.1 * time)));
 			}
-			if(input.isKeyDown(Input.KEY_LEFT)){
-				pos.setX((float) (pos.getX() - (0.1 * Game.gameTime)));
+			if (input.isKeyDown(Input.KEY_LEFT)) {
+				pos.setX((float) (pos.getX() - (0.1 * time)));
 			}
 		}
 	}
@@ -56,5 +56,5 @@ public class Entity {
 	public Image getImage() {
 		return image;
 	}
-	
+
 }
