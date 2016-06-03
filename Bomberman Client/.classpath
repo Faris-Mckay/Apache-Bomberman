@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="libs/lwjgl_util_applet.jar"/>
 	<classpathentry kind="lib" path="libs/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="libs/lwjgl.jar"/>
+	<classpathentry kind="lib" path="libs/jl1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

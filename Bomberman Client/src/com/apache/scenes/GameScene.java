@@ -9,6 +9,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.tiled.TiledMap;
 
 import com.apache.Entity;
 import com.apache.Game;
@@ -18,14 +19,17 @@ public class GameScene extends Scene {
 
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 
+	private TiledMap map;
+	
 	public GameScene() {
 		super();
 		setPriority(2);
 	}
 
 	protected void CustomRender(GameContainer gc, Graphics g) throws SlickException {
+		map.render(0, 0);
 		for (Entity entity : entities)
-			entity.render();
+			entity.render(g);
 	}
 
 	public boolean circleIntersects(Entity entity, Entity entityTwo) {
@@ -58,7 +62,7 @@ public class GameScene extends Scene {
 		}
 		for (int index = 0; index < entities.size(); index++) {
 			Entity entity = entities.get(index);
-			entity.checkInput(t);
+			entity.checkInput(t, map);
 			for (int index2 = 0; index2 < entities.size(); index2++) {
 				if (index == index2)
 					continue;
@@ -72,8 +76,8 @@ public class GameScene extends Scene {
 	}
 
 	public void init(GameContainer gc) throws SlickException {
-		entities.add(new Entity(new Position(0, 0), gc.getInput(), new Image("res/square.png")));
-		entities.add(new Entity(new Position(100, 100), null, new Image("res/square.png")));
+		map = new TiledMap("res/bomberman.tmx");
+		entities.add(new Entity(new Position(32, 32), gc.getInput(), new Image("res/square.png")));
 	}
 
 	public String toString() {
