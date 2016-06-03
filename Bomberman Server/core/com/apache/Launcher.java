@@ -12,8 +12,9 @@
  */
 package com.apache;
 
-import com.apache.engine.Engine;
+import com.apache.engine.TaskEngine;
 import com.apache.engine.task.impl.CleanupTask;
+import com.client.Launcher;
 
 /**
  *
@@ -22,9 +23,9 @@ import com.apache.engine.task.impl.CleanupTask;
 public class Launcher {
     
     /**
-     * The Engine Server of the server
+     * The TaskEngine Server of the server
      */
-    private Engine engine;
+    private TaskEngine engine;
     
     /**
      * Main point of entry into the program
@@ -38,7 +39,7 @@ public class Launcher {
      * Initialise the server application
      */
     public void init(){
-        engine = new Engine();
+        engine = new TaskEngine();
         engine.submit(new CleanupTask());
         launch();
     }

@@ -10,7 +10,7 @@
  * Written by Faris McKay <faris.mckay@hotmail.com>, May 2016
  *
  */
-package com.apache;
+package com.client;
 
 /**
  *
