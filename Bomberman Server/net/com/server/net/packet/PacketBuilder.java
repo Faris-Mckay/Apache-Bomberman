@@ -12,8 +12,6 @@
  */
 package com.server.net.packet;
 
-import com.client.net.packet.Packet;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 /**

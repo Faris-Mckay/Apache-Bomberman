@@ -12,8 +12,6 @@
  */
 package com.client;
 
-import com.bomberman.*;
-
 /**
  *
  * @author Faris <https://github.com/faris-mckay>

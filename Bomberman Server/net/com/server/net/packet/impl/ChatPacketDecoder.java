@@ -13,7 +13,7 @@
 package com.server.net.packet.impl;
 
 import com.apache.Player;
-import com.client.net.packet.Packet;
+import com.server.net.packet.Packet;
 import com.server.net.packet.PacketDecoder;
 import com.server.net.packet.PacketOpcode;
 /**
@@ -22,8 +22,8 @@ import com.server.net.packet.PacketOpcode;
 @PacketOpcode({ 2 })
 public class ChatPacketDecoder implements PacketDecoder {
 
-	@Override
-	public void decode(Player player, Packet packet) {
-
-	}
+    @Override
+    public void decode(Player player, Packet packet) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

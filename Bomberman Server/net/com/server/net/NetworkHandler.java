@@ -12,8 +12,7 @@
  */
 package com.server.net;
 
-import com.client.net.packet.Packet;
-
+import com.server.net.packet.Packet;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.group.ChannelGroup;

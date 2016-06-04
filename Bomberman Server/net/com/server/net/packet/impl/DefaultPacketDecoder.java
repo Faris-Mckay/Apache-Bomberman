@@ -15,7 +15,7 @@ package com.server.net.packet.impl;
 import java.util.logging.Logger;
 
 import com.apache.Player;
-import com.client.net.packet.Packet;
+import com.server.net.packet.Packet;
 import com.server.net.packet.PacketDecoder;
 import com.server.net.packet.PacketOpcode;
 /**

@@ -13,7 +13,6 @@
 package com.server.net.packet;
 
 import com.apache.Player;
-import com.client.net.packet.Packet;
 /**
  * @author Juan Ortiz <https://github.com/TheRealJP>
  */

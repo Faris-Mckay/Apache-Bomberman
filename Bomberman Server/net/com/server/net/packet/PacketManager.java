@@ -15,7 +15,6 @@ package com.server.net.packet;
 import java.io.File;
 
 import com.apache.Player;
-import com.client.net.packet.Packet;
 
 import io.netty.channel.ChannelHandlerContext;
 /**

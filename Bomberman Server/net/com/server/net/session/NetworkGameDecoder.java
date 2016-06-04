@@ -12,9 +12,8 @@
  */
 package com.server.net.session;
 
+import com.server.net.packet.Packet;
 import java.util.List;
-
-import com.client.net.packet.Packet;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
