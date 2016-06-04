@@ -12,8 +12,9 @@
  */
 package com.apache;
 
-import com.apache.engine.Engine;
+import com.apache.engine.TaskEngine;
 import com.apache.engine.task.impl.CleanupTask;
+import java.util.logging.Logger;
 
 /**
  *
@@ -22,9 +23,14 @@ import com.apache.engine.task.impl.CleanupTask;
 public class Launcher {
     
     /**
-     * The Engine Server of the server
+     * The TaskEngine Server of the server
      */
-    private Engine engine;
+    private TaskEngine engine;
+    
+    /**
+     * A logger used to log messages.
+     */
+    public static final Logger logger = Logger.getLogger(CleanupTask.class.getName());
     
     /**
      * Main point of entry into the program
@@ -38,7 +44,8 @@ public class Launcher {
      * Initialise the server application
      */
     public void init(){
-        engine = new Engine();
+        logger.info("initializing game server...");
+        engine = new TaskEngine();
         engine.submit(new CleanupTask());
         launch();
     }
