@@ -3,7 +3,6 @@ package com.apache.entities;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.tiled.TiledMap;
 
 import com.apache.Entity;
 import com.apache.Position;
@@ -31,7 +30,6 @@ public class Player extends Entity{
 	@Override
 	public void update(int time) {
 		float speed = (float) (0.1 * time);
-		float lastX = pos.getX(), lastY = pos.getY();
 		if (input != null){
 			if(!colliding) {
 				if (input.isKeyDown(Input.KEY_UP)) {
@@ -46,10 +44,6 @@ public class Player extends Entity{
 				if (input.isKeyDown(Input.KEY_LEFT)) {
 					pos.setX((float) (pos.getX() - speed));
 				}
-			} else {
-				pos.setX(lastX);
-				pos.setY(lastY);
-				colliding = false;
 			}
 		}
 	}

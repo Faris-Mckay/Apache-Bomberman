@@ -1,7 +1,6 @@
 package com.apache.scenes;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -9,14 +8,13 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.tiled.TiledMap;
 
 import com.apache.Entity;
 import com.apache.Game;
 import com.apache.GenericMap;
 import com.apache.Position;
-import com.apache.entities.*;
 import com.apache.entities.Object;
+import com.apache.entities.Player;
 
 public class GameScene extends Scene {
 
@@ -65,13 +63,16 @@ public class GameScene extends Scene {
 		}
 		for (int index = 0; index < entities.size(); index++) {
 			Entity entity = entities.get(index);
+			float lastX = entity.getPos().getX(), lastY = entity.getPos().getY();
 			entity.update(t);
 			for (int index2 = 0; index2 < entities.size(); index2++) {
 				if (index == index2)
 					continue;
 				if (rectanglesCollide(entity, entities.get(index2))) {
 					entity.setColliding(true);
-					System.out.println("Colliding!");
+					entity.getPos().setX(lastX);
+					entity.getPos().setY(lastY);
+					entity.setColliding(false);
 				}
 			}
 		}
@@ -79,7 +80,7 @@ public class GameScene extends Scene {
 
 	public void init(GameContainer gc) throws SlickException {
 		map = new GenericMap();
-		entities.add(new Player(new Position(32, 32), new Image("res/square.png"), gc.getInput()));
+		entities.add(new Player(new Position(33, 33), new Image("res/square.png"), gc.getInput()));
 		System.out.println("rectangles: " + map.getTiles().size());
 		for(int index = 0; index < map.getTiles().size(); index ++){
 			Rectangle tile = map.getTiles().get(index);
