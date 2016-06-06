@@ -10,9 +10,9 @@
  * Written by Faris McKay <faris.mckay@hotmail.com>, May 2016
  *
  */
-package com.server.net;
+package com.apache.net;
 
-import com.server.net.packet.Packet;
+import com.apache.net.packet.Packet;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.group.ChannelGroup;

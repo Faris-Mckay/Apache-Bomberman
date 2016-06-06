@@ -13,9 +13,9 @@
 package com.apache.net.packet.impl;
 
 import com.apache.Player;
-import com.server.net.packet.Packet;
-import com.server.net.packet.PacketDecoder;
-import com.server.net.packet.PacketOpcode;
+import com.apache.net.packet.Packet;
+import com.apache.net.packet.PacketDecoder;
+import com.apache.net.packet.PacketOpcode;
 /**
  * @author Juan Ortiz <https://github.com/TheRealJP>
  */

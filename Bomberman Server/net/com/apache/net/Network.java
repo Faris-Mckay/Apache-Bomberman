@@ -10,10 +10,10 @@
  * Written by Faris McKay <faris.mckay@hotmail.com>, May 2016
  *
  */
-package com.server.net;
+package com.apache.net;
 
-import com.server.net.packet.PacketManager;
-import com.server.net.session.NetworkLoginDecoder;
+import com.apache.net.packet.PacketManager;
+import com.apache.net.session.NetworkLoginDecoder;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

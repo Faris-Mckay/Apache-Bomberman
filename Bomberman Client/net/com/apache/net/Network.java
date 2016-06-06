@@ -10,9 +10,9 @@
  * Written by Faris McKay <faris.mckay@hotmail.com>, May 2016
  *
  */
-package com.client.net;
+package com.apache.net;
 
-import com.client.net.packet.PacketBuilder;
+import com.apache.net.packet.PacketBuilder;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
