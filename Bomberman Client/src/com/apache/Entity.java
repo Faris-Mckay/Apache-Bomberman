@@ -6,27 +6,22 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.tiled.TiledMap;
 
 
-public class Entity {
+public abstract class Entity {
 
-	private Position pos;
-	private Input input;
-	private Image image;
+	protected Position pos;
 	
-	private int width, height;
+	protected int width, height;
 
-	public Entity(Position pos, Input input, Image image) {
+	protected boolean colliding;
+
+	public Entity(Position pos) {
 		this.pos = pos;
-		this.input = input;
-		this.image = image;
+		height = width = Settings.TILE_SIZE_DEFAULT;
 	}
 
-	public void render(Graphics g) {
-		this.width = 30;
-		this.height = 30;
-		g.fillRect(pos.getX(), pos.getY(), width, height);
-		//image.draw(pos.getX(), pos.getY());
-		// image.rotate(1);
-	}
+	public abstract void render(Graphics g);
+
+	public abstract void update(int time);
 
 	public Position getPos() {
 		return pos;
@@ -35,46 +30,29 @@ public class Entity {
 	public void setPos(Position pos) {
 		this.pos = pos;
 	}
-
-	public Input getInput() {
-		return input;
+	
+	public int getWidth() {
+		return width;
 	}
 
-	public void setInput(Input input) {
-		this.input = input;
+	public void setWidth(int width) {
+		this.width = width;
 	}
 
-	public void checkInput(int time, TiledMap map) {
-		float speed = (float) (0.1 * time);
-		if(map != null){
-			int objectLayer = map.getLayerIndex("Objects");
-			if (input != null) {
-				if (input.isKeyDown(Input.KEY_UP)) {
-					if(map.getTileId((int) (pos.getX())/32, (int) (pos.getY() - 1)/32, objectLayer) == 0){
-						pos.setY((float) (pos.getY() - speed));
-					}
-				}
-				if (input.isKeyDown(Input.KEY_DOWN)) {
-					if(map.getTileId((int) (pos.getX() + width)/32, ((int) pos.getY() + 1)/32, objectLayer) == 0){
-						pos.setY((float) (pos.getY() + speed));
-					}
-				}
-				if (input.isKeyDown(Input.KEY_RIGHT)) {
-					if(map.getTileId((int) (pos.getX() + 1)/32, (int) (pos.getY())/32, objectLayer) == 0){
-						pos.setX((float) (pos.getX() + speed));
-					}
-				}
-				if (input.isKeyDown(Input.KEY_LEFT)) {
-					if(map.getTileId((int) (pos.getX() - 1)/32, (int) (pos.getY())/32, objectLayer) == 0){
-						pos.setX((float) (pos.getX() - speed));
-					}
-				}
-			}
-		}
+	public int getHeight() {
+		return height;
 	}
 
-	public Image getImage() {
-		return image;
+	public void setHeight(int height) {
+		this.height = height;
 	}
 
+	public boolean isColliding() {
+		return colliding;
+	}
+
+	public void setColliding(boolean colliding) {
+		this.colliding = colliding;
+	}
+	
 }

@@ -1,6 +1,5 @@
 package com.apache.scenes;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,17 +8,21 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
 
 import com.apache.Entity;
 import com.apache.Game;
+import com.apache.GenericMap;
 import com.apache.Position;
+import com.apache.entities.*;
+import com.apache.entities.Object;
 
 public class GameScene extends Scene {
 
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 
-	private TiledMap map;
+	private GenericMap map;
 	
 	public GameScene() {
 		super();
@@ -38,8 +41,8 @@ public class GameScene extends Scene {
 		float x2 = entityTwo.getPos().getX();
 		float y2 = entityTwo.getPos().getY();
 		float distance = (float) (Math.pow((x - x2), 2) + Math.pow((y - y2), 2));
-		float radiusOne = entity.getImage().getHeight() / 2;
-		float radiusTwo = entityTwo.getImage().getHeight() / 2;
+		float radiusOne = entity.getHeight() / 2;
+		float radiusTwo = entityTwo.getHeight() / 2;
 		float targetDistance = (float) Math.pow((radiusOne + radiusTwo), 2);
 		if (distance < targetDistance)
 			return true;
@@ -48,9 +51,9 @@ public class GameScene extends Scene {
 
 	public boolean rectanglesCollide(Entity entity, Entity entityTwo) {
 		Rectangle rectangleOne = new Rectangle((int) entity.getPos().getX(), (int) entity.getPos().getY(),
-				entity.getImage().getWidth(), entity.getImage().getHeight());
+				entity.getWidth(), entity.getHeight());
 		Rectangle rectangleTwo = new Rectangle((int) entityTwo.getPos().getX(), (int) entityTwo.getPos().getY(),
-				entityTwo.getImage().getWidth(), entityTwo.getImage().getHeight());
+				entityTwo.getWidth(), entityTwo.getHeight());
 		if (rectangleOne.intersects(rectangleTwo))
 			return true;
 		return false;
@@ -62,22 +65,26 @@ public class GameScene extends Scene {
 		}
 		for (int index = 0; index < entities.size(); index++) {
 			Entity entity = entities.get(index);
-			entity.checkInput(t, map);
+			entity.update(t);
 			for (int index2 = 0; index2 < entities.size(); index2++) {
 				if (index == index2)
 					continue;
 				if (rectanglesCollide(entity, entities.get(index2))) {
-					Random random = new Random();
-					entities.get(index2).getPos().setX(random.nextInt(700));
-					entities.get(index2).getPos().setY(random.nextInt(500));
+					entity.setColliding(true);
+					System.out.println("Colliding!");
 				}
 			}
 		}
 	}
 
 	public void init(GameContainer gc) throws SlickException {
-		map = new TiledMap("res/bomberman.tmx");
-		entities.add(new Entity(new Position(32, 32), gc.getInput(), new Image("res/square.png")));
+		map = new GenericMap();
+		entities.add(new Player(new Position(32, 32), new Image("res/square.png"), gc.getInput()));
+		System.out.println("rectangles: " + map.getTiles().size());
+		for(int index = 0; index < map.getTiles().size(); index ++){
+			Rectangle tile = map.getTiles().get(index);
+			entities.add(new Object(new Position(tile.getX(), tile.getY()), null));
+		}
 	}
 
 	public String toString() {
