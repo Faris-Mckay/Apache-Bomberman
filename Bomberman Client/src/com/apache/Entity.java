@@ -8,12 +8,18 @@ public abstract class Entity {
 	protected Position pos;
 	
 	protected int width, height;
+	
+    private float lastX, lastY;
 
 	protected boolean colliding;
+	
+	protected boolean moving;
 
 	public Entity(Position pos) {
 		this.pos = pos;
 		height = width = Settings.TILE_SIZE_DEFAULT;
+		lastX = pos.getX();
+		lastY = pos.getY();
 	}
 
 	public abstract void render(Graphics g);
@@ -50,6 +56,30 @@ public abstract class Entity {
 
 	public void setColliding(boolean colliding) {
 		this.colliding = colliding;
+	}
+
+	public boolean isMoving() {
+		return moving;
+	}
+
+	public void setMoving(boolean moving) {
+		this.moving = moving;
+	}
+	
+	public float getLastY() {
+		return lastY;
+	}
+
+	public void setLastY(float lastY) {
+		this.lastY = lastY;
+	}
+
+	public float getLastX() {
+		return lastX;
+	}
+
+	public void setLastX(float lastX) {
+		this.lastX = lastX;
 	}
 	
 }

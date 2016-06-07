@@ -66,21 +66,25 @@ public class GameScene extends Scene {
 		}
 		for (int index = 0; index < entities.size(); index++) {
 			Entity entity = entities.get(index);
-			float lastX = entity.getPos().getX();
-			float lastY = entity.getPos().getY();
 			entity.update(t);
+			if(entity.getPos().getX() == entity.getLastX() && entity.getPos().getY() == entity.getLastY())
+				entity.setMoving(false);
+			else 
+				entity.setMoving(true);
 			for (int index2 = 0; index2 < entities.size(); index2++) {
 				if (index == index2)
 					continue;
 				if (rectanglesCollide(entity, entities.get(index2))) {
 					entity.setColliding(true);
-					if(entity.getPos().getX() != lastX)
-						entity.getPos().setX(lastX);
-					if(entity.getPos().getY() != lastY)
-						entity.getPos().setY(lastY);
+					if(entity.getPos().getX() != entity.getLastX())
+						entity.getPos().setX(entity.getLastX());
+					if(entity.getPos().getY() != entity.getLastY())
+						entity.getPos().setY(entity.getLastY());
 					entity.setColliding(false);
 				}
 			}
+			entity.setLastX(entity.getPos().getX());
+			entity.setLastY(entity.getPos().getY());
 		}
 	}
 

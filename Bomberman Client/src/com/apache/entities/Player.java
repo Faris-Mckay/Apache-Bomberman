@@ -25,6 +25,7 @@ public class Player extends Entity{
 			sheets[index] = new SpriteSheet("res/sheet"+ index + ".png", 32, 32);
 		}
 		this.animation = new Animation(sheets[1], Settings.ANIM_DURATION);
+		this.animation.setPingPong(true);
 		this.input = input;
 	}
 
@@ -36,12 +37,17 @@ public class Player extends Entity{
 	@Override
 	public void update(int time) {
 		animation.update(time);
+		if(moving){
+			animation.stop();
+			animation.setLooping(true);
+		}
+		System.out.println(moving);
 		float speed = (float) (0.2 * time);
 		if (input != null){
 			if(!colliding) {
 				if (input.isKeyDown(Input.KEY_UP)) {
 					if(!up){
-						resetDirection();
+						resetVars();
 						up = true;
 						changeDirection(sheets[0]);
 					}
@@ -49,7 +55,7 @@ public class Player extends Entity{
 				}
 				if (input.isKeyDown(Input.KEY_DOWN)) {
 					if(!down){
-						resetDirection();
+						resetVars();
 						down = true;
 						changeDirection(sheets[1]);
 					}
@@ -57,7 +63,7 @@ public class Player extends Entity{
 				}
 				if (input.isKeyDown(Input.KEY_RIGHT)) {
 					if(!right){
-						resetDirection();
+						resetVars();
 						right = true;
 						changeDirection(sheets[2]);
 					}
@@ -65,7 +71,7 @@ public class Player extends Entity{
 				}
 				if (input.isKeyDown(Input.KEY_LEFT)) {
 					if(!left){
-						resetDirection();
+						resetVars();
 						left = true;
 						changeDirection(sheets[3]);
 					}
@@ -75,7 +81,7 @@ public class Player extends Entity{
 		}
 	}
 	
-	private void resetDirection() {
+	private void resetVars() {
 		left = right = up = down = false;
 	}
 	
