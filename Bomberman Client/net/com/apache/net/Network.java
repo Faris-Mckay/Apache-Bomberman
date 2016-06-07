@@ -22,14 +22,15 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+
 /**
-*
-* @author JP <https://github.com/TheRealJP>
-*/
+ *
+ * @author JP <https://github.com/TheRealJP>
+ */
 public class Network {
 
-	String host;
-	int port;
+	private String host;
+	private int port;
 
 	public Network(String host, int port) {
 		this.host = host;
@@ -56,14 +57,16 @@ public class Network {
 			ChannelFuture f = b.connect(host, port).sync();
 
 			PacketBuilder pb = new PacketBuilder(1);
-			String username = "aivars";
+			String username = "Jack";
 			String password = "password";
+
 			pb.putInt(username.length());
 			pb.putString(username);
 			pb.putString(password);
-			f.channel().writeAndFlush(pb.getPacket());
 
+			f.channel().writeAndFlush(pb.getPacket());
 			f.channel().closeFuture().sync();
+			System.out.println("Sent packet 1 to server.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

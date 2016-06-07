@@ -19,38 +19,53 @@ import com.apache.map.Location;
  * @author Faris <https://github.com/faris-mckay>
  */
 public abstract class Entity {
-    
-    private boolean isAlive;
-    private Location location;
-    
-    public abstract void updateSelf();
-    
-    /**
-     * @return the location
-     */
-    public Location getLocation() {
-        return location;
-    }
+	private int id;
+	private boolean isAlive;
+	private Location location;
 
-    /**
-     * @param location the location to set
-     */
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-    
-    /**
-     * @return the isAlive
-     */
-    public boolean isAlive() {
-        return isAlive;
-    }
+	public abstract void updateSelf();
 
-    /**
-     * @param isAlive the isAlive to set
-     */
-    public void setAlive(boolean isAlive) {
-        this.isAlive = isAlive;
-    }
-    
+	/**
+	 * @return the location
+	 */
+	public Location getLocation() {
+		return location;
+	}
+
+	/**
+	 * @param location
+	 *            the location to set
+	 */
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	/**
+	 * @return the isAlive
+	 */
+	public boolean isAlive() {
+		return isAlive;
+	}
+
+	/**
+	 * @param isAlive
+	 *            the isAlive to set
+	 */
+	public void setAlive(boolean isAlive) {
+		this.isAlive = isAlive;
+	}
+
+	/** @return the entity's current id */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id
+	 *            the entity's id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
 }

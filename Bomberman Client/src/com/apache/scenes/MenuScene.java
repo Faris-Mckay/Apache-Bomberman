@@ -21,6 +21,7 @@ public class MenuScene extends Scene {
 		setPriority(1);
 	}
 
+	@Override
 	protected void CustomRender(GameContainer gc, Graphics g) throws SlickException {
 		g.setColor(hovered ? Color.cyan : Color.blue);
 		g.fillRect(400 - width / 2, 300 - height / 2, width, height);
@@ -28,9 +29,10 @@ public class MenuScene extends Scene {
 		drawCenteredString(g, "Play", new Rectangle(400 - width / 2, 300 - height / 2, width, height));
 	}
 
-
+	@Override
 	protected void CustomUpdate(GameContainer gc, int t) throws SlickException {
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+			
 			Game.manager.clear();
 			Game.manager.addScene(new GameScene());
 		}
@@ -42,6 +44,7 @@ public class MenuScene extends Scene {
 		}
 	}
 
+	@Override
 	public void init(GameContainer gc) throws SlickException {
 
 	}

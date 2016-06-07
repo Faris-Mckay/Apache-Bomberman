@@ -12,7 +12,11 @@
  */
 package com.apache.net;
 
+import com.apache.engine.task.impl.SessionMessageTask;
+import com.apache.game.GameEngine;
+import com.apache.game.Lobby;
 import com.apache.net.packet.Packet;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.group.ChannelGroup;
@@ -20,13 +24,14 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 public class NetworkHandler extends ChannelInboundHandlerAdapter {
-
+	/**
+	 * The channel group that holds all the channels currently connected to the
+	 * server.
+	 */
 	private ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-	// private final GameEngine engine = World.getWorld().getEngine();
 
-	@Override
-	public void channelInactive(ChannelHandlerContext ctx) {
-	}
+	/** Our game engine used to push data into the game loop. */
+	private final GameEngine engine = Lobby.getLobby().getEngine();
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable e) {
@@ -37,11 +42,9 @@ public class NetworkHandler extends ChannelInboundHandlerAdapter {
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		System.out.println("channelRead:");
 		if (msg != null && msg instanceof Packet) {
-			/*
-			 * Push tasks here. Example: engine.pushTask(new
-			 * SessionMessageTask(ctx, (Packet) msg));
-			 * 
-			 */
+			ctx.write(msg);
+			ctx.flush();
+			engine.pushTask(new SessionMessageTask(ctx, (Packet) msg));
 		}
 	}
 
@@ -54,6 +57,5 @@ public class NetworkHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
 		System.out.println("Channel left.");
-		// getPlayer().finish();
 	}
 }

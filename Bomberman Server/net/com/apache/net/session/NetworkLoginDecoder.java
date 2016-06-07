@@ -14,6 +14,8 @@ package com.apache.net.session;
 
 import java.util.List;
 
+import com.apache.game.Lobby;
+import com.apache.game.entity.Player;
 import com.apache.net.packet.PacketBuilder;
 
 import io.netty.buffer.ByteBuf;
@@ -27,7 +29,7 @@ public class NetworkLoginDecoder extends MessageToMessageDecoder<ByteBuf> {
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-		System.out.println("NetworkLoginDecoder");
+		// System.out.println("NetworkLoginDecoder");
 		int returnCode = 1;
 		int opcode = in.readByte();
 		if (opcode == 1) {
@@ -35,17 +37,17 @@ public class NetworkLoginDecoder extends MessageToMessageDecoder<ByteBuf> {
 			int usernameLength = payload.readInt();
 			String username = PacketBuilder.readString(payload.readBytes(usernameLength));
 			String password = PacketBuilder.readString(payload.readBytes(payload.readableBytes()));
-			/*
-			 * Example code: Player player = new Player(ctx.channel(),
-			 * username, password);
-			 * 
-			 * if (!World.getWorld().getPlayers().add(player)) { returnCode = 2;
-			 * // Could not register player ( world is full )
-			 * System.out.println("Could not register player : " + player +
-			 * " [world full]"); } ctx.channel().pipeline().replace("decoder",
-			 * "decoder", new NetworkGameDecoder());
-			 * World.getWorld().load(player);
-			 */
+
+			Player player = new Player(ctx.channel(), username, password);
+
+			if (!Lobby.getLobby().getPlayers().add(player)) {
+				returnCode = 2;
+				System.out.println("Could not register player : " + player + " [world full]");
+			}
+			ctx.channel().pipeline().replace("decoder", "decoder", new NetworkGameDecoder());
+			Lobby.getLobby().load(player);
+			System.out.println(player.getUsername() + " has successfully connected.");
+
 		}
 	}
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="Bomberman Client/net"/>
+	<classpathentry kind="src" path="Bomberman Client/src"/>
+	<classpathentry kind="src" path="Bomberman Server/core"/>
+	<classpathentry kind="src" path="Bomberman Server/logic"/>
+	<classpathentry kind="src" path="Bomberman Server/net"/>
+	<classpathentry kind="lib" path="Bomberman Client/libs/AppleJavaExtensions.jar"/>
+	<classpathentry kind="lib" path="Bomberman Client/libs/asm-debug-all.jar"/>
+	<classpathentry kind="lib" path="Bomberman Client/libs/jinput.jar"/>
+	<classpathentry kind="lib" path="Bomberman Client/libs/jl1.0.jar"/>
+	<classpathentry kind="lib" path="Bomberman Client/libs/lwjgl_test.jar"/>
+	<classpathentry kind="lib" path="Bomberman Client/libs/lwjgl_util_applet.jar"/>
+	<classpathentry kind="lib" path="Bomberman Client/libs/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="Bomberman Client/libs/lwjgl-debug.jar"/>
+	<classpathentry kind="lib" path="Bomberman Client/libs/lwjgl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Apache-Bomberman/Bomberman Client/native/windows"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="Bomberman Client/libs/lzma.jar"/>
+	<classpathentry kind="lib" path="Bomberman Client/libs/netty-all-4.1.0.Final-javadoc.jar"/>
+	<classpathentry kind="lib" path="Bomberman Client/libs/netty-all-4.1.0.Final.jar"/>
+	<classpathentry kind="lib" path="Bomberman Client/libs/slick.jar"/>
+	<classpathentry kind="lib" path="Bomberman Server/libs/netty-all-4.1.0.Final-javadoc.jar"/>
+	<classpathentry kind="lib" path="Bomberman Server/libs/netty-all-4.1.0.Final.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="Bomberman Client/bin"/>
+</classpath>

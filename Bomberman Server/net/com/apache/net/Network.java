@@ -75,7 +75,7 @@ public final class Network extends ChannelInboundHandlerAdapter {
 			channelFuture.sync();
 			channelFuture.channel().closeFuture().sync();
 		} catch (Exception e) {
-			System.out.println("Network thread fail!" + e);
+			System.out.println("ClientNetwork thread fail!" + e);
 		} finally {
 			bootstrap.config().group().shutdownGracefully();
 			bootstrap.config().childGroup().shutdownGracefully();
