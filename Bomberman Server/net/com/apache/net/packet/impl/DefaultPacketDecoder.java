@@ -14,7 +14,7 @@ package com.apache.net.packet.impl;
 
 import java.util.logging.Logger;
 
-import com.apache.Player;
+import com.apache.game.entity.Player;
 import com.apache.net.packet.Packet;
 import com.apache.net.packet.PacketDecoder;
 import com.apache.net.packet.PacketOpcode;
