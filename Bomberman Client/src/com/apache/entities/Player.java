@@ -38,8 +38,10 @@ public class Player extends Entity{
 	public void update(int time) {
 		animation.update(time);
 		if(moving){
-			animation.stop();
+			animation.start();
 			animation.setLooping(true);
+		} else {
+			animation.stop();
 		}
 		System.out.println(moving);
 		float speed = (float) (0.2 * time);
