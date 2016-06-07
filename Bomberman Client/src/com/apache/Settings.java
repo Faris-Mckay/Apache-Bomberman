@@ -9,5 +9,9 @@ public class Settings {
 	public static final int TILE_SIZE_DEFAULT = 32;
         
 	public static boolean SOUND_ENABLED = true;
+        
+        public static boolean GAME_RUNNING = true;
+        
+        public static int CLIENT_CYCLE_RATE = 100;
 	
 }

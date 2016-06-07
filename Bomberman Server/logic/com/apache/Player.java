@@ -12,6 +12,65 @@
  */
 package com.apache;
 
+import com.apache.map.Location;
+import java.util.List;
+
 public class Player {
+    
+    private String name;
+    private Location location;
+    private boolean isAlive;
+    private int kills;
+    
+    public Player(String name){
+        this.name = name;
+        this.isAlive = true;
+    }
+    
+    public void update(List<Player> playersToUpdate){
+        
+    }
+
+    /**
+     * @return the location
+     */
+    public Location getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    /**
+     * @return the isAlive
+     */
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    /**
+     * @param isAlive the isAlive to set
+     */
+    public void setAlive(boolean isAlive) {
+        this.isAlive = isAlive;
+    }
+
+    /**
+     * @return the kills
+     */
+    public int getKills() {
+        return kills;
+    }
+
+    /**
+     * add one to the kills
+     */
+    public void addKill() {
+        this.kills = ++kills;
+    }
 
 }

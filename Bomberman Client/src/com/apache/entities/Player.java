@@ -11,6 +11,7 @@ public class Player extends Entity{
 
 	private Input input;
 	private Image image;
+        private boolean inGame = false;
 	
 	public Player(Position pos, Image image, Input input) {
 		super(pos);
