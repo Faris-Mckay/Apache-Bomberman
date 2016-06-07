@@ -7,12 +7,14 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 
 import com.apache.Entity;
 import com.apache.Game;
 import com.apache.GenericMap;
 import com.apache.Position;
+import com.apache.Settings;
 import com.apache.entities.Object;
 import com.apache.entities.Player;
 
@@ -48,10 +50,11 @@ public class GameScene extends Scene {
 	}
 
 	public boolean rectanglesCollide(Entity entity, Entity entityTwo) {
-		Rectangle rectangleOne = new Rectangle((int) entity.getPos().getX(), (int) entity.getPos().getY(),
-				entity.getWidth(), entity.getHeight());
-		Rectangle rectangleTwo = new Rectangle((int) entityTwo.getPos().getX(), (int) entityTwo.getPos().getY(),
-				entityTwo.getWidth(), entityTwo.getHeight());
+		final int padding = Settings.COLLISION_PADDING;
+		Rectangle rectangleOne = new Rectangle((int) entity.getPos().getX() + padding, (int) entity.getPos().getY() + padding,
+				entity.getWidth() - (padding*2), entity.getHeight() - (padding*2));
+		Rectangle rectangleTwo = new Rectangle((int) entityTwo.getPos().getX() + padding, (int) entityTwo.getPos().getY() + padding,
+				entityTwo.getWidth() - (padding*2), entityTwo.getHeight() - (padding*2));
 		if (rectangleOne.intersects(rectangleTwo))
 			return true;
 		return false;
@@ -63,15 +66,18 @@ public class GameScene extends Scene {
 		}
 		for (int index = 0; index < entities.size(); index++) {
 			Entity entity = entities.get(index);
-			float lastX = entity.getPos().getX(), lastY = entity.getPos().getY();
+			float lastX = entity.getPos().getX();
+			float lastY = entity.getPos().getY();
 			entity.update(t);
 			for (int index2 = 0; index2 < entities.size(); index2++) {
 				if (index == index2)
 					continue;
 				if (rectanglesCollide(entity, entities.get(index2))) {
 					entity.setColliding(true);
-					entity.getPos().setX(lastX);
-					entity.getPos().setY(lastY);
+					if(entity.getPos().getX() != lastX)
+						entity.getPos().setX(lastX);
+					if(entity.getPos().getY() != lastY)
+						entity.getPos().setY(lastY);
 					entity.setColliding(false);
 				}
 			}
@@ -80,7 +86,7 @@ public class GameScene extends Scene {
 
 	public void init(GameContainer gc) throws SlickException {
 		map = new GenericMap();
-		entities.add(new Player(new Position(33, 33), new Image("res/square.png"), gc.getInput()));
+		entities.add(new Player(new Position(33, 33), new SpriteSheet("res/you.png", 32, 32), gc.getInput()));
 		System.out.println("rectangles: " + map.getTiles().size());
 		for(int index = 0; index < map.getTiles().size(); index ++){
 			Rectangle tile = map.getTiles().get(index);

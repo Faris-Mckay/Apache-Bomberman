@@ -38,6 +38,9 @@ public class Launcher {
             AppGameContainer container = new AppGameContainer(new Game(Settings.GAME_TITLE));
             container.setDisplayMode(800, 600, false);
             container.setTargetFrameRate(Settings.TARGET_FRAME_RATE);
+            container.setSoundOn(true);
+            if(!Settings.DEBUG)
+            	container.setShowFPS(false);
             container.start();
         } catch (SlickException e) {
             e.printStackTrace();
