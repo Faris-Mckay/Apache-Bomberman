@@ -22,9 +22,11 @@ public class Game extends BasicGame {
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException {
 		manager.render(gc, g);
-		if (displayStats != null) {
-			g.drawString("Mouse X: " + displayStats.getMouseX(), 10, 25);
-			g.drawString("Mouse Y: " + displayStats.getMouseY(), 10, 40);
+		if(Settings.DEBUG){
+			if (displayStats != null) {
+				g.drawString("Mouse X: " + displayStats.getMouseX(), 10, 25);
+				g.drawString("Mouse Y: " + displayStats.getMouseY(), 10, 40);
+			}
 		}
 	}
 
