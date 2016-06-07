@@ -86,7 +86,7 @@ public class GameScene extends Scene {
 
 	public void init(GameContainer gc) throws SlickException {
 		map = new GenericMap();
-		entities.add(new Player(new Position(33, 33), new SpriteSheet("res/you.png", 32, 32), gc.getInput()));
+		entities.add(new Player(new Position(33, 33), gc.getInput()));
 		System.out.println("rectangles: " + map.getTiles().size());
 		for(int index = 0; index < map.getTiles().size(); index ++){
 			Rectangle tile = map.getTiles().get(index);
