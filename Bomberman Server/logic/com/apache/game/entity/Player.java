@@ -10,53 +10,29 @@
  * Written by Faris McKay <faris.mckay@hotmail.com>, May 2016
  *
  */
-package com.apache;
+package com.apache.game.entity;
 
 import com.apache.map.Location;
 import java.util.List;
 
-public class Player {
+public class Player extends Entity {
     
     private String name;
-    private Location location;
-    private boolean isAlive;
+    
     private int kills;
     
     public Player(String name){
         this.name = name;
-        this.isAlive = true;
+        setAlive(true);
     }
     
-    public void update(List<Player> playersToUpdate){
+    public void updateOthers(List<Player> playersToUpdate){
         
     }
-
-    /**
-     * @return the location
-     */
-    public Location getLocation() {
-        return location;
-    }
-
-    /**
-     * @param location the location to set
-     */
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    /**
-     * @return the isAlive
-     */
-    public boolean isAlive() {
-        return isAlive;
-    }
-
-    /**
-     * @param isAlive the isAlive to set
-     */
-    public void setAlive(boolean isAlive) {
-        this.isAlive = isAlive;
+    
+    @Override
+    public void updateSelf(){
+        
     }
 
     /**

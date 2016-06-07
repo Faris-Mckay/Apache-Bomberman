@@ -12,7 +12,7 @@
  */
 package com.apache.net.packet;
 
-import com.apache.Player;
+import com.apache.game.entity.Player;
 /**
  * @author Juan Ortiz <https://github.com/TheRealJP>
  */

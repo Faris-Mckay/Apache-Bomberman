@@ -14,7 +14,7 @@ package com.apache.net.packet;
 
 import java.io.File;
 
-import com.apache.Player;
+import com.apache.game.entity.Player;
 
 import io.netty.channel.ChannelHandlerContext;
 /**

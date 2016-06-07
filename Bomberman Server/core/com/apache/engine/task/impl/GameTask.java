@@ -12,9 +12,9 @@
  */
 package com.apache.engine.task.impl;
 
-import com.apache.Player;
+import com.apache.game.entity.Player;
 import com.apache.engine.task.FiniteTask;
-import com.apache.game.Constants;
+import com.apache.Constants;
 import com.apache.game.Game;
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class GameTask extends FiniteTask {
             setShouldStop(true);
         }
         for(Player player : game.getPlayers()){
-            player.update(game.getPlayers());
+            player.updateOthers(game.getPlayers());
         }
     }
     

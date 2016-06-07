@@ -10,49 +10,34 @@
  * Written by Faris McKay <faris.mckay@hotmail.com>, May 2016
  *
  */
-package com.apache.map;
+package com.apache.game.entity;
 
 /**
  *
  * @author Faris <https://github.com/faris-mckay>
  */
-public class Location {
+public enum PowerupType {
     
-    public Location(int x, int y){
-        this.x = x;
-        this.y = y;
-    }
+    /**
+     * Increase the speed of the players movement
+     * (Update that player more times per cycle)
+     */
+    SPEED,
     
-    private int x;
+    /**
+     * Increase the power of the players bombs
+     */
+    BOOST,
     
-    private int y;
-
     /**
-     * @return the x
+     * Increase the amount of bombs the player is allowed to drop at one
+     * time
      */
-    public int getX() {
-        return x;
-    }
-
+    BOMB,
+    
     /**
-     * @param x the x to set
+     * Contains no Power up at all
      */
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    /**
-     * @return the y
-     */
-    public int getY() {
-        return y;
-    }
-
-    /**
-     * @param y the y to set
-     */
-    public void setY(int y) {
-        this.y = y;
-    }
+    NONE
     
 }

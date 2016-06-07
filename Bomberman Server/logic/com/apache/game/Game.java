@@ -12,7 +12,7 @@
  */
 package com.apache.game;
 
-import com.apache.Player;
+import com.apache.game.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 

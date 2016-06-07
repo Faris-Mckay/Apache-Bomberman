@@ -1,5 +1,5 @@
 /* 
- * This file is part of Bomberman.
+ * This file is property of Apache-GS.
  *
  * Copyright (C) Apache-GS, Inc - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
@@ -10,20 +10,23 @@
  * Written by Faris McKay <faris.mckay@hotmail.com>, May 2016
  *
  */
-package com.apache.net.packet.impl;
+package com.apache.game.entity;
 
-import com.apache.game.entity.Player;
-import com.apache.net.packet.Packet;
-import com.apache.net.packet.PacketDecoder;
-import com.apache.net.packet.PacketOpcode;
 /**
- * @author Juan Ortiz <https://github.com/TheRealJP>
+ *
+ * @author Faris <https://github.com/faris-mckay>
  */
-@PacketOpcode({ 2 })
-public class ChatPacketDecoder implements PacketDecoder {
+public class Powerup extends Entity {
+    
+    private PowerupType type;
+    
+    public Powerup(PowerupType type){
+        this.type = type;
+    }
 
     @Override
-    public void decode(Player player, Packet packet) {
+    public void updateSelf() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
 }
