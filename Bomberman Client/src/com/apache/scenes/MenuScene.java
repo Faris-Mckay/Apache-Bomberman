@@ -28,14 +28,9 @@ public class MenuScene extends Scene {
 		drawCenteredString(g, "Play", new Rectangle(400 - width / 2, 300 - height / 2, width, height));
 	}
 
-	public void drawCenteredString(Graphics g, String string, Rectangle r) {
-		int width = g.getFont().getWidth(string);
-		int height = g.getFont().getHeight(string);
-		g.drawString(string, (r.x + r.width / 2) - (width / 2), (r.y + r.height / 2) - (height / 2));
-	}
 
 	protected void CustomUpdate(GameContainer gc, int t) throws SlickException {
-		if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
 			Game.manager.clear();
 			Game.manager.addScene(new GameScene());
 		}

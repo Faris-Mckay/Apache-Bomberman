@@ -4,23 +4,22 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 
 import com.apache.Entity;
 import com.apache.Game;
-import com.apache.GenericMap;
 import com.apache.Position;
 import com.apache.Settings;
+import com.apache.entities.Bomb;
 import com.apache.entities.Object;
 import com.apache.entities.Player;
+import com.apache.maps.GenericMap;
 
 public class GameScene extends Scene {
 
-	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	private static ArrayList<Entity> entities = new ArrayList<Entity>();
 
 	private GenericMap map;
 	
@@ -59,7 +58,7 @@ public class GameScene extends Scene {
 			return true;
 		return false;
 	}
-
+	
 	protected void CustomUpdate(GameContainer gc, int t) throws SlickException {
 		if (gc.getInput().isKeyDown(Input.KEY_ESCAPE)) {
 			Game.manager.newScene(new MenuScene());
@@ -67,14 +66,13 @@ public class GameScene extends Scene {
 		for (int index = 0; index < entities.size(); index++) {
 			Entity entity = entities.get(index);
 			entity.update(t);
-			if(entity.getPos().getX() == entity.getLastX() && entity.getPos().getY() == entity.getLastY())
-				entity.setMoving(false);
-			else 
-				entity.setMoving(true);
+			entity.setMoving(!(entity.getPos().getX() == entity.getLastX() && entity.getPos().getY() == entity.getLastY()));
 			for (int index2 = 0; index2 < entities.size(); index2++) {
 				if (index == index2)
 					continue;
 				if (rectanglesCollide(entity, entities.get(index2))) {
+					if(entities.get(index2) instanceof Bomb)
+						continue;
 					entity.setColliding(true);
 					if(entity.getPos().getX() != entity.getLastX())
 						entity.getPos().setX(entity.getLastX());
@@ -90,8 +88,8 @@ public class GameScene extends Scene {
 
 	public void init(GameContainer gc) throws SlickException {
 		map = new GenericMap();
-		entities.add(new Player(new Position(33, 33), gc.getInput()));
-		System.out.println("rectangles: " + map.getTiles().size());
+		entities.add(new Player(new Position(65, 33), gc.getInput()));
+		//System.out.println("rectangles: " + map.getTiles().size());
 		for(int index = 0; index < map.getTiles().size(); index ++){
 			Rectangle tile = map.getTiles().get(index);
 			entities.add(new Object(new Position(tile.getX(), tile.getY()), null));

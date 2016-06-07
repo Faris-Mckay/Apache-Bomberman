@@ -1,10 +1,12 @@
-package com.apache;
+package com.apache.maps;
 
 import java.util.ArrayList;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.tiled.TiledMap;
+
+import com.apache.Settings;
 
 public class GenericMap extends TiledMap{
 	
@@ -27,7 +29,7 @@ public class GenericMap extends TiledMap{
 		// since the objects are on the second layer.
 		int layer = getLayerIndex("Objects"); 
 		
-		System.out.println("LayerId:  " + layer);
+		//System.out.println("LayerId:  " + layer);
 		
 		for(int i = 0; i < this.getWidth(); i++) {
 		    for(int j = 0; j < this.getHeight(); j++) {
@@ -40,7 +42,7 @@ public class GenericMap extends TiledMap{
 
 		        // If the value of the Property is "true"...
 		        if(value.equalsIgnoreCase("true")) {
-		        	System.out.println("blocked");
+		        	//System.out.println("blocked");
 
 		            // We set that index of the TileMap as blocked
 		            blocked[i][j] = true;
@@ -48,7 +50,7 @@ public class GenericMap extends TiledMap{
 		            // And create the collision Rectangle
 		            tiles.add(new Rectangle((float)i * Settings.TILE_SIZE_DEFAULT, (float)j * Settings.TILE_SIZE_DEFAULT, Settings.TILE_SIZE_DEFAULT, Settings.TILE_SIZE_DEFAULT));
 		        } else {
-		        	System.out.println("not blocked");
+		        	//System.out.println("not blocked");
 		        }
 		    }
 		}

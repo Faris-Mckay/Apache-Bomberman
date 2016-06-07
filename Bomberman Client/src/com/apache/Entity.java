@@ -22,6 +22,22 @@ public abstract class Entity {
 		lastY = pos.getY();
 	}
 
+	public boolean inSameTile(Entity entity) {
+		int x1Tile = Math.round(entity.getPos().getX()/Settings.TILE_SIZE_DEFAULT);
+		int x2Tile = Math.round(pos.getX()/Settings.TILE_SIZE_DEFAULT);
+		int y1Tile = Math.round(entity.getPos().getY()/Settings.TILE_SIZE_DEFAULT);
+		int y2Tile = Math.round(pos.getY()/Settings.TILE_SIZE_DEFAULT);
+		if(x1Tile == x2Tile && y1Tile == y2Tile)
+			return true;
+		return false;
+	}
+	
+	public Position getTilePos() {
+		int xTile = Math.round(getPos().getX()/Settings.TILE_SIZE_DEFAULT);
+		int yTile = Math.round(getPos().getY()/Settings.TILE_SIZE_DEFAULT);
+		return new Position(xTile, yTile);
+	}
+	
 	public abstract void render(Graphics g);
 
 	public abstract void update(int time);
