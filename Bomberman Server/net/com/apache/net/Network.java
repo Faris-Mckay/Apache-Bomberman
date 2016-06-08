@@ -14,6 +14,7 @@ package com.apache.net;
 
 import com.apache.net.packet.PacketManager;
 import com.apache.net.session.NetworkLoginDecoder;
+import com.apache.util.Utility;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -71,11 +72,11 @@ public final class Network extends ChannelInboundHandlerAdapter {
 	public void run() {
 		try {
 			channelFuture = bootstrap.bind(port);
-			System.out.println("Network started on[Port: " + port + "]");
+			Utility.log("Network started on[Port: " + port + "]");
 			channelFuture.sync();
 			channelFuture.channel().closeFuture().sync();
 		} catch (Exception e) {
-			System.out.println("ClientNetwork thread fail!" + e);
+			Utility.log("Network thread fail!" + e);
 		} finally {
 			bootstrap.config().group().shutdownGracefully();
 			bootstrap.config().childGroup().shutdownGracefully();

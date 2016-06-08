@@ -1,5 +1,7 @@
 package com.apache.util;
 
+import java.util.logging.Logger;
+
 import com.apache.map.Location;
 
 public class Utility {
@@ -16,6 +18,11 @@ public class Utility {
 	 */
 	public static Location delta(Location a, Location b) {
 		return new Location(b.getX() - a.getX(), b.getY() - a.getY());
+	}
+
+	/** Logs a message for output. */
+	public static void log(String msg) {
+		Logger.getLogger(msg.getClass().getName()).info(msg);
 	}
 
 }

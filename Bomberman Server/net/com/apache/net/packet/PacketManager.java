@@ -15,6 +15,7 @@ package com.apache.net.packet;
 import java.io.File;
 
 import com.apache.game.entity.Player;
+import com.apache.util.Utility;
 
 import io.netty.channel.ChannelHandlerContext;
 
@@ -39,7 +40,7 @@ public class PacketManager {
 		try {
 			packetDecoders[packet.getOpcode()].decode((Player) session.read(), packet);
 		} catch (Exception ex) {
-			System.out.println("Exception handling packet: " + ex);
+			Utility.log("Exception handling packet: " + ex);
 			session.channel().close();
 		}
 	}
@@ -59,7 +60,7 @@ public class PacketManager {
 
 				for (int opcode : packetOpcodes) {
 					PacketManager.getPacketManager().bind(opcode, packet);
-					System.out.println("Bound " + packet.toString() + " to opcode : " + opcode);
+					Utility.log("Bound " + packet.toString() + " to opcode : " + opcode);
 				}
 			}
 		}

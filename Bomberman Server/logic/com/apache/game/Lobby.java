@@ -9,6 +9,7 @@ import com.apache.engine.task.impl.SessionLoginTask;
 import com.apache.game.entity.Player;
 import com.apache.util.BlockingExecutorService;
 import com.apache.util.EntityList;
+import com.apache.util.Utility;
 
 public class Lobby {
 
@@ -27,7 +28,7 @@ public class Lobby {
 			@Override
 			public Object call() throws Exception {
 				// load npcs
-				System.out.println("Loading NPCs?");
+				Utility.log("Loading NPCs?");
 				return null;
 			}
 		});

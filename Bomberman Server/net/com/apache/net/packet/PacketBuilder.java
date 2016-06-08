@@ -12,6 +12,8 @@
  */
 package com.apache.net.packet;
 
+import com.apache.util.Utility;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -66,7 +68,7 @@ public class PacketBuilder {
 			}
 			buff.writeChar('\000');
 		} catch (Exception e) {
-			System.out.println("Failed writing string!" + e);
+			Utility.log("Failed writing string!" + e);
 		}
 	}
 

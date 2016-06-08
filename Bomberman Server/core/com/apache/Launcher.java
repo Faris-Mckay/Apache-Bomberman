@@ -12,14 +12,13 @@
  */
 package com.apache;
 
-import java.util.logging.Logger;
-
 import com.apache.engine.TaskEngine;
 import com.apache.engine.task.impl.CleanupTask;
 import com.apache.game.GameEngine;
 import com.apache.game.Lobby;
 import com.apache.net.Network;
 import com.apache.util.Constants;
+import com.apache.util.Utility;
 
 /**
  *
@@ -35,10 +34,6 @@ public class Launcher {
 	private Network network;
 	private GameEngine gameEngine;
 
-	/**
-	 * A logger used to log messages.
-	 */
-	public static final Logger logger = Logger.getLogger(CleanupTask.class.getName());
 
 	/**
 	 * Main point of entry into the program
@@ -55,7 +50,7 @@ public class Launcher {
 	 */
 	public void init() {
 		try {
-			logger.info("Initializing game server...");
+			Utility.log("Initializing game server...");
 			taskEngine = new TaskEngine();
 			taskEngine.submit(new CleanupTask());
 			network = new Network(Constants.PORT_ID);
@@ -66,7 +61,7 @@ public class Launcher {
 			Lobby.getLobby().setLobbyId(1);
 			Lobby.getLobby().init(gameEngine);
 			if (Lobby.getLobby().getBackgroundLoader().getPendingTaskAmount() > 0) {
-				System.out.println("Waiting for pending background loading tasks...");
+				Utility.log("Waiting for pending background loading tasks...");
 				Lobby.getLobby().getBackgroundLoader().waitForPendingTasks();
 			}
 			Lobby.getLobby().getBackgroundLoader().shutdown();

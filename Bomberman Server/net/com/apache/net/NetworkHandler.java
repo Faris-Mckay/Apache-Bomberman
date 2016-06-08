@@ -16,6 +16,7 @@ import com.apache.engine.task.impl.SessionMessageTask;
 import com.apache.game.GameEngine;
 import com.apache.game.Lobby;
 import com.apache.net.packet.Packet;
+import com.apache.util.Utility;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -40,22 +41,21 @@ public class NetworkHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
-		System.out.println("channelRead:");
+		Utility.log("channelRead:");
 		if (msg != null && msg instanceof Packet) {
-			ctx.write(msg);
-			ctx.flush();
+			ctx.writeAndFlush(msg);
 			engine.pushTask(new SessionMessageTask(ctx, (Packet) msg));
 		}
 	}
 
 	@Override
 	public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("Channel joined.");
+		Utility.log("Channel joined.");
 		channels.add(ctx.channel());
 	}
 
 	@Override
 	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("Channel left.");
+		Utility.log("Channel left.");
 	}
 }
