@@ -59,7 +59,7 @@ public class Player extends Entity {
 	 * add one to the kills
 	 */
 	public void addKill() {
-		this.kills = ++kills;
+		this.kills += 1;
 	}
 
 	public Channel getChannel() {

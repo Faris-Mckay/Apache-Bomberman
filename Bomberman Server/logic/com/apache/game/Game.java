@@ -30,13 +30,15 @@ public class Game {
 	private BlockingExecutorService backgroundLoader = new BlockingExecutorService(Executors.newSingleThreadExecutor());
 
 	/** The engine thread used to create this game. */
-	private GameEngine engine;
+	// private GameEngine engine;
 
 	private int gameID;
 
+	private boolean gameActive;
+
 	/**
-	 * List capacity set to 8. We should end the game when the list is empty.
-	 * <br>
+	 * List capacity set to 8. TODO: We should end the game when the list has
+	 * reached 1 player. <br>
 	 * Example: <br>
 	 * <code>void gameloop(){ <br>
 	 * while(!players.size <= 1){ <br>
@@ -56,13 +58,18 @@ public class Game {
 		});
 	}
 
+	public Game(Player player) {
+		players.add(player);
+		gameActive = true;
+	}
+
 	public BlockingExecutorService getBackgroundLoader() {
 		return backgroundLoader;
 	}
 
 	/** Initializes the game. */
 	public void init(GameEngine engine) throws Exception {
-		this.engine = engine;
+		// this.engine = engine;
 		this.registerGameEvents();
 	}
 
@@ -71,23 +78,15 @@ public class Game {
 		// submit(new EntityUpdateEvent());
 	}
 
-	private boolean gameActive;
-
-	public Game(Player player) {
-		players.add(player);
-		gameActive = true;
-	}
-
 	/**
-	 * Declare winner and remove all pointers to minimize memory leaks (just
-	 * incase garbage collection misses something).
+	 * TODO: Declare winner and remove all pointers to minimize memory leaks
+	 * (just incase garbage collection misses something).
 	 */
 	private void endGame() {
 		// declare winner.
 		players.clear();
 		gameID = 0;
 		setGameActive(false);
-
 	}
 
 	/**

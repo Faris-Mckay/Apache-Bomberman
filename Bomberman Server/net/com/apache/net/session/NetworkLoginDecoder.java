@@ -30,7 +30,6 @@ public class NetworkLoginDecoder extends MessageToMessageDecoder<ByteBuf> {
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		// System.out.println("NetworkLoginDecoder");
-		int returnCode = 1;
 		int opcode = in.readByte();
 		if (opcode == 1) {
 			ByteBuf payload = in.readBytes(in.readableBytes());
@@ -41,7 +40,6 @@ public class NetworkLoginDecoder extends MessageToMessageDecoder<ByteBuf> {
 			Player player = new Player(ctx.channel(), username, password);
 
 			if (!Lobby.getLobby().getPlayers().add(player)) {
-				returnCode = 2;
 				System.out.println("Could not register player : " + player + " [world full]");
 			}
 			ctx.channel().pipeline().replace("decoder", "decoder", new NetworkGameDecoder());

@@ -12,6 +12,14 @@ public enum GameState {
 	private int value;
 
 	private GameState(int value) {
+		this.setValue(value);
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
 		this.value = value;
 	}
 }
