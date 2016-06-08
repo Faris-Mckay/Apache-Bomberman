@@ -50,7 +50,13 @@ public class Launcher {
 			container.setSoundOn(true);
 			if (!Settings.DEBUG)
 				container.setShowFPS(false);
-			connectToServer();
+                        Thread networkThread = new Thread(){
+                            @Override
+                            public void run(){
+                                connectToServer();
+                            }
+                        };
+                        networkThread.start();
 			container.start();
 		} catch (SlickException e) {
 			e.printStackTrace();
