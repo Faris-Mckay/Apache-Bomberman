@@ -45,7 +45,9 @@ public class Bomb extends Entity {
 						public void run() {
 							i++;
 							if (i % duration == 0) {
-							//	player.getBombs().remove(0);
+								//player.getBombs().remove(0);
+								int bombs_dropped = player.getBombsDropped();
+								player.setBombsDropped(bombs_dropped > 0 ? bombs_dropped-- : 0);
 								this.cancel();
 							}
 						}
@@ -83,7 +85,9 @@ public class Bomb extends Entity {
 			/*Scene.drawCenteredString(g, "" + timeLeft,
 					new Rectangle((int) pos.getX(), (int) pos.getY(), width, height));*/
 		} else {
-			explosion.draw(pos.getX(), pos.getY(), player.getColour());
+			for(int x = 0; x < player.getBlastRadius(); x++)
+				for(int y = 0; y < player.getBlastRadius(); y++)
+					explosion.draw((getTilePos().getX() + x) * Settings.TILE_SIZE_DEFAULT, (getTilePos().getY() + y) * Settings.TILE_SIZE_DEFAULT, player.getColour());
 		}
 	}
 

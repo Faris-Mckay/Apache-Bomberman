@@ -18,8 +18,16 @@ public class Player extends Entity{
 	private Input input;
 	private Animation animation;
 	private SpriteSheet[] sheets = new SpriteSheet[4];
-   // private boolean inGame = false;
+	//private boolean inGame = false;
     private boolean up, down, right, left;
+    
+    private int max_bombs;
+    private int blast_radius;
+    private int bombs_dropped;
+    private int speed;
+    
+    private int score;
+    private String message;
     
     private long lastBomb;
 	
@@ -31,6 +39,10 @@ public class Player extends Entity{
 		this.animation = new Animation(sheets[1], Settings.ANIM_DURATION);
 		this.animation.setPingPong(true);
 		this.input = input;
+		this.speed = 2;
+		this.bombs_dropped = 0;
+		this.max_bombs = 5;
+		this.blast_radius = 4;
 	}
 
 	private ArrayList<Bomb> bombs = new ArrayList<Bomb>();
@@ -57,7 +69,11 @@ public class Player extends Entity{
 		} else {
 			animation.stop();
 		}
-		float speed = (float) (0.2 * time);
+		handleInputs(time);
+	}
+	
+	private void handleInputs(int time) {
+		float playerSpeed = (float) ((speed/10f) * time);
 		if (input != null){
 			if(!colliding) {
 				if (input.isKeyDown(Input.KEY_UP)) {
@@ -66,7 +82,7 @@ public class Player extends Entity{
 						up = true;
 						changeDirection(sheets[0]);
 					}
-					pos.setY((float) (pos.getY() - speed));
+					pos.setY((float) (pos.getY() - playerSpeed));
 				}
 				if (input.isKeyDown(Input.KEY_DOWN)) {
 					if(!down){
@@ -74,7 +90,7 @@ public class Player extends Entity{
 						down = true;
 						changeDirection(sheets[1]);
 					}
-					pos.setY((float) (pos.getY() + speed));
+					pos.setY((float) (pos.getY() + playerSpeed));
 				}
 				if (input.isKeyDown(Input.KEY_RIGHT)) {
 					if(!right){
@@ -82,7 +98,7 @@ public class Player extends Entity{
 						right = true;
 						changeDirection(sheets[2]);
 					}
-					pos.setX((float) (pos.getX() + speed));
+					pos.setX((float) (pos.getX() + playerSpeed));
 				}
 				if (input.isKeyDown(Input.KEY_LEFT)) {
 					if(!left){
@@ -90,7 +106,7 @@ public class Player extends Entity{
 						left = true;
 						changeDirection(sheets[3]);
 					}
-					pos.setX((float) (pos.getX() - speed));
+					pos.setX((float) (pos.getX() - playerSpeed));
 				}
 				if(input.isKeyDown(Input.KEY_SPACE)){
 					Bomb bomb = new Bomb(this, new Position(
@@ -99,6 +115,7 @@ public class Player extends Entity{
 					if(System.currentTimeMillis() > lastBomb + 500){
 						if(!cantDrop(bomb) || bombs.size() == 0){
 							bombs.add(bomb);
+							setBombsDropped(getBombsDropped() + 1);
 							lastBomb = System.currentTimeMillis();
 						}
 					}
@@ -106,8 +123,10 @@ public class Player extends Entity{
 			}
 		}
 	}
-	
+
 	private boolean cantDrop(Bomb bomb){
+		if(getBombsDropped() == max_bombs)
+			return true;
 		for(Bomb bomb2 : bombs){
 			if(bomb2.getTilePos().getX() == bomb.getTilePos().getX()
 					&& bomb2.getTilePos().getY() == bomb.getTilePos().getY()){
@@ -135,6 +154,22 @@ public class Player extends Entity{
 
 	public Color getColour() {
 		return new Color(255, 111, 80);
+	}
+
+	public int getBombsDropped() {
+		return bombs_dropped;
+	}
+
+	public void setBombsDropped(int bombs_dropped) {
+		this.bombs_dropped = bombs_dropped;
+	}
+
+	public int getBlastRadius() {
+		return blast_radius;
+	}
+
+	public void setBlastRadius(int blast_radius) {
+		this.blast_radius = blast_radius;
 	}
 
 }
