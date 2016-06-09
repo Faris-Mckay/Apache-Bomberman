@@ -1,4 +1,4 @@
-package com.apache.entities;
+package com.apache.entities.impl;
 
 import java.util.ArrayList;
 
@@ -9,9 +9,9 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
-import com.apache.Entity;
 import com.apache.Position;
 import com.apache.Settings;
+import com.apache.entities.Entity;
 
 public class Player extends Entity{
 

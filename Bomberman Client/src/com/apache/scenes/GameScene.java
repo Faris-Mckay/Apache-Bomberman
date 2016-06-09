@@ -1,20 +1,21 @@
 package com.apache.scenes;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
-import com.apache.Entity;
 import com.apache.Game;
 import com.apache.Position;
 import com.apache.Settings;
-import com.apache.entities.Bomb;
-import com.apache.entities.Object;
-import com.apache.entities.Player;
+import com.apache.entities.Entity;
+import com.apache.entities.impl.Object;
+import com.apache.entities.impl.Player;
 import com.apache.maps.GenericMap;
 
 public class GameScene extends Scene {
@@ -71,8 +72,6 @@ public class GameScene extends Scene {
 				if (index == index2)
 					continue;
 				if (rectanglesCollide(entity, entities.get(index2))) {
-					if(entities.get(index2) instanceof Bomb)
-						continue;
 					entity.setColliding(true);
 					if(entity.getPos().getX() != entity.getLastX())
 						entity.getPos().setX(entity.getLastX());
@@ -86,13 +85,37 @@ public class GameScene extends Scene {
 		}
 	}
 
+	private final static int[][] cantSpawnLoc = {{1,1},{1,2}, {2,1}, {3,1},{1,3} };
+	
+	public boolean freeTile(int x, int y){
+		for(int index = 0; index < cantSpawnLoc.length; index++){
+			if(x == cantSpawnLoc[index][0] && x == cantSpawnLoc[index][1])
+				return false;
+		}
+		for(Entity entity : entities){
+			if(entity.getTilePos().getX() == x && entity.getTilePos().getY() == y)
+				return false;
+		}
+		return true;
+	}
+	
 	public void init(GameContainer gc) throws SlickException {
 		map = new GenericMap();
 		entities.add(new Player(new Position(65, 33), gc.getInput()));
 		//System.out.println("rectangles: " + map.getTiles().size());
+		Image breakableSprite = new Image("res/breakable.png");
+		
 		for(int index = 0; index < map.getTiles().size(); index ++){
 			Rectangle tile = map.getTiles().get(index);
-			entities.add(new Object(new Position(tile.getX(), tile.getY()), null));
+			entities.add(new Object(new Position(tile.getX(), tile.getY()), null, false));
+		}
+		for(int i = 0; i < 300; i++){
+			Random random  = new Random();
+			int x = random.nextInt(17);
+			int y = random.nextInt(17);
+			if(freeTile(x, y)){
+				entities.add(new Object(new Position(x * Settings.TILE_SIZE_DEFAULT, y * Settings.TILE_SIZE_DEFAULT), breakableSprite, true));
+			}
 		}
 	}
 

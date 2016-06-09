@@ -1,6 +1,9 @@
-package com.apache;
+package com.apache.entities;
 
 import org.newdawn.slick.Graphics;
+
+import com.apache.Position;
+import com.apache.Settings;
 
 
 public abstract class Entity {

@@ -1,17 +1,20 @@
-package com.apache.entities;
+package com.apache.entities.impl;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
-import com.apache.Entity;
 import com.apache.Position;
+import com.apache.entities.Entity;
 
 public class Object extends Entity{
 
 	private Image image;
 	
-	public Object(Position pos, Image image) {
+	private boolean breakable;
+	
+	public Object(Position pos, Image image, boolean breakable) {
 		super(pos);
+		this.breakable = breakable;
 		this.image = image;
 	}
 

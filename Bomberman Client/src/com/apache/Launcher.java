@@ -37,7 +37,7 @@ public class Launcher {
         try {
             AppGameContainer container = new AppGameContainer(new Game(Settings.GAME_TITLE));
             container.setDisplayMode(800, 600, false);
-            container.setTargetFrameRate(Settings.TARGET_FRAME_RATE);
+            //container.setTargetFrameRate(Settings.TARGET_FRAME_RATE);
             container.setSoundOn(true);
             if(!Settings.DEBUG)
             	container.setShowFPS(false);
