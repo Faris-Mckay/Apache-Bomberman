@@ -12,41 +12,78 @@
  */
 package com.apache.game.entity;
 
-import com.apache.map.Location;
 import java.util.List;
 
+import com.apache.net.ActionSender;
+
+import io.netty.channel.Channel;
+
 public class Player extends Entity {
-    
-    private String name;
-    
-    private int kills;
-    
-    public Player(String name){
-        this.name = name;
-        setAlive(true);
-    }
-    
-    public void updateOthers(List<Player> playersToUpdate){
-        
-    }
-    
-    @Override
-    public void updateSelf(){
-        
-    }
+	private int kills;
 
-    /**
-     * @return the kills
-     */
-    public int getKills() {
-        return kills;
-    }
+	/** The channel this player is connected to. */
+	private Channel channel;
 
-    /**
-     * add one to the kills
-     */
-    public void addKill() {
-        this.kills = ++kills;
-    }
+	private String username;
+	private String password;
+	private ActionSender actionSender = new ActionSender(this);
+
+	public Player(Channel channel, String username, String password) {
+		this.channel = channel;
+		this.username = username;
+		this.password = password;
+	}
+
+	public Player(String name) {
+		this.username = name;
+		setAlive(true);
+	}
+
+	public void updateOthers(List<Player> playersToUpdate) {
+
+	}
+
+	@Override
+	public void updateSelf() {
+
+	}
+
+	/**
+	 * @return the kills
+	 */
+	public int getKills() {
+		return kills;
+	}
+
+	/**
+	 * add one to the kills
+	 */
+	public void addKill() {
+		this.kills += 1;
+	}
+
+	public Channel getChannel() {
+		return channel;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public ActionSender getActionSender() {
+		return actionSender;
+	}
 
 }

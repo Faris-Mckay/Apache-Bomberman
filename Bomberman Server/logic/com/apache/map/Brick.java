@@ -25,7 +25,7 @@ public class Brick {
     private PowerupType type;
     
     public Brick(Location location){
-        this.location = location;
+        this.setLocation(location);
         addPower();
     }
     
@@ -60,5 +60,13 @@ public class Brick {
     public void setType(PowerupType type) {
         this.type = type;
     }
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
     
 }

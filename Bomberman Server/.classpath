@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="core"/>
+	<classpathentry kind="src" path="net"/>
+	<classpathentry kind="src" path="logic"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libs/netty-all-4.1.0.Final-javadoc.jar"/>
 	<classpathentry kind="lib" path="libs/netty-all-4.1.0.Final.jar"/>

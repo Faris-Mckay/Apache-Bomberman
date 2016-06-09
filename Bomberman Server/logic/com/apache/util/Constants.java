@@ -10,14 +10,16 @@
  * Written by Faris McKay <faris.mckay@hotmail.com>, May 2016
  *
  */
-package com.apache;
+package com.apache.util;
 
 /**
  *
  * @author Faris <https://github.com/faris-mckay>
  */
 public class Constants {
-    
-    public static final int PLAYER_PROCESS_PER_CYCLE = 1;
-    
+
+	public static final int PLAYER_PROCESS_PER_CYCLE = 1;
+	/* Networking */
+	public static final String HOST = "localhost";
+	public static final int PORT_ID = 5555;
 }

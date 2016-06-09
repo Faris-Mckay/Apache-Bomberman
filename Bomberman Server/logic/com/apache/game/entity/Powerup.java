@@ -21,12 +21,20 @@ public class Powerup extends Entity {
     private PowerupType type;
     
     public Powerup(PowerupType type){
-        this.type = type;
+        this.setType(type);
     }
 
     @Override
     public void updateSelf() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	public PowerupType getType() {
+		return type;
+	}
+
+	public void setType(PowerupType type) {
+		this.type = type;
+	}
     
 }

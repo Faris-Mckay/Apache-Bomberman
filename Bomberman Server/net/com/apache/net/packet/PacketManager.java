@@ -17,6 +17,7 @@ import java.io.File;
 import com.apache.game.entity.Player;
 
 import io.netty.channel.ChannelHandlerContext;
+
 /**
  * @author Juan Ortiz <https://github.com/TheRealJP>
  */
@@ -44,9 +45,9 @@ public class PacketManager {
 	}
 
 	public static void loadPacketDecoders() throws Exception {
-		File[] files = new File("./src/main/java/com/net/packet/decoders/").listFiles();
+		File[] files = new File("./net/com/apache/net/packet/impl/").listFiles();
 		for (File file : files) {
-			Class<?> c = Class.forName("com.net.packet.decoders." + file.getName().replaceAll(".java", ""));
+			Class<?> c = Class.forName("com.apache.net.packet.impl." + file.getName().replaceAll(".java", ""));
 
 			if (PacketDecoder.class.isAssignableFrom(c) && !c.isInterface()) {
 				PacketDecoder packet = (PacketDecoder) c.newInstance();

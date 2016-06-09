@@ -18,7 +18,7 @@ public class Player extends Entity{
 	private Input input;
 	private Animation animation;
 	private SpriteSheet[] sheets = new SpriteSheet[4];
-    private boolean inGame = false;
+   // private boolean inGame = false;
     private boolean up, down, right, left;
     
     private long lastBomb;

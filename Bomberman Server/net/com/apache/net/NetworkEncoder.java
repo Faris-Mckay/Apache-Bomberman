@@ -29,8 +29,9 @@ public class NetworkEncoder extends MessageToMessageEncoder<Packet> {
 		int payloadLength = packet.getLength();
 		ByteBuf buffer = Unpooled.buffer(headerLength + payloadLength);
 		buffer.writeByte(packet.getOpcode());
-		// buffer.writeByte(payloadLength);
+		buffer.writeByte(payloadLength);
 		buffer.writeBytes(packet.getPayload());
 		out.add(buffer);
+		System.out.println("Message sent.");
 	}
 }

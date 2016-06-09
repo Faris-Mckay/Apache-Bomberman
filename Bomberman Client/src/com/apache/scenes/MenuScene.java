@@ -17,15 +17,17 @@ public class MenuScene extends Scene {
 		setPriority(1);
 	}
 
+	@Override
 	protected void CustomRender(GameContainer gc, Graphics g) throws SlickException {
 		for(Interface ui : interfaces){
 			ui.render(g);
 		}
 	}
 
-
+	@Override
 	protected void CustomUpdate(GameContainer gc, int t) throws SlickException {
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+			
 			Game.manager.clear();
 			Game.manager.addScene(new GameScene());
 		}
@@ -34,6 +36,7 @@ public class MenuScene extends Scene {
 		}
 	}
 
+	@Override
 	public void init(GameContainer gc) throws SlickException {
 		interfaces.add(new LoginMenu(new Position(400, 300)));
 		for(Interface ui : interfaces){

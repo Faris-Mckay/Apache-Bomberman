@@ -12,33 +12,32 @@
  */
 package com.apache.engine.task.impl;
 
-import com.apache.game.entity.Player;
 import com.apache.engine.task.FiniteTask;
-import com.apache.Constants;
 import com.apache.game.Game;
-import java.util.List;
+import com.apache.game.entity.Player;
+import com.apache.util.Constants;
 
 /**
  *
  * @author Faris <https://github.com/faris-mckay>
  */
 public class GameTask extends FiniteTask {
-    
-    private Game game;
 
-    public GameTask(Game game) {
-        super(Constants.PLAYER_PROCESS_PER_CYCLE);
-        this.game = game;
-    }
+	private Game game;
 
-    @Override
-    public void execute() {
-        if(!game.isGameActive()){
-            setShouldStop(true);
-        }
-        for(Player player : game.getPlayers()){
-            player.updateOthers(game.getPlayers());
-        }
-    }
-    
+	public GameTask(Game game) {
+		super(Constants.PLAYER_PROCESS_PER_CYCLE);
+		this.game = game;
+	}
+
+	@Override
+	public void execute() {
+		if (!game.isGameActive()) {
+			setShouldStop(true);
+		}
+		for (Player player : game.getPlayers()) {
+			player.updateOthers(game.getPlayers());
+		}
+	}
+
 }

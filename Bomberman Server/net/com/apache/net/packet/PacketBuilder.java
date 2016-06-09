@@ -14,12 +14,14 @@ package com.apache.net.packet;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+
 /**
  * @author Juan Ortiz <https://github.com/TheRealJP>
  */
 public class PacketBuilder {
 
 	private int opcode;
+
 	private final ByteBuf payload = Unpooled.buffer();
 
 	public PacketBuilder() {
@@ -75,6 +77,7 @@ public class PacketBuilder {
 		}
 	}
 
+	/** Reads the string buffer. */
 	public static String readString(ByteBuf buffer) {
 		StringBuilder builder = new StringBuilder();
 		while (buffer.isReadable()) {
@@ -83,6 +86,7 @@ public class PacketBuilder {
 		return builder.toString();
 	}
 
+	/** Converts data to a single packet. */
 	public Packet toPacket() {
 		return new Packet(opcode, payload);
 	}
