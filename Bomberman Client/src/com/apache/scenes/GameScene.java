@@ -35,31 +35,6 @@ public class GameScene extends Scene {
 			entity.render(g);
 	}
 
-	public boolean circleIntersects(Entity entity, Entity entityTwo) {
-		float x = entity.getPos().getX();
-		float y = entity.getPos().getY();
-		float x2 = entityTwo.getPos().getX();
-		float y2 = entityTwo.getPos().getY();
-		float distance = (float) (Math.pow((x - x2), 2) + Math.pow((y - y2), 2));
-		float radiusOne = entity.getHeight() / 2;
-		float radiusTwo = entityTwo.getHeight() / 2;
-		float targetDistance = (float) Math.pow((radiusOne + radiusTwo), 2);
-		if (distance < targetDistance)
-			return true;
-		return false;
-	}
-
-	public boolean rectanglesCollide(Entity entity, Entity entityTwo) {
-		final int padding = Settings.COLLISION_PADDING;
-		Rectangle rectangleOne = new Rectangle((int) entity.getPos().getX() + padding, (int) entity.getPos().getY() + padding,
-				entity.getWidth() - (padding*2), entity.getHeight() - (padding*2));
-		Rectangle rectangleTwo = new Rectangle((int) entityTwo.getPos().getX() + padding, (int) entityTwo.getPos().getY() + padding,
-				entityTwo.getWidth() - (padding*2), entityTwo.getHeight() - (padding*2));
-		if (rectangleOne.intersects(rectangleTwo))
-			return true;
-		return false;
-	}
-	
 	protected void CustomUpdate(GameContainer gc, int t) throws SlickException {
 		if (gc.getInput().isKeyDown(Input.KEY_ESCAPE)) {
 			Game.manager.newScene(new MenuScene());
@@ -71,12 +46,12 @@ public class GameScene extends Scene {
 			for (int index2 = 0; index2 < entities.size(); index2++) {
 				if (index == index2)
 					continue;
-				if (rectanglesCollide(entity, entities.get(index2))) {
+				if (entity.rectanglesCollide(entities.get(index2))) {
 					entity.setColliding(true);
 					if(entity.getPos().getX() != entity.getLastX())
-						entity.getPos().setX(entity.getLastX());
+						entity.updateXPosition(entity.getLastX());
 					if(entity.getPos().getY() != entity.getLastY())
-						entity.getPos().setY(entity.getLastY());
+						entity.updateYPosition(entity.getLastY());
 					entity.setColliding(false);
 				}
 			}
@@ -101,10 +76,7 @@ public class GameScene extends Scene {
 	
 	public void init(GameContainer gc) throws SlickException {
 		map = new GenericMap();
-		entities.add(new Player(new Position(65, 33), gc.getInput()));
-		//System.out.println("rectangles: " + map.getTiles().size());
 		Image breakableSprite = new Image("res/breakable.png");
-		
 		for(int index = 0; index < map.getTiles().size(); index ++){
 			Rectangle tile = map.getTiles().get(index);
 			entities.add(new Object(new Position(tile.getX(), tile.getY()), null, false));
@@ -113,10 +85,11 @@ public class GameScene extends Scene {
 			Random random  = new Random();
 			int x = random.nextInt(17);
 			int y = random.nextInt(17);
-			if(freeTile(x, y)){
-				entities.add(new Object(new Position(x * Settings.TILE_SIZE_DEFAULT, y * Settings.TILE_SIZE_DEFAULT), breakableSprite, true));
+			if(freeTile(x-1, y)){
+				entities.add(new Object(new Position((x-1) * Settings.TILE_SIZE_DEFAULT, y * Settings.TILE_SIZE_DEFAULT), breakableSprite, true));
 			}
 		}
+		entities.add(new Player(new Position(33, 33), gc.getInput()));
 	}
 
 	public String toString() {

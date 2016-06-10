@@ -1,6 +1,7 @@
 package com.apache.entities;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Rectangle;
 
 import com.apache.Position;
 import com.apache.Settings;
@@ -9,6 +10,8 @@ import com.apache.Settings;
 public abstract class Entity {
 
 	protected Position pos;
+	
+	protected Rectangle hitBox; 
 	
 	protected int width, height;
 	
@@ -20,9 +23,10 @@ public abstract class Entity {
 
 	public Entity(Position pos) {
 		this.pos = pos;
-		height = width = Settings.TILE_SIZE_DEFAULT;
-		lastX = pos.getX();
-		lastY = pos.getY();
+		this.height = this.width = Settings.TILE_SIZE_DEFAULT - Settings.COLLISION_PADDING*2;
+		this.hitBox = new Rectangle(pos.getX(), pos.getY(), width, height);
+		this.lastX = pos.getX();
+		this.lastY = pos.getY();
 	}
 
 	public boolean inSameTile(Entity entity) {
@@ -41,6 +45,41 @@ public abstract class Entity {
 		return new Position(xTile, yTile);
 	}
 	
+	public boolean circleIntersects(Entity entity) {
+		float x = entity.getPos().getX();
+		float y = entity.getPos().getY();
+		float distance = (float) (Math.pow((pos.getX() - x), 2) + Math.pow((pos.getY() - y), 2));
+		float radius = entity.getHeight() / 2;
+		float targetDistance = (float) Math.pow(((height / 2) + radius), 2);
+		if (distance < targetDistance)
+			return true;
+		return false;
+	}
+
+	public boolean rectanglesCollide(Entity entity) {
+		if (hitBox.intersects(entity.hitBox))
+			return true;
+		return false;
+	}
+	
+	public void updateYPosition(float y) {
+		pos.setY(y);
+		hitBox.setY(y);
+	}
+	
+	public void updateXPosition(float x) {
+		pos.setX(x);
+		hitBox.setX(x);
+	}
+	
+	public Rectangle getHitBox() {
+		return hitBox;
+	}
+
+	public void setHitBox(Rectangle hitBox) {
+		this.hitBox = hitBox;
+	}
+
 	public abstract void render(Graphics g);
 
 	public abstract void update(int time);
