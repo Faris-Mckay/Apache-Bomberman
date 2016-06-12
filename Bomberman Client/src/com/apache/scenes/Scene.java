@@ -1,20 +1,21 @@
 package com.apache.scenes;
 
-import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import com.apache.gui.Interface;
+
 public abstract class Scene implements Comparable<Scene> {
+
+	protected ArrayList<Interface> interfaces = new ArrayList<Interface>();
 	
 	// The states a scene can be in
 	public enum STATE {
-		ON,
-		FREEZE,
-		FREEZE_NEXT,
-		INVISIBLE
+		ON, FREEZE, FREEZE_NEXT, INVISIBLE
 	};
 
 	// The current state is saved in this variable
@@ -26,12 +27,6 @@ public abstract class Scene implements Comparable<Scene> {
 	// An Image "Buffer" to hold the last active frame when our scene get
 	// freezed
 	private Image scene;
-	
-	public static void drawCenteredString(Graphics g, String string, Rectangle r) {
-		int width = g.getFont().getWidth(string);
-		int height = g.getFont().getHeight(string);
-		g.drawString(string, (r.x + r.width / 2) - (width / 2), (r.y + r.height / 2) - (height / 2));
-	}
 
 	public Scene() {
 		// Default state is on
