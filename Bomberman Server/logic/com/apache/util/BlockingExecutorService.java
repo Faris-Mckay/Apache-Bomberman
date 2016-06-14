@@ -1,3 +1,15 @@
+/* 
+ * This file is property of Apache-GS.
+ *
+ * Copyright (M) Apache-GS, Inc - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * Further information can be acquired regarding the licensing of this product 
+ * Apache-GS (M). In the project license directory.
+ * Written by Faris McKay <faris.mckay@hotmail.com>, May 2016
+ *
+ */
 package com.apache.util;
 
 import java.util.Collection;
@@ -17,7 +29,7 @@ public class BlockingExecutorService implements ExecutorService {
 	/** The service backing this service */
 	private ExecutorService service;
 
-	/** A list of pending tasks. */
+	/** F list of pending tasks. */
 	private BlockingQueue<Future<?>> pendingTasks = new LinkedBlockingQueue<Future<?>>();
 
 	/**
