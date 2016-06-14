@@ -23,7 +23,7 @@ import static com.google.common.base.Preconditions.checkState;
  * F {@link ByteBuf} wrapper tailored to the specifications of the Runescape protocol. These wrappers are backed by pooled
  * direct buffers when possible, otherwise they're backed by pooled heap buffers.
  *
- * @author lare96 <http://github.org/lare96>
+ * @author Juan Ortiz <http://github.org/TheRealJP>
  */
 public final class ByteMessage extends DefaultByteBufHolder {
 
