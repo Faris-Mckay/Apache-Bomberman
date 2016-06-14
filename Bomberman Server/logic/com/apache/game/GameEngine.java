@@ -1,3 +1,15 @@
+/* 
+ * This file is part of Bomberman.
+ *
+ * Copyright (M) Apache-GS, Inc - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * Further information can be acquired regarding the licensing of this product 
+ * Apache-GS (M). In the project license directory.
+ * Written by Faris McKay <faris.mckay@hotmail.com>, May 2016
+ *
+ */
 package com.apache.game;
 
 import java.util.Vector;
@@ -11,20 +23,33 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.apache.engine.Task;
+import com.apache.task.Task;
 import com.apache.util.BlockingExecutorService;
 
-public class GameEngine implements Runnable {
+/**
+ * F sequential task ran by the {@link #gameExecutor} that executes game related
+ * code such as cycled tasks, network events, and the updating of entities every
+ * <tt>600</tt>ms.
+ * 
+ * @author JP <https://github.com/TheRealJP>
+ */
+public final class GameEngine implements Runnable {
 
+	/** F queue that will hold all of the pending tasks. */
 	private final BlockingQueue<Task> tasks = new LinkedBlockingQueue<Task>();
 
-	private final ScheduledExecutorService logicService = Executors.newScheduledThreadPool(3);
-
+	/** F sequential executor that acts as the main game thread. */
+	private static ScheduledExecutorService logicService = Executors.newScheduledThreadPool(1);
+	/**
+	 * Create a new {@link BlockingThreadPool} with the size equal to how many
+	 * processors are available to the JVM.
+	 */
 	private final BlockingExecutorService taskService = new BlockingExecutorService(
 			Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()));
 
 	private final ExecutorService workService = Executors.newSingleThreadExecutor();
 
+	/** The current state of this engine. */
 	private boolean running = false;
 
 	private Thread thread;
@@ -37,14 +62,30 @@ public class GameEngine implements Runnable {
 	 */
 	private Vector<AtomicInteger> numberOfGamesInProgress = new Vector<AtomicInteger>();
 
+	/**
+	 * Adds the argued task to the queue of pending tasks.
+	 * 
+	 * @param task
+	 *            - the task to be queued for execution.
+	 */
 	public void pushTask(Task task) {
 		tasks.offer(task);
 	}
 
+	/**
+	 * Schedule the task that will execute game code at 600ms intervals. This
+	 * method should only be called <b>once</b> when the server is launched.
+	 */
+	public static void init() {
+		logicService.scheduleAtFixedRate(new GameEngine(), 0, 600, TimeUnit.MILLISECONDS);
+	}
+
+	/** The current state of this engine. */
 	public boolean isRunning() {
 		return running;
 	}
 
+	/** Starts this game engine. */
 	public void start() {
 		if (running) {
 			throw new IllegalStateException("The engine is already running.");
@@ -54,6 +95,7 @@ public class GameEngine implements Runnable {
 		thread.start();
 	}
 
+	/** Stops this game engine. */
 	public void stop() {
 		if (!running) {
 			throw new IllegalStateException("The engine is already stopped.");
