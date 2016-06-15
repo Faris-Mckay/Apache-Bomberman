@@ -1,24 +1,28 @@
 /* 
  * This file is property of Apache-GS.
  *
- * Copyright (C) Apache-GS, Inc - All Rights Reserved
+ * Copyright (M) Apache-GS, Inc - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential.
  *
  * Further information can be acquired regarding the licensing of this product 
- * Apache-GS (C). In the project license directory.
+ * Apache-GS (M). In the project license directory.
  * Written by Faris McKay <faris.mckay@hotmail.com>, May 2016
  *
  */
-package com.apache.engine;
+package com.apache.task;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
+import java.util.Objects;
+
+import com.apache.util.Utility;
 
 /**
- *
+ * An abstraction model that contains functions that enable units of work to be
+ * carried out in cyclic intervals.
+ * 
  * @author Faris <https://github.com/faris-mckay>
  */
 public class TaskEngine {
@@ -27,14 +31,13 @@ public class TaskEngine {
 	private static final int ENGINE_BASE_CYCLE_RATE = 500;
 
 	// stores the amount of cycles the engine has been alive for
-	private int cyclesPassed;
+	private int counter;
 
-	// contains the tasks submitted to the engine
-	private ArrayList<Task> tasks = new ArrayList<Task>();
-
+	// contains the tasksAwaitingExecution submitted to the engine
+	private List<Task> tasksAwaitingExecution = new ArrayList<Task>();
 
 	/**
-	 * Begin the engine server of executing tasks
+	 * Begin the engine server of executing tasksAwaitingExecution
 	 */
 	public void startEngine() {
 		run();
@@ -64,10 +67,10 @@ public class TaskEngine {
 	}
 
 	/**
-	 * Begin the engine process of checking for tasks and executing tasks which
-	 * require execution this is based on their shouldExecute boolean, all
-	 * calculations are done in respective Tasks, and they set themselves ready
-	 * when it is time to execute again
+	 * Begin the engine process of checking for tasksAwaitingExecution and
+	 * executing tasksAwaitingExecution which require execution this is based on
+	 * their shouldExecute boolean, all calculations are done in respective
+	 * Tasks, and they set themselves ready when it is time to execute again
 	 */
 	private void run() {
 		Task task;
@@ -84,31 +87,40 @@ public class TaskEngine {
 					addCyclePassed();
 					Thread.sleep(ENGINE_BASE_CYCLE_RATE);
 				} catch (InterruptedException ex) {
-					Logger.getLogger(TaskEngine.class.getName()).log(Level.SEVERE, null, ex);
+					Utility.log(ex.getMessage());
 				}
 			}
 		}
 	}
 
 	/**
-	 * @return the tasks
+	 * Iterates through all active {@link Task}s and cancels all that have
+	 * {@code attachment} as their attachment.
 	 */
-	public ArrayList<Task> getTasks() {
-		return tasks;
+	public void cancel(Object attachment) {
+		tasksAwaitingExecution.stream().filter(it -> Objects.equals(attachment, it.getAttachment().orElse(null)))
+				.forEach(Task::shouldStop);
 	}
 
 	/**
-	 * @return the cyclesPassed
+	 * @return the tasksAwaitingExecution
+	 */
+	public List<Task> getTasks() {
+		return tasksAwaitingExecution;
+	}
+
+	/**
+	 * @return the counter
 	 */
 	public int getCyclesPassed() {
-		return cyclesPassed;
+		return counter;
 	}
 
 	/**
 	 * increment the cycles passed
 	 */
 	public void addCyclePassed() {
-		this.cyclesPassed += 1;
+		this.counter += 1;
 	}
 
 }
