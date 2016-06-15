@@ -29,7 +29,7 @@ import com.google.common.collect.Iterators;
  * is very high performing because it utilizes string interning and its own
  * method of caching.
  *
- * @author lare96 <http://github.org/lare96>
+ * @author Juan Ortiz <http://github.org/TheRealJP>
  */
 public final class AttributeMap implements Iterable<Entry<String, AttributeValue<?>>> {
 

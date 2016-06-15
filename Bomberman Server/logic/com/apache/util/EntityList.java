@@ -15,6 +15,8 @@ package com.apache.util;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 import com.apache.game.entity.Entity;
 
@@ -56,6 +58,22 @@ public class EntityList<E extends Entity> implements Collection<E>, Iterable<E> 
 		}
 		return entities[index];
 	}
+	
+    /**
+     * Finds the first element that matches {@code filter}.
+     *
+     * @param filter The filter to apply to the elements of this sequence.
+     * @return An {@link Optional} containing the element, or an empty {@code Optional} if no element was found.
+     */
+    public Optional<E> findFirst(Predicate<? super E> filter) {
+        for (E e : this) {
+            if (filter.test(e)) {
+                return Optional.of(e);
+            }
+        }
+        return Optional.empty();
+    }
+    
 
 	/**
 	 * Gets the index of an entity.
