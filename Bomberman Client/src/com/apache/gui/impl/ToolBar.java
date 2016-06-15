@@ -1,6 +1,6 @@
 package com.apache.gui.impl;
 
-import com.apache.Position;
+import com.apache.entities.Position;
 import com.apache.gui.Interface;
 
 public class ToolBar extends Interface{

@@ -6,7 +6,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import com.apache.Game;
-import com.apache.Position;
+import com.apache.entities.Position;
 import com.apache.gui.Interface;
 import com.apache.gui.impl.LoginMenu;
 

@@ -11,9 +11,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
 import com.apache.Game;
-import com.apache.Position;
 import com.apache.Settings;
 import com.apache.entities.Entity;
+import com.apache.entities.Position;
 import com.apache.entities.impl.Object;
 import com.apache.entities.impl.Player;
 import com.apache.maps.GenericMap;

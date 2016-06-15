@@ -50,7 +50,7 @@ public class Network {
 				public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast("encoder", new Encoder());
 					ch.pipeline().addLast("decoder", new Decoder());
-					ch.pipeline().addLast(new ClientHandler());
+					ch.pipeline().addLast(new BombermanChannelHandler());
 				}
 			});
 

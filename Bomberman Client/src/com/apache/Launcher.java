@@ -26,26 +26,28 @@ import org.newdawn.slick.SlickException;
  */
 public class Launcher {
 
-    /**
-     * Main point of entry into the program
-     *
-     * @param args input to the application
-     */
-    public static void main(String[] args) {
-        System.setProperty("org.lwjgl.librarypath", new File(new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName()).getAbsolutePath());
-        SFX.getInstance().playSound("screenshot");
-        try {
-            AppGameContainer container = new AppGameContainer(new Game(Settings.GAME_TITLE));
-            container.setDisplayMode(800, 600, false);
-            //container.setTargetFrameRate(Settings.TARGET_FRAME_RATE);
-            container.setSoundOn(true);
-            if(!Settings.DEBUG)
-            	container.setShowFPS(false);
-            container.start();
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
+	/**
+	 * Main point of entry into the program
+	 *
+	 * @param args
+	 *            input to the application
+	 */
+	public static void main(String[] args) {
+		System.setProperty("org.lwjgl.librarypath",
+				new File(new File(System.getProperty("user.dir"), "native"), LWJGLUtil.getPlatformName())
+						.getAbsolutePath());
+		SFX.getInstance().playSound("screenshot");
+		try {
+			AppGameContainer container = new AppGameContainer(new Game(Settings.GAME_TITLE));
+			container.setDisplayMode(800, 600, false);
+			// container.setTargetFrameRate(Settings.TARGET_FRAME_RATE);
+			container.setSoundOn(true);
+			if (!Settings.DEBUG)
+				container.setShowFPS(false);
+			container.start();
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 
-    }
-
+	}
 }

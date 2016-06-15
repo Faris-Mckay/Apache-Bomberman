@@ -2,7 +2,7 @@ package com.apache.gui.impl;
 
 import org.newdawn.slick.geom.Rectangle;
 
-import com.apache.Position;
+import com.apache.entities.Position;
 import com.apache.gui.Interface;
 import com.apache.gui.components.Button;
 import com.apache.gui.components.TextInput;

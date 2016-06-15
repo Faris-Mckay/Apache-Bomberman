@@ -8,9 +8,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
-import com.apache.Position;
 import com.apache.Settings;
 import com.apache.entities.Entity;
+import com.apache.entities.Position;
 
 public class Bomb extends Entity {
 

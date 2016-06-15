@@ -2,8 +2,8 @@ package com.apache.entities.impl;
 
 import org.newdawn.slick.Graphics;
 
-import com.apache.Position;
 import com.apache.entities.Entity;
+import com.apache.entities.Position;
 
 public class PowerUps extends Entity{
 

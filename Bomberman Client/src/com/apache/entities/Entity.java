@@ -3,7 +3,6 @@ package com.apache.entities;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
-import com.apache.Position;
 import com.apache.Settings;
 
 

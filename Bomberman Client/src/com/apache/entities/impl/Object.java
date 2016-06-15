@@ -3,8 +3,8 @@ package com.apache.entities.impl;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
-import com.apache.Position;
 import com.apache.entities.Entity;
+import com.apache.entities.Position;
 
 public class Object extends Entity{
 

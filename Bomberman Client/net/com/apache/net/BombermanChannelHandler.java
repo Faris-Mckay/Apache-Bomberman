@@ -22,11 +22,11 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * 
  * @author JP <https://github.com/TheRealJP>
  */
-public class ClientHandler extends ChannelInboundHandlerAdapter {
+public class BombermanChannelHandler extends ChannelInboundHandlerAdapter {
 
 	private final ByteBuf firstMessage;
 
-	public ClientHandler() {
+	public BombermanChannelHandler() {
 		firstMessage = Unpooled.buffer(256);
 		for (int i = 0; i < firstMessage.capacity(); i++) {
 			firstMessage.writeByte((byte) i);
@@ -40,13 +40,12 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
-		ctx.write(msg);
+		/*
+		 * Using writeAndFlush so that information is sent immediately instead
+		 * of waiting for the buffer to fill up and then flushing.
+		 */
+		ctx.writeAndFlush(msg);
 		System.out.println("channelRead");
-	}
-
-	@Override
-	public void channelReadComplete(ChannelHandlerContext ctx) {
-		ctx.flush();
 	}
 
 	@Override

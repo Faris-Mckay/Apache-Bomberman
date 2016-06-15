@@ -4,7 +4,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
-import com.apache.Position;
+import com.apache.entities.Position;
 
 public abstract class Component {
 

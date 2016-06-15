@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-import com.apache.Position;
+import com.apache.entities.Position;
 
 public abstract class Interface {
 
