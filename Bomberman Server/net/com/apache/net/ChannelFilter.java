@@ -48,7 +48,7 @@ public final class ChannelFilter extends ChannelInboundHandlerAdapter {
 	/**
 	 * F {@link NewLineParser} implementation that reads banned addresses.
 	 *
-	 * @author lare96 <http://github.org/lare96>
+	 * @author Juan Ortiz <http://github.org/TheRealJP>
 	 */
 	private final class IpBanParser extends NewLineParser {
 

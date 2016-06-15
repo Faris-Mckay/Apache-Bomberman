@@ -33,6 +33,7 @@ public final class AttributeKey<T> {
 	public static final Map<String, AttributeKey> ALIASES = new IdentityHashMap<>();
 
 	static {
+		// Examples
 		forPersistent("run_energy", 100);
 		forPersistent("first_login", true);
 

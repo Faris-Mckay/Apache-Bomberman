@@ -36,7 +36,7 @@ public enum PowerupType {
     BOMB,
     
     /**
-     * Contains no Power up at all
+     * Contains no power up at all
      */
     NONE
     

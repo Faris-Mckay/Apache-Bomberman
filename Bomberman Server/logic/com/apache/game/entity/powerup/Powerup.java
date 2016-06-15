@@ -13,6 +13,7 @@
 package com.apache.game.entity.powerup;
 
 import com.apache.game.entity.Entity;
+import com.apache.net.BombermanContext;
 
 /**
  * TODO: Power up abstraction (Offensive, Defensive, Evasive, Token power ups).
@@ -24,8 +25,10 @@ public abstract class Powerup extends Entity {
 
 	private PowerupType type;
 
+	private static BombermanContext context;
+
 	public Powerup(PowerupType type) {
-		//super(context);
+		super(context);
 		this.setType(type);
 	}
 

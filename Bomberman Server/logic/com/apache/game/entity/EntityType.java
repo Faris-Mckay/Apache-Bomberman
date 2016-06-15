@@ -31,5 +31,10 @@ public enum EntityType {
 	/**
 	 * An object that can be destroyed up by a {@link Player}.
 	 */
-	BRICK;
+	BRICK,
+	/**
+	 * An {@link Entity} that is controlled by the game itself (Artificially
+	 * Intelligent Player).
+	 */
+	NPC;
 }

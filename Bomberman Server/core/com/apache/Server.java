@@ -25,7 +25,7 @@ import io.netty.util.ResourceLeakDetector;
 /**
  * Initializes the individual modules to launch {@link Bomberman}.
  *
- * @author lare96 <http://github.org/lare96>
+ * @author Juan Ortiz <http://github.org/TheRealJP>
  */
 public final class Server {
 

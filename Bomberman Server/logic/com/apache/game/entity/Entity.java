@@ -14,6 +14,7 @@ package com.apache.game.entity;
 
 import com.apache.game.GameService;
 import com.apache.game.World;
+import com.apache.game.entity.attrib.AttributeMap;
 import com.apache.game.update.UpdateFlagContainer;
 import com.apache.map.Location;
 import com.apache.net.BombermanContext;
@@ -44,8 +45,13 @@ public abstract class Entity {
 	 */
 	protected final UpdateFlagContainer updateFlags = new UpdateFlagContainer();
 
+	/**
+	 * An {@link AttributeMap} instance assigned to this {@code Entity}.
+	 */
+	public final AttributeMap attributes = new AttributeMap();
+
 	private int id;
-    /**
+	/**
 	 * The location of this {@code Entity}.
 	 */
 	private Location location;
@@ -97,8 +103,16 @@ public abstract class Entity {
 	}
 
 	/**
+	 * @return The {@link AttributeMap} instance assigned to this
+	 *         {@code Entity}.
+	 */
+	public final AttributeMap attr() {
+		return attributes;
+	}
+
+	/**
 	 * @return The {@link UpdateFlagContainer} instance assigned to this
-	 *         {@code MobileEntity}.
+	 *         {@code Entity}.
 	 */
 	public final UpdateFlagContainer getUpdateFlags() {
 		return updateFlags;
