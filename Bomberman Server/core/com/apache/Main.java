@@ -29,7 +29,7 @@ public final class Main {
 
 	static {
 		try {
-			Thread.currentThread().setName("Bomberman Initialization Thread");
+			Thread.currentThread().setName("BombermanInitializationThread");
 		} catch (Exception e) {
 			throw new ExceptionInInitializerError(e);
 		}

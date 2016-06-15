@@ -42,6 +42,7 @@ public final class NetworkConstants {
 			RESOURCE_LEAK_DETECTION = Level.valueOf(reader.get("resource_leak_detection_level").getAsString());
 			CONNECTION_LIMIT = reader.get("connection_threshold").getAsInt();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ExceptionInInitializerError(e);
 		}
 	}
