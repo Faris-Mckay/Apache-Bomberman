@@ -29,48 +29,48 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  */
 public class Network {
 
-	private String host;
-	private int port;
+    private String host;
+    private int port;
 
-	public Network(String host, int port) {
-		this.host = host;
-		this.port = port;
-	}
+    public Network(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
 
-	public void init() {
-		EventLoopGroup workerGroup = new NioEventLoopGroup();
+    public void init() {
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
 
-		try {
-			Bootstrap b = new Bootstrap();
-			b.group(workerGroup);
-			b.channel(NioSocketChannel.class);
-			b.option(ChannelOption.SO_KEEPALIVE, true);
-			b.handler(new ChannelInitializer<SocketChannel>() {
-				@Override
-				public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast("encoder", new Encoder());
-					ch.pipeline().addLast("decoder", new Decoder());
-					ch.pipeline().addLast(new BombermanChannelHandler());
-				}
-			});
+        try {
+            Bootstrap b = new Bootstrap();
+            b.group(workerGroup);
+            b.channel(NioSocketChannel.class);
+            b.option(ChannelOption.SO_KEEPALIVE, true);
+            b.handler(new ChannelInitializer<SocketChannel>() {
+                @Override
+                public void initChannel(SocketChannel ch) throws Exception {
+                    ch.pipeline().addLast("encoder", new Encoder());
+                    ch.pipeline().addLast("decoder", new Decoder());
+                    ch.pipeline().addLast(new BombermanChannelHandler());
+                }
+            });
 
-			ChannelFuture f = b.connect(host, port).sync();
+            ChannelFuture f = b.connect(host, port).sync();
 
-			PacketBuilder pb = new PacketBuilder(1);
-			String username = "Jack";
-			String password = "password";
+            PacketBuilder pb = new PacketBuilder(1);
+            String username = "Jack";
+            String password = "password";
 
-			pb.putInt(username.length());
-			pb.putString(username);
-			pb.putString(password);
+            pb.putInt(username.length());
+            pb.putString(username);
+            pb.putString(password);
 
-			f.channel().writeAndFlush(pb.getPacket());
-			f.channel().closeFuture().sync();
-			System.out.println("Sent packet 1 to server.");
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			workerGroup.shutdownGracefully();
-		}
-	}
+            f.channel().writeAndFlush(pb.getPacket());
+            f.channel().closeFuture().sync();
+            System.out.println("Sent packet 1 to server.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            workerGroup.shutdownGracefully();
+        }
+    }
 }

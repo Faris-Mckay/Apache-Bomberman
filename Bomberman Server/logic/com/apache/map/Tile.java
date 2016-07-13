@@ -17,11 +17,11 @@ package com.apache.map;
  * @author Faris <https://github.com/faris-mckay>
  */
 public class Tile {
-    
+
     private int xCoordinate, yCoordinate;
-    
-    public Location convertToLocation(){
+
+    public Location convertToLocation() {
         return new Location(xCoordinate * 32, yCoordinate * 32);
     }
-    
+
 }

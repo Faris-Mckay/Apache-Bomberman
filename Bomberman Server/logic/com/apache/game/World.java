@@ -26,180 +26,187 @@ import com.apache.util.EntityList;
 import com.apache.util.StringUtility;
 
 public class World {
-	/**
-	 * The total amount of {@link Player}s that can be either logged in per game
-	 * loop.
-	 */
-	public static final int LOGIN_THRESHOLD = 50;
 
-	/** An instance of the {@link BombermanContext}. */
-	private final BombermanContext context;
+    /**
+     * The total amount of {@link Player}s that can be either logged in per game
+     * loop.
+     */
+    public static final int LOGIN_THRESHOLD = 50;
 
-	private GameEngine engine;
+    /**
+     * An instance of the {@link BombermanContext}.
+     */
+    private final BombermanContext context;
 
-	private int lobbyId, port;
+    private GameEngine engine;
 
-	/** The {@link TaskManager} that manages cycle based tasks. */
-	private final TaskEngine tasks = new TaskEngine();
+    private int lobbyId, port;
 
-	/** F {@link Queue} of {@link Player}s awaiting login. */
-	private final Queue<Player> logins = new ConcurrentLinkedQueue<>();
+    /**
+     * The {@link TaskManager} that manages cycle based tasks.
+     */
+    private final TaskEngine tasks = new TaskEngine();
 
-	/** F {@link Queue} of {@link Player}s awaiting logout. */
-	private final Queue<Player> logouts = new ConcurrentLinkedQueue<>();
+    /**
+     * F {@link Queue} of {@link Player}s awaiting login.
+     */
+    private final Queue<Player> logins = new ConcurrentLinkedQueue<>();
 
-	/** The list of {@link Player}s in the lobby. */
-	private EntityList<Player> players = new EntityList<Player>(2000);
+    /**
+     * F {@link Queue} of {@link Player}s awaiting logout.
+     */
+    private final Queue<Player> logouts = new ConcurrentLinkedQueue<>();
 
-	/**
-	 * The {@link WorldSynchronizer} that will perform updating for all
-	 * {@link MobileEntity}s.
-	 */
-	private final WorldSynchronizer synchronizer = new WorldSynchronizer(this);
+    /**
+     * The list of {@link Player}s in the lobby.
+     */
+    private EntityList<Player> players = new EntityList<Player>(2000);
 
-	/**
-	 * Creates a new {@link World}.
-	 *
-	 * @param context
-	 *            An instance of the {@link BombermanContext}.
-	 */
-	public World(BombermanContext context) {
-		this.context = context;
-	}
+    /**
+     * The {@link WorldSynchronizer} that will perform updating for all
+     * {@link MobileEntity}s.
+     */
+    private final WorldSynchronizer synchronizer = new WorldSynchronizer(this);
 
-	/**
-	 * Schedules a {@link Task} using the underlying {@link TaskEngine}.
-	 *
-	 * @param t
-	 *            The {@code Task} to schedule.
-	 */
-	public void schedule(Task t) {
-		tasks.submit(t);
-	}
+    /**
+     * Creates a new {@link World}.
+     *
+     * @param context An instance of the {@link BombermanContext}.
+     */
+    public World(BombermanContext context) {
+        this.context = context;
+    }
 
-	/**
-	 * Runs one iteration of the main game loop which includes processing
-	 * {@link Task}s and synchronization.
-	 */
-	public void runGameLoop() {
-		tasks.startEngine();
-		synchronizer.preSynchronize();
-		synchronizer.synchronize();
-		synchronizer.postSynchronize();
-	}
+    /**
+     * Schedules a {@link Task} using the underlying {@link TaskEngine}.
+     *
+     * @param t The {@code Task} to schedule.
+     */
+    public void schedule(Task t) {
+        tasks.submit(t);
+    }
 
-	/**
-	 * Queues {@code player} to be logged in on the next game loop.
-	 *
-	 * @param player
-	 *            The {@link Player} to be logged in.
-	 */
-	public void queueLogin(Player player) {
-		if (!logins.contains(player)) {
-			logins.add(player);
-		}
-	}
+    /**
+     * Runs one iteration of the main game loop which includes processing
+     * {@link Task}s and synchronization.
+     */
+    public void runGameLoop() {
+        tasks.startEngine();
+        synchronizer.preSynchronize();
+        synchronizer.synchronize();
+        synchronizer.postSynchronize();
+    }
 
-	/**
-	 * Dequeues the {@link Queue} of {@link Player}s awaiting login.
-	 */
-	public void dequeueLogins() {
-		for (int amount = 0; amount < LOGIN_THRESHOLD; amount++) {
-			Player player = logins.poll();
-			if (player == null) {
-				break;
-			}
-			players.add(player);
-		}
-	}
+    /**
+     * Queues {@code player} to be logged in on the next game loop.
+     *
+     * @param player The {@link Player} to be logged in.
+     */
+    public void queueLogin(Player player) {
+        if (!logins.contains(player)) {
+            logins.add(player);
+        }
+    }
 
-	/**
-	 * Queues {@code player} to be logged out on the next game loop.
-	 *
-	 * @param player
-	 *            The {@link Player} to be logged out.
-	 */
-	public void queueLogout(Player player) {
-		if (!logouts.contains(player)) {
-			logouts.add(player);
-		}
-	}
+    /**
+     * Dequeues the {@link Queue} of {@link Player}s awaiting login.
+     */
+    public void dequeueLogins() {
+        for (int amount = 0; amount < LOGIN_THRESHOLD; amount++) {
+            Player player = logins.poll();
+            if (player == null) {
+                break;
+            }
+            players.add(player);
+        }
+    }
 
-	/**
-	 * Dequeues the {@link Queue} of {@link Player}s awaiting logout.
-	 */
-	public void dequeueLogouts() {
-		for (int amount = 0; amount < LOGIN_THRESHOLD; amount++) {
-			Player player = logouts.poll();
-			if (player == null) {
-				break;
-			}
-			// TODO: Do not remove if still in combat
-			players.remove(player);
-		}
-	}
+    /**
+     * Queues {@code player} to be logged out on the next game loop.
+     *
+     * @param player The {@link Player} to be logged out.
+     */
+    public void queueLogout(Player player) {
+        if (!logouts.contains(player)) {
+            logouts.add(player);
+        }
+    }
 
-	/**
-	 * Retrieves a {@link Player} instance by its {@code username}.
-	 *
-	 * @param username
-	 *            The username hash of the {@code Player}.
-	 * @return The {@code Player} instance wrapped in an {@link Optional}, or an
-	 *         empty {@code Optional} if no {@code Player} was found.
-	 */
-	public Optional<Player> getPlayer(long username) {
-		return players.findFirst(it -> it.getUsernameHash() == username);
-	}
+    /**
+     * Dequeues the {@link Queue} of {@link Player}s awaiting logout.
+     */
+    public void dequeueLogouts() {
+        for (int amount = 0; amount < LOGIN_THRESHOLD; amount++) {
+            Player player = logouts.poll();
+            if (player == null) {
+                break;
+            }
+            // TODO: Do not remove if still in combat
+            players.remove(player);
+        }
+    }
 
-	/**
-	 * Retrieves a {@link Player} instance by its {@code username}.
-	 *
-	 * @param username
-	 *            The username of the {@code Player}.
-	 * @return The {@code Player} instance wrapped in an {@link Optional}, or an
-	 *         empty {@code Optional} if no {@code Player} was found.
-	 */
-	public Optional<Player> getPlayer(String username) {
-		return getPlayer(StringUtility.encode(username));
-	}
+    /**
+     * Retrieves a {@link Player} instance by its {@code username}.
+     *
+     * @param username The username hash of the {@code Player}.
+     * @return The {@code Player} instance wrapped in an {@link Optional}, or an
+     * empty {@code Optional} if no {@code Player} was found.
+     */
+    public Optional<Player> getPlayer(long username) {
+        return players.findFirst(it -> it.getUsernameHash() == username);
+    }
 
-	/** @return An instance of the {@link BombermanContext}. */
-	public BombermanContext getContext() {
-		return context;
-	}
+    /**
+     * Retrieves a {@link Player} instance by its {@code username}.
+     *
+     * @param username The username of the {@code Player}.
+     * @return The {@code Player} instance wrapped in an {@link Optional}, or an
+     * empty {@code Optional} if no {@code Player} was found.
+     */
+    public Optional<Player> getPlayer(String username) {
+        return getPlayer(StringUtility.encode(username));
+    }
 
-	/**
-	 * @return The list of {@link Player}s in the lobby.
-	 */
-	public EntityList<Player> getPlayers() {
-		return players;
-	}
+    /**
+     * @return An instance of the {@link BombermanContext}.
+     */
+    public BombermanContext getContext() {
+        return context;
+    }
 
-	public void init(GameEngine engine) throws Exception {
-		this.engine = engine;
+    /**
+     * @return The list of {@link Player}s in the lobby.
+     */
+    public EntityList<Player> getPlayers() {
+        return players;
+    }
 
-		this.registerGlobalEvents();
-	}
+    public void init(GameEngine engine) throws Exception {
+        this.engine = engine;
 
-	private void registerGlobalEvents() {
-		submit(new CleanupTask());
-	}
+        this.registerGlobalEvents();
+    }
 
-	public void submit(Task task) {
-		this.engine.pushTask(task);
-	}
+    private void registerGlobalEvents() {
+        submit(new CleanupTask());
+    }
 
-	public GameEngine getEngine() {
-		return engine;
-	}
+    public void submit(Task task) {
+        this.engine.pushTask(task);
+    }
 
-	public void setWorldId(int lobbyId) {
-		this.lobbyId = lobbyId;
-	}
+    public GameEngine getEngine() {
+        return engine;
+    }
 
-	public EntityList<Entity> getEntities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void setWorldId(int lobbyId) {
+        this.lobbyId = lobbyId;
+    }
+
+    public EntityList<Entity> getEntities() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

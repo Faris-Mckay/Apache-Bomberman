@@ -20,15 +20,17 @@ import io.netty.buffer.PooledByteBufAllocator;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * F {@link ByteBuf} wrapper tailored to the specifications of the Runescape protocol. These wrappers are backed by pooled
- * direct buffers when possible, otherwise they're backed by pooled heap buffers.
+ * F {@link ByteBuf} wrapper tailored to the specifications of the Runescape
+ * protocol. These wrappers are backed by pooled direct buffers when possible,
+ * otherwise they're backed by pooled heap buffers.
  *
  * @author Juan Ortiz <http://github.org/TheRealJP>
  */
 public final class ByteMessage extends DefaultByteBufHolder {
 
     /**
-     * F buffer pool that will help reduce the overhead from allocating and deallocating direct buffers.
+     * F buffer pool that will help reduce the overhead from allocating and
+     * deallocating direct buffers.
      */
     public static final ByteBufAllocator ALLOC = PooledByteBufAllocator.DEFAULT;
 
@@ -38,28 +40,32 @@ public final class ByteMessage extends DefaultByteBufHolder {
     private static final int[] BIT_MASK = new int[32];
 
     /**
-     * @return Creates a {@link ByteMessage} used to read and write raw messages.
+     * @return Creates a {@link ByteMessage} used to read and write raw
+     * messages.
      */
     public static ByteMessage message() {
         return new ByteMessage(ALLOC.buffer(128), -1, MessageType.RAW);
     }
 
     /**
-     * @return Creates a {@link ByteMessage} used to read and write game messages.
+     * @return Creates a {@link ByteMessage} used to read and write game
+     * messages.
      */
     public static ByteMessage message(int opcode, MessageType type) {
         return new ByteMessage(ALLOC.buffer(128), opcode, type);
     }
 
     /**
-     * @return Creates a fixed type {@link ByteMessage} used to read and write game messages.
+     * @return Creates a fixed type {@link ByteMessage} used to read and write
+     * game messages.
      */
     public static ByteMessage message(int opcode) {
         return message(opcode, MessageType.FIXED);
     }
 
     /**
-     * @return Creates a raw {@link ByteMessage} wrapped around the specified {@link ByteBuf}.
+     * @return Creates a raw {@link ByteMessage} wrapped around the specified
+     * {@link ByteBuf}.
      */
     public static ByteMessage wrap(ByteBuf buf) {
         return new ByteMessage(buf, -1, MessageType.RAW);
@@ -121,7 +127,8 @@ public final class ByteMessage extends DefaultByteBufHolder {
     }
 
     /**
-     * Writes the bytes from the argued buffer into this buffer. This method does not modify the argued buffer.
+     * Writes the bytes from the argued buffer into this buffer. This method
+     * does not modify the argued buffer.
      *
      * @param from The argued buffer that bytes will be written from.
      * @return An instance of this byte message.
@@ -134,7 +141,8 @@ public final class ByteMessage extends DefaultByteBufHolder {
     }
 
     /**
-     * Writes the bytes from the argued buffer into this buffer. This method does not modify the argued buffer.
+     * Writes the bytes from the argued buffer into this buffer. This method
+     * does not modify the argued buffer.
      *
      * @param from The argued buffer that bytes will be written from.
      * @return An instance of this byte message.
@@ -172,7 +180,8 @@ public final class ByteMessage extends DefaultByteBufHolder {
      * @param amount The amount of bits to write.
      * @param value The value of the bits.
      * @return An instance of this byte message.
-     * @throws IllegalArgumentException If the number of bits is not between {@code 1} and {@code 32} inclusive.
+     * @throws IllegalArgumentException If the number of bits is not between
+     * {@code 1} and {@code 32} inclusive.
      */
     public ByteMessage putBits(int amount, int value) {
         checkState(amount >= 1 || amount <= 32, "Number of bits must be between 1 and 32 inclusive.");
@@ -226,17 +235,17 @@ public final class ByteMessage extends DefaultByteBufHolder {
      */
     public ByteMessage put(int value, ByteTransform type) {
         switch (type) {
-        case F:
-            value += 128;
-            break;
-        case M:
-            value = -value;
-            break;
-        case J:
-            value = 128 - value;
-            break;
-        case DEFAULT:
-            break;
+            case F:
+                value += 128;
+                break;
+            case M:
+                value = -value;
+                break;
+            case J:
+                value = 128 - value;
+                break;
+            case DEFAULT:
+                break;
         }
         buf.writeByte((byte) value);
         return this;
@@ -260,22 +269,23 @@ public final class ByteMessage extends DefaultByteBufHolder {
      * @param type The byte transformation type
      * @param order The byte endianness type.
      * @return An instance of this byte message.
-     * @throws UnsupportedOperationException If middle or inverse-middle value types are selected.
+     * @throws UnsupportedOperationException If middle or inverse-middle value
+     * types are selected.
      */
     public ByteMessage putShort(int value, ByteTransform type, ByteOrder order) {
         switch (order) {
-        case BIG:
-            put(value >> 8);
-            put(value, type);
-            break;
-        case MIDDLE:
-            throw new UnsupportedOperationException("Middle-endian short is impossible.");
-        case INVERSE_MIDDLE:
-            throw new UnsupportedOperationException("Inversed-middle-endian short is impossible.");
-        case LITTLE:
-            put(value, type);
-            put(value >> 8);
-            break;
+            case BIG:
+                put(value >> 8);
+                put(value, type);
+                break;
+            case MIDDLE:
+                throw new UnsupportedOperationException("Middle-endian short is impossible.");
+            case INVERSE_MIDDLE:
+                throw new UnsupportedOperationException("Inversed-middle-endian short is impossible.");
+            case LITTLE:
+                put(value, type);
+                put(value >> 8);
+                break;
         }
         return this;
     }
@@ -325,30 +335,30 @@ public final class ByteMessage extends DefaultByteBufHolder {
      */
     public ByteMessage putInt(int value, ByteTransform type, ByteOrder order) {
         switch (order) {
-        case BIG:
-            put(value >> 24);
-            put(value >> 16);
-            put(value >> 8);
-            put(value, type);
-            break;
-        case MIDDLE:
-            put(value >> 8);
-            put(value, type);
-            put(value >> 24);
-            put(value >> 16);
-            break;
-        case INVERSE_MIDDLE:
-            put(value >> 16);
-            put(value >> 24);
-            put(value, type);
-            put(value >> 8);
-            break;
-        case LITTLE:
-            put(value, type);
-            put(value >> 8);
-            put(value >> 16);
-            put(value >> 24);
-            break;
+            case BIG:
+                put(value >> 24);
+                put(value >> 16);
+                put(value >> 8);
+                put(value, type);
+                break;
+            case MIDDLE:
+                put(value >> 8);
+                put(value, type);
+                put(value >> 24);
+                put(value >> 16);
+                break;
+            case INVERSE_MIDDLE:
+                put(value >> 16);
+                put(value >> 24);
+                put(value, type);
+                put(value >> 8);
+                break;
+            case LITTLE:
+                put(value, type);
+                put(value >> 8);
+                put(value >> 16);
+                put(value >> 24);
+                break;
         }
         return this;
     }
@@ -395,34 +405,35 @@ public final class ByteMessage extends DefaultByteBufHolder {
      * @param type The byte transformation type
      * @param order The byte endianness type.
      * @return An instance of this byte message.
-     * @throws UnsupportedOperationException If middle or inverse-middle value types are selected.
+     * @throws UnsupportedOperationException If middle or inverse-middle value
+     * types are selected.
      */
     public ByteMessage putLong(long value, ByteTransform type, ByteOrder order) {
         switch (order) {
-        case BIG:
-            put((int) (value >> 56));
-            put((int) (value >> 48));
-            put((int) (value >> 40));
-            put((int) (value >> 32));
-            put((int) (value >> 24));
-            put((int) (value >> 16));
-            put((int) (value >> 8));
-            put((int) value, type);
-            break;
-        case MIDDLE:
-            throw new UnsupportedOperationException("Middle-endian long is not implemented!");
-        case INVERSE_MIDDLE:
-            throw new UnsupportedOperationException("Inverse-middle-endian long is not implemented!");
-        case LITTLE:
-            put((int) value, type);
-            put((int) (value >> 8));
-            put((int) (value >> 16));
-            put((int) (value >> 24));
-            put((int) (value >> 32));
-            put((int) (value >> 40));
-            put((int) (value >> 48));
-            put((int) (value >> 56));
-            break;
+            case BIG:
+                put((int) (value >> 56));
+                put((int) (value >> 48));
+                put((int) (value >> 40));
+                put((int) (value >> 32));
+                put((int) (value >> 24));
+                put((int) (value >> 16));
+                put((int) (value >> 8));
+                put((int) value, type);
+                break;
+            case MIDDLE:
+                throw new UnsupportedOperationException("Middle-endian long is not implemented!");
+            case INVERSE_MIDDLE:
+                throw new UnsupportedOperationException("Inverse-middle-endian long is not implemented!");
+            case LITTLE:
+                put((int) value, type);
+                put((int) (value >> 8));
+                put((int) (value >> 16));
+                put((int) (value >> 24));
+                put((int) (value >> 32));
+                put((int) (value >> 40));
+                put((int) (value >> 48));
+                put((int) (value >> 56));
+                break;
         }
         return this;
     }
@@ -486,17 +497,17 @@ public final class ByteMessage extends DefaultByteBufHolder {
     public int get(boolean signed, ByteTransform type) {
         int value = buf.readByte();
         switch (type) {
-        case F:
-            value = value - 128;
-            break;
-        case M:
-            value = -value;
-            break;
-        case J:
-            value = 128 - value;
-            break;
-        case DEFAULT:
-            break;
+            case F:
+                value = value - 128;
+                break;
+            case M:
+                value = -value;
+                break;
+            case J:
+                value = 128 - value;
+                break;
+            case DEFAULT:
+                break;
         }
         return signed ? value : value & 0xff;
     }
@@ -537,23 +548,24 @@ public final class ByteMessage extends DefaultByteBufHolder {
      * @param type The byte transformation type
      * @param order The byte endianness type.
      * @return The value of the short.
-     * @throws UnsupportedOperationException if middle or inverse-middle value types are selected.
+     * @throws UnsupportedOperationException if middle or inverse-middle value
+     * types are selected.
      */
     public int getShort(boolean signed, ByteTransform type, ByteOrder order) {
         int value = 0;
         switch (order) {
-        case BIG:
-            value |= get(false) << 8;
-            value |= get(false, type);
-            break;
-        case MIDDLE:
-            throw new UnsupportedOperationException("Middle-endian short is impossible!");
-        case INVERSE_MIDDLE:
-            throw new UnsupportedOperationException("Inverse-middle-endian short is impossible!");
-        case LITTLE:
-            value |= get(false, type);
-            value |= get(false) << 8;
-            break;
+            case BIG:
+                value |= get(false) << 8;
+                value |= get(false, type);
+                break;
+            case MIDDLE:
+                throw new UnsupportedOperationException("Middle-endian short is impossible!");
+            case INVERSE_MIDDLE:
+                throw new UnsupportedOperationException("Inverse-middle-endian short is impossible!");
+            case LITTLE:
+                value |= get(false, type);
+                value |= get(false) << 8;
+                break;
         }
         return signed ? value : value & 0xffff;
     }
@@ -641,30 +653,30 @@ public final class ByteMessage extends DefaultByteBufHolder {
     public int getInt(boolean signed, ByteTransform type, ByteOrder order) {
         long value = 0;
         switch (order) {
-        case BIG:
-            value |= get(false) << 24;
-            value |= get(false) << 16;
-            value |= get(false) << 8;
-            value |= get(false, type);
-            break;
-        case MIDDLE:
-            value |= get(false) << 8;
-            value |= get(false, type);
-            value |= get(false) << 24;
-            value |= get(false) << 16;
-            break;
-        case INVERSE_MIDDLE:
-            value |= get(false) << 16;
-            value |= get(false) << 24;
-            value |= get(false, type);
-            value |= get(false) << 8;
-            break;
-        case LITTLE:
-            value |= get(false, type);
-            value |= get(false) << 8;
-            value |= get(false) << 16;
-            value |= get(false) << 24;
-            break;
+            case BIG:
+                value |= get(false) << 24;
+                value |= get(false) << 16;
+                value |= get(false) << 8;
+                value |= get(false, type);
+                break;
+            case MIDDLE:
+                value |= get(false) << 8;
+                value |= get(false, type);
+                value |= get(false) << 24;
+                value |= get(false) << 16;
+                break;
+            case INVERSE_MIDDLE:
+                value |= get(false) << 16;
+                value |= get(false) << 24;
+                value |= get(false, type);
+                value |= get(false) << 8;
+                break;
+            case LITTLE:
+                value |= get(false, type);
+                value |= get(false) << 8;
+                value |= get(false) << 16;
+                value |= get(false) << 24;
+                break;
         }
         return (int) (signed ? value : value & 0xffffffffL);
     }
@@ -747,34 +759,35 @@ public final class ByteMessage extends DefaultByteBufHolder {
      * @param type The byte transformation type
      * @param order The byte endianness type.
      * @return The value of the long.
-     * @throws UnsupportedOperationException if middle or inverse-middle value types are selected.
+     * @throws UnsupportedOperationException if middle or inverse-middle value
+     * types are selected.
      */
     public long getLong(ByteTransform type, ByteOrder order) {
         long value = 0;
         switch (order) {
-        case BIG:
-            value |= (long) get(false) << 56L;
-            value |= (long) get(false) << 48L;
-            value |= (long) get(false) << 40L;
-            value |= (long) get(false) << 32L;
-            value |= (long) get(false) << 24L;
-            value |= (long) get(false) << 16L;
-            value |= (long) get(false) << 8L;
-            value |= get(false, type);
-            break;
-        case INVERSE_MIDDLE:
-        case MIDDLE:
-            throw new UnsupportedOperationException("Middle and inverse-middle value types not supported!");
-        case LITTLE:
-            value |= get(false, type);
-            value |= (long) get(false) << 8L;
-            value |= (long) get(false) << 16L;
-            value |= (long) get(false) << 24L;
-            value |= (long) get(false) << 32L;
-            value |= (long) get(false) << 40L;
-            value |= (long) get(false) << 48L;
-            value |= (long) get(false) << 56L;
-            break;
+            case BIG:
+                value |= (long) get(false) << 56L;
+                value |= (long) get(false) << 48L;
+                value |= (long) get(false) << 40L;
+                value |= (long) get(false) << 32L;
+                value |= (long) get(false) << 24L;
+                value |= (long) get(false) << 16L;
+                value |= (long) get(false) << 8L;
+                value |= get(false, type);
+                break;
+            case INVERSE_MIDDLE:
+            case MIDDLE:
+                throw new UnsupportedOperationException("Middle and inverse-middle value types not supported!");
+            case LITTLE:
+                value |= get(false, type);
+                value |= (long) get(false) << 8L;
+                value |= (long) get(false) << 16L;
+                value |= (long) get(false) << 24L;
+                value |= (long) get(false) << 32L;
+                value |= (long) get(false) << 40L;
+                value |= (long) get(false) << 48L;
+                value |= (long) get(false) << 56L;
+                break;
         }
         return value;
     }
@@ -823,7 +836,8 @@ public final class ByteMessage extends DefaultByteBufHolder {
     }
 
     /**
-     * Reads the amount of bytes into the array, starting at the current position.
+     * Reads the amount of bytes into the array, starting at the current
+     * position.
      *
      * @param amount The amount to read.
      * @return F buffer filled with the data.
@@ -833,7 +847,8 @@ public final class ByteMessage extends DefaultByteBufHolder {
     }
 
     /**
-     * Reads the amount of bytes into a byte array, starting at the current position.
+     * Reads the amount of bytes into a byte array, starting at the current
+     * position.
      *
      * @param amount The amount of bytes.
      * @param type The byte transformation type of each byte.
@@ -848,8 +863,9 @@ public final class ByteMessage extends DefaultByteBufHolder {
     }
 
     /**
-     * Reads the amount of bytes from the buffer in reverse, starting at {@code current_position + amount} and reading in
-     * reverse until the current position.
+     * Reads the amount of bytes from the buffer in reverse, starting at
+     * {@code current_position + amount} and reading in reverse until the
+     * current position.
      *
      * @param amount The amount of bytes to read.
      * @param type The byte transformation type of each byte.
@@ -861,17 +877,17 @@ public final class ByteMessage extends DefaultByteBufHolder {
         for (int i = buf.readerIndex() + amount - 1; i >= buf.readerIndex(); i--) {
             int value = buf.getByte(i);
             switch (type) {
-            case F:
-                value -= 128;
-                break;
-            case M:
-                value = -value;
-                break;
-            case J:
-                value = 128 - value;
-                break;
-            case DEFAULT:
-                break;
+                case F:
+                    value -= 128;
+                    break;
+                case M:
+                    value = -value;
+                    break;
+                case J:
+                    value = 128 - value;
+                    break;
+                case DEFAULT:
+                    break;
             }
             data[dataPosition++] = (byte) value;
         }

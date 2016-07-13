@@ -17,9 +17,9 @@ package com.apache.task;
  * @author Faris <https://github.com/faris-mckay>
  */
 public abstract class InfiniteTask extends Task {
-    
-    public InfiniteTask(int cycleRate){
+
+    public InfiniteTask(int cycleRate) {
         super(false, cycleRate);
     }
-    
+
 }

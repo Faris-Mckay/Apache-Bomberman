@@ -17,7 +17,8 @@ import com.apache.net.codec.ByteMessage;
 import com.apache.net.msg.OutboundGameMessage;
 
 /**
- * An {@link OutboundGameMessage} implementation that disposes the login session.
+ * An {@link OutboundGameMessage} implementation that disposes the login
+ * session.
  *
  * @author Juan Ortiz <http://github.org/TheRealJP>
  */

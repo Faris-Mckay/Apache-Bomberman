@@ -32,53 +32,52 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 @Sharable
 public final class BombermanChannelInitializer extends ChannelInitializer<SocketChannel> {
 
-	/**
-	 * Handles upstream messages from Netty.
-	 */
-	private final ChannelHandler upstreamHandler = new BombermanUpstreamHandler();
+    /**
+     * Handles upstream messages from Netty.
+     */
+    private final ChannelHandler upstreamHandler = new BombermanUpstreamHandler();
 
-	/**
-	 * Encodes the login response.
-	 */
-	private final ChannelHandler loginEncoder = new LoginEncoder();
+    /**
+     * Encodes the login response.
+     */
+    private final ChannelHandler loginEncoder = new LoginEncoder();
 
-	/**
-	 * Filters channels based on the amount of active connections they have.
-	 */
-	public final ChannelHandler channelFilter = new BombermanChannelFilter();
+    /**
+     * Filters channels based on the amount of active connections they have.
+     */
+    public final ChannelHandler channelFilter = new BombermanChannelFilter();
 
-	/**
-	 * The underlying context to be managed under.
-	 */
-	private final BombermanContext context;
+    /**
+     * The underlying context to be managed under.
+     */
+    private final BombermanContext context;
 
-	/**
-	 * The repository containing data for incoming messages.
-	 */
-	private final MessageRepository messageRepository;
+    /**
+     * The repository containing data for incoming messages.
+     */
+    private final MessageRepository messageRepository;
 
-	/**
-	 * Creates a new {@link BombermanChannelInitializer}.
-	 *
-	 * @param context
-	 *            The underlying context to be managed under.
-	 * @param messageRepository
-	 *            The repository containing data for incoming messages.
-	 */
-	public BombermanChannelInitializer(BombermanContext context, MessageRepository messageRepository) {
-		this.context = context;
-		this.messageRepository = messageRepository;
-	}
+    /**
+     * Creates a new {@link BombermanChannelInitializer}.
+     *
+     * @param context The underlying context to be managed under.
+     * @param messageRepository The repository containing data for incoming
+     * messages.
+     */
+    public BombermanChannelInitializer(BombermanContext context, MessageRepository messageRepository) {
+        this.context = context;
+        this.messageRepository = messageRepository;
+    }
 
-	@Override
-	protected void initChannel(SocketChannel ch) throws Exception {
-		ch.attr(NetworkConstants.SESSION_KEY).setIfAbsent(new Session(ch));
+    @Override
+    protected void initChannel(SocketChannel ch) throws Exception {
+        ch.attr(NetworkConstants.SESSION_KEY).setIfAbsent(new Session(ch));
 
-		ch.pipeline().addLast("read-timeout", new ReadTimeoutHandler(NetworkConstants.READ_IDLE_SECONDS));
-		ch.pipeline().addLast("channel-filter", channelFilter);
-		ch.pipeline().addLast("login-decoder", new LoginDecoder(context, messageRepository));
-		ch.pipeline().addLast("login-encoder", loginEncoder);
-		ch.pipeline().addLast("upstream-handler", upstreamHandler);
-	}
+        ch.pipeline().addLast("read-timeout", new ReadTimeoutHandler(NetworkConstants.READ_IDLE_SECONDS));
+        ch.pipeline().addLast("channel-filter", channelFilter);
+        ch.pipeline().addLast("login-decoder", new LoginDecoder(context, messageRepository));
+        ch.pipeline().addLast("login-encoder", loginEncoder);
+        ch.pipeline().addLast("upstream-handler", upstreamHandler);
+    }
 
 }

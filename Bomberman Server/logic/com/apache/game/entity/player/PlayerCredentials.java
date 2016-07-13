@@ -21,53 +21,51 @@ import com.apache.util.StringUtility;
  */
 public final class PlayerCredentials {
 
-	/**
-	 * The username credential.
-	 */
-	private final String username;
+    /**
+     * The username credential.
+     */
+    private final String username;
 
-	/**
-	 * The password credential.
-	 */
-	private final String password;
+    /**
+     * The password credential.
+     */
+    private final String password;
 
-	/**
-	 * The username hash credential, generated from the {@code username}.
-	 */
-	private final long usernameHash;
+    /**
+     * The username hash credential, generated from the {@code username}.
+     */
+    private final long usernameHash;
 
-	/**
-	 * Creates a new {@link PlayerCredentials}.
-	 *
-	 * @param username
-	 *            The username credential.
-	 * @param password
-	 *            The password credential.
-	 */
-	public PlayerCredentials(String username, String password) {
-		this.username = username;
-		this.password = password;
-		usernameHash = StringUtility.encode(username);
-	}
+    /**
+     * Creates a new {@link PlayerCredentials}.
+     *
+     * @param username The username credential.
+     * @param password The password credential.
+     */
+    public PlayerCredentials(String username, String password) {
+        this.username = username;
+        this.password = password;
+        usernameHash = StringUtility.encode(username);
+    }
 
-	/**
-	 * @return The username credential.
-	 */
-	public String getUsername() {
-		return username;
-	}
+    /**
+     * @return The username credential.
+     */
+    public String getUsername() {
+        return username;
+    }
 
-	/**
-	 * @return The password credential.
-	 */
-	public String getPassword() {
-		return password;
-	}
+    /**
+     * @return The password credential.
+     */
+    public String getPassword() {
+        return password;
+    }
 
-	/**
-	 * @return The username hash.
-	 */
-	public long getUsernameHash() {
-		return usernameHash;
-	}
+    /**
+     * @return The username hash.
+     */
+    public long getUsernameHash() {
+        return usernameHash;
+    }
 }

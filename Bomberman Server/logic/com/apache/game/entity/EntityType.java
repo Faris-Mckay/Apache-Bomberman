@@ -20,21 +20,21 @@ package com.apache.game.entity;
  */
 public enum EntityType {
 
-	/**
-	 * An enhancer item that can be picked up by a {@link Player}.
-	 */
-	POWERUP,
-	/**
-	 * An {@link Entity} that is controlled by a real person.
-	 */
-	PLAYER,
-	/**
-	 * An object that can be destroyed up by a {@link Player}.
-	 */
-	BRICK,
-	/**
-	 * An {@link Entity} that is controlled by the game itself (Artificially
-	 * Intelligent Player).
-	 */
-	NPC;
+    /**
+     * An enhancer item that can be picked up by a {@link Player}.
+     */
+    POWERUP,
+    /**
+     * An {@link Entity} that is controlled by a real person.
+     */
+    PLAYER,
+    /**
+     * An object that can be destroyed up by a {@link Player}.
+     */
+    BRICK,
+    /**
+     * An {@link Entity} that is controlled by the game itself (Artificially
+     * Intelligent Player).
+     */
+    NPC;
 }

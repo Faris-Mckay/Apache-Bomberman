@@ -28,31 +28,30 @@ import io.netty.handler.codec.MessageToByteEncoder;
  */
 public final class GameMessageEncoder extends MessageToByteEncoder<GameMessage> {
 
-	/**
-	 * The encryptor for this message.
-	 */
-	private final IsaacCipher encryptor;
+    /**
+     * The encryptor for this message.
+     */
+    private final IsaacCipher encryptor;
 
-	/**
-	 * Creates a new {@link GameMessageEncoder}.
-	 *
-	 * @param encryptor
-	 *            The encryptor for this encoder.
-	 */
-	public GameMessageEncoder(IsaacCipher encryptor) {
-		this.encryptor = encryptor;
-	}
+    /**
+     * Creates a new {@link GameMessageEncoder}.
+     *
+     * @param encryptor The encryptor for this encoder.
+     */
+    public GameMessageEncoder(IsaacCipher encryptor) {
+        this.encryptor = encryptor;
+    }
 
-	@Override
-	public void encode(ChannelHandlerContext ctx, GameMessage msg, ByteBuf out) throws Exception {
-		out.writeByte(msg.getOpcode() + encryptor.nextInt());
-		if (msg.getType() == MessageType.VARIABLE) {
-			out.writeByte(msg.getSize());
-		} else if (msg.getType() == MessageType.VARIABLE_SHORT) {
-			out.writeShort(msg.getSize());
-		}
-		out.writeBytes(msg.getPayload().getBuffer());
+    @Override
+    public void encode(ChannelHandlerContext ctx, GameMessage msg, ByteBuf out) throws Exception {
+        out.writeByte(msg.getOpcode() + encryptor.nextInt());
+        if (msg.getType() == MessageType.VARIABLE) {
+            out.writeByte(msg.getSize());
+        } else if (msg.getType() == MessageType.VARIABLE_SHORT) {
+            out.writeShort(msg.getSize());
+        }
+        out.writeBytes(msg.getPayload().getBuffer());
 
-		msg.getPayload().release();
-	}
+        msg.getPayload().release();
+    }
 }

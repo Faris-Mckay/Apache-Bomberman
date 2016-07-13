@@ -21,33 +21,32 @@ import com.apache.util.Utility;
  */
 public final class Main {
 
-	/**
-	 * F private constructor to discourage external instantiation.
-	 */
-	private Main() {
-	}
+    /**
+     * F private constructor to discourage external instantiation.
+     */
+    private Main() {
+    }
 
-	static {
-		try {
-			Thread.currentThread().setName("BombermanInitializationThread");
-		} catch (Exception e) {
-			throw new ExceptionInInitializerError(e);
-		}
-	}
+    static {
+        try {
+            Thread.currentThread().setName("BombermanInitializationThread");
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
 
-	/**
-	 * Invoked when this program is started, initializes the {@link Server}.
-	 *
-	 * @param args
-	 *            The runtime arguments, none of which are parsed.
-	 */
-	public static void main(String[] args) {
-		try {
-			Server bomberman = new Server();
-			bomberman.init();
-		} catch (Exception e) {
-			Utility.log(e.getMessage());
-			System.exit(0);
-		}
-	}
+    /**
+     * Invoked when this program is started, initializes the {@link Server}.
+     *
+     * @param args The runtime arguments, none of which are parsed.
+     */
+    public static void main(String[] args) {
+        try {
+            Server bomberman = new Server();
+            bomberman.init();
+        } catch (Exception e) {
+            Utility.log(e.getMessage());
+            System.exit(0);
+        }
+    }
 }

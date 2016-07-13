@@ -25,8 +25,8 @@ import com.apache.net.msg.InboundGameMessage;
  */
 public final class InboundGenericMessage extends InboundGameMessage {
 
-	@Override
-	public Event readMessage(Player player, GameMessage msg) throws Exception {
-		return null;
-	}
+    @Override
+    public Event readMessage(Player player, GameMessage msg) throws Exception {
+        return null;
+    }
 }

@@ -27,12 +27,12 @@ import io.netty.handler.codec.MessageToByteEncoder;
 @Sharable
 public final class LoginEncoder extends MessageToByteEncoder<LoginResponseMessage> {
 
-	@Override
-	protected void encode(ChannelHandlerContext ctx, LoginResponseMessage msg, ByteBuf out) throws Exception {
-		out.writeByte(msg.getResponse().getOpcode());
+    @Override
+    protected void encode(ChannelHandlerContext ctx, LoginResponseMessage msg, ByteBuf out) throws Exception {
+        out.writeByte(msg.getResponse().getOpcode());
 
-		if (msg.getResponse() == LoginResponse.NORMAL) {
-			out.writeBoolean(msg.isFlagged());
-		}
-	}
+        if (msg.getResponse() == LoginResponse.NORMAL) {
+            out.writeBoolean(msg.isFlagged());
+        }
+    }
 }

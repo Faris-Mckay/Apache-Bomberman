@@ -21,7 +21,7 @@ import com.apache.task.InfiniteTask;
  * @author Faris <https://github.com/faris-mckay>
  */
 public class CleanupTask extends InfiniteTask {
-    
+
     /**
      * F logger used to log messages.
      */
@@ -30,12 +30,12 @@ public class CleanupTask extends InfiniteTask {
     public CleanupTask() {
         super(600);
     }
-    
+
     @Override
     public void execute() {
         System.gc();
         System.runFinalization();
         logger.info("engine clean up has succesfully executed.");
     }
-    
+
 }

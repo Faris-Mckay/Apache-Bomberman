@@ -18,25 +18,25 @@ import com.apache.net.BombermanContext;
 /**
  * TODO: Power up abstraction (Offensive, Defensive, Evasive, Token power ups).
  * Design documents for each as well.
- * 
+ *
  * @author Faris <https://github.com/faris-mckay>
  */
 public abstract class Powerup extends Entity {
 
-	private PowerupType type;
+    private PowerupType type;
 
-	private static BombermanContext context;
+    private static BombermanContext context;
 
-	public Powerup(PowerupType type) {
-		super(context);
-		this.setType(type);
-	}
+    public Powerup(PowerupType type) {
+        super(context);
+        this.setType(type);
+    }
 
-	public PowerupType getType() {
-		return type;
-	}
+    public PowerupType getType() {
+        return type;
+    }
 
-	public void setType(PowerupType type) {
-		this.type = type;
-	}
+    public void setType(PowerupType type) {
+        this.type = type;
+    }
 }

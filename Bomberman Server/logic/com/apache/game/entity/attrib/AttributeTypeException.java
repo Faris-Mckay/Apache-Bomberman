@@ -20,14 +20,13 @@ package com.apache.game.entity.attrib;
  */
 public final class AttributeTypeException extends RuntimeException {
 
-	/**
-	 * Creates a new {@link AttributeTypeException}.
-	 *
-	 * @param alias
-	 *            The {@link AttributeKey} alias which the exception is being
-	 *            thrown for.
-	 */
-	public AttributeTypeException(AttributeKey<?> alias) {
-		super("invalid attribute{" + alias.getName() + "} type! expected{" + alias.getTypeName() + "}");
-	}
+    /**
+     * Creates a new {@link AttributeTypeException}.
+     *
+     * @param alias The {@link AttributeKey} alias which the exception is being
+     * thrown for.
+     */
+    public AttributeTypeException(AttributeKey<?> alias) {
+        super("invalid attribute{" + alias.getName() + "} type! expected{" + alias.getTypeName() + "}");
+    }
 }

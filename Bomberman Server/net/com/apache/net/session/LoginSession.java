@@ -33,7 +33,8 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelPipeline;
 
 /**
- * F {@link Session} implementation that handles networking for a {@link Player} during login.
+ * F {@link Session} implementation that handles networking for a {@link Player}
+ * during login.
  *
  * @author Juan Ortiz <http://github.org/TheRealJP>
  */
@@ -54,7 +55,8 @@ public final class LoginSession extends Session {
      *
      * @param context The context to be managed under.
      * @param channel The {@link Channel} for this session.
-     * @param messageRepository The repository containing data for incoming messages.
+     * @param messageRepository The repository containing data for incoming
+     * messages.
      */
     public LoginSession(BombermanContext context, Channel channel, MessageRepository messageRepository) {
         super(channel);
@@ -71,7 +73,8 @@ public final class LoginSession extends Session {
     }
 
     /**
-     * Loads the character file and sends the {@link LoginResponse} code to the client.
+     * Loads the character file and sends the {@link LoginResponse} code to the
+     * client.
      *
      * @param msg The message containing the credentials.
      * @throws Exception If any errors occur while handling credentials.
@@ -105,10 +108,10 @@ public final class LoginSession extends Session {
             future.addListener(it -> {
                 pipeline.replace("login-encoder", "game-encoder", new GameMessageEncoder(msg.getEncryptor()));
                 pipeline
-                    .replace("login-decoder", "game-decoder", new GameMessageDecoder(msg.getDecryptor(), messageRepository));
+                        .replace("login-decoder", "game-decoder", new GameMessageDecoder(msg.getDecryptor(), messageRepository));
 
                 GameSession session = new GameSession(player, channel, msg.getEncryptor(), msg.getDecryptor(),
-                    messageRepository);
+                        messageRepository);
 
                 channel.attr(NetworkConstants.SESSION_KEY).set(session);
                 player.setSession(session);

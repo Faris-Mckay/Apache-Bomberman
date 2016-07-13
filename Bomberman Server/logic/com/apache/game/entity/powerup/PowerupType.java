@@ -17,27 +17,23 @@ package com.apache.game.entity.powerup;
  * @author Faris <https://github.com/faris-mckay>
  */
 public enum PowerupType {
-    
+
     /**
-     * Increase the speed of the players movement
-     * (Update that player more times per cycle)
+     * Increase the speed of the players movement (Update that player more times
+     * per cycle)
      */
     SPEED,
-    
     /**
      * Increase the power of the players bombs
      */
     BOOST,
-    
     /**
-     * Increase the amount of bombs the player is allowed to drop at one
-     * time
+     * Increase the amount of bombs the player is allowed to drop at one time
      */
     BOMB,
-    
     /**
      * Contains no power up at all
      */
     NONE
-    
+
 }

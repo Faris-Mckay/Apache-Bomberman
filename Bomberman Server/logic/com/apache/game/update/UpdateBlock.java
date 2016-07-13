@@ -74,7 +74,8 @@ public abstract class UpdateBlock<E extends Entity> {
     /**
      * Writes the data for this update block into {@code buf}.
      *
-     * @param mob The {@link MobileEntity} this update block is being written for.
+     * @param mob The {@link MobileEntity} this update block is being written
+     * for.
      * @param msg The buffer to write the data to.
      */
     public abstract void write(E mob, ByteMessage msg);

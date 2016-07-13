@@ -12,7 +12,6 @@
  */
 package com.apache.event.impl;
 
-
 import com.apache.event.Event;
 import com.apache.game.entity.Entity;
 import com.apache.map.Location;
@@ -28,55 +27,52 @@ import com.apache.map.Location;
  */
 public final class LocationChangeEvent extends Event {
 
-	/**
-	 * The old {@link Location} of the {@link Entity}.
-	 */
-	private final Location oldLocation;
+    /**
+     * The old {@link Location} of the {@link Entity}.
+     */
+    private final Location oldLocation;
 
-	/**
-	 * The new {@link Location} of the {@link Entity}.
-	 */
-	private final Location newLocation;
+    /**
+     * The new {@link Location} of the {@link Entity}.
+     */
+    private final Location newLocation;
 
-	/**
-	 * The {@link Entity} changing its {@link Location}.
-	 */
-	private final Entity entity;
+    /**
+     * The {@link Entity} changing its {@link Location}.
+     */
+    private final Entity entity;
 
-	/**
-	 * Creates a new {@link LocationChangeEvent}.
-	 *
-	 * @param oldLocation
-	 *            The old {@link Location} of the {@link Entity}.
-	 * @param newLocation
-	 *            The new {@link Location} of the {@link Entity}.
-	 * @param entity
-	 *            The {@link Entity} changing its {@link Location}.
-	 */
-	public LocationChangeEvent(Location oldLocation, Location newLocation, Entity entity) {
-		this.oldLocation = oldLocation;
-		this.newLocation = newLocation;
-		this.entity = entity;
-	}
+    /**
+     * Creates a new {@link LocationChangeEvent}.
+     *
+     * @param oldLocation The old {@link Location} of the {@link Entity}.
+     * @param newLocation The new {@link Location} of the {@link Entity}.
+     * @param entity The {@link Entity} changing its {@link Location}.
+     */
+    public LocationChangeEvent(Location oldLocation, Location newLocation, Entity entity) {
+        this.oldLocation = oldLocation;
+        this.newLocation = newLocation;
+        this.entity = entity;
+    }
 
-	/**
-	 * @return The old {@link Location} of the {@link Entity}.
-	 */
-	public Location getOldLocation() {
-		return oldLocation;
-	}
+    /**
+     * @return The old {@link Location} of the {@link Entity}.
+     */
+    public Location getOldLocation() {
+        return oldLocation;
+    }
 
-	/**
-	 * @return The new {@link Location} of the {@link Entity}.
-	 */
-	public Location getNewLocation() {
-		return newLocation;
-	}
+    /**
+     * @return The new {@link Location} of the {@link Entity}.
+     */
+    public Location getNewLocation() {
+        return newLocation;
+    }
 
-	/**
-	 * @return The {@link Entity} changing its {@link Location}.
-	 */
-	public Entity getEntity() {
-		return entity;
-	}
+    /**
+     * @return The {@link Entity} changing its {@link Location}.
+     */
+    public Entity getEntity() {
+        return entity;
+    }
 }

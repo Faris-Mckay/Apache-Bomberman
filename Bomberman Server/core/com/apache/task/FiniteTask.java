@@ -16,10 +16,10 @@ package com.apache.task;
  *
  * @author Faris <https://github.com/faris-mckay>
  */
-public abstract class FiniteTask extends Task {   
-    
-    public FiniteTask(int cycleRate){
+public abstract class FiniteTask extends Task {
+
+    public FiniteTask(int cycleRate) {
         super(true, cycleRate);
     }
-    
+
 }

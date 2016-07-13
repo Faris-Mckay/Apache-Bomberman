@@ -28,17 +28,17 @@ import io.netty.handler.codec.MessageToMessageEncoder;
  */
 public class Encoder extends MessageToMessageEncoder<Packet> {
 
-	@Override
-	protected void encode(ChannelHandlerContext ctx, Packet packet, List<Object> out) throws Exception {
-		System.out.println("Encoding in process... ");
-		int headerLength = 3;
-		int payloadLength = packet.getLength();
+    @Override
+    protected void encode(ChannelHandlerContext ctx, Packet packet, List<Object> out) throws Exception {
+        System.out.println("Encoding in process... ");
+        int headerLength = 3;
+        int payloadLength = packet.getLength();
 
-		ByteBuf buffer = Unpooled.buffer(headerLength + payloadLength);
-		buffer.writeByte(packet.getOpcode());
-		buffer.writeBytes(packet.getPayload());
-		System.out.println("Opcode: " + packet.getOpcode() + " successfully added to buffer.");
-		System.out.println("Payload:" + Arrays.toString(packet.getPayload().array()));
-		out.add(buffer);
-	}
+        ByteBuf buffer = Unpooled.buffer(headerLength + payloadLength);
+        buffer.writeByte(packet.getOpcode());
+        buffer.writeBytes(packet.getPayload());
+        System.out.println("Opcode: " + packet.getOpcode() + " successfully added to buffer.");
+        System.out.println("Payload:" + Arrays.toString(packet.getPayload().array()));
+        out.add(buffer);
+    }
 }

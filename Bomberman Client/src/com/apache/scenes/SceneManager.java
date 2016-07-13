@@ -9,84 +9,85 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 public class SceneManager {
-	
-	// A list with all our scenes
-	private List<Scene> scenes;
-	// The Gamecontainer to handle the init method
-	private GameContainer gc;
 
-	public SceneManager(GameContainer gc) {
-		this.gc = gc;
-		scenes = new ArrayList<Scene>();
-	}
+    // A list with all our scenes
+    private List<Scene> scenes;
+    // The Gamecontainer to handle the init method
+    private GameContainer gc;
 
-	// Add a scene to the list and call the init method
-	public void addScene(Scene scene) {
-		scenes.add(scene);
-		try {
-			scene.init(gc);
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
-		Collections.sort(scenes);
-	}
+    public SceneManager(GameContainer gc) {
+        this.gc = gc;
+        scenes = new ArrayList<Scene>();
+    }
 
-	// Removes a scene by an specific object
-	public void removeScene(Scene scene) {
-		scenes.remove(scene);
-	}
-	
-	/**
-	 * Closes other scenes and opens new scene
-	 * @param scene
-	 */
-	public void newScene(Scene scene){
-		scenes.clear();
-		scenes.add(scene);
-	}
+    // Add a scene to the list and call the init method
+    public void addScene(Scene scene) {
+        scenes.add(scene);
+        try {
+            scene.init(gc);
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+        Collections.sort(scenes);
+    }
 
-	// Removes a scene by an specific name
-	public boolean removeScene(String scene) {
-		for (int i = 0; i < scenes.size(); i++) {
-			if (scenes.get(i).toString().equals(scene)) {
-				scenes.remove(i);
-				return true;
-			}
-		}
-		return false;
-	}
+    // Removes a scene by an specific object
+    public void removeScene(Scene scene) {
+        scenes.remove(scene);
+    }
 
-	// Render all scenes
-	public void render(GameContainer gc, Graphics g) throws SlickException {
-		for (int i = 0; i < scenes.size(); i++) {
-			scenes.get(i).render(gc, g);
-		}
-	}
+    /**
+     * Closes other scenes and opens new scene
+     *
+     * @param scene
+     */
+    public void newScene(Scene scene) {
+        scenes.clear();
+        scenes.add(scene);
+    }
 
-	// Update all scenes
-	public void update(GameContainer gc, int t) throws SlickException {
-		for (int i = 0; i < scenes.size(); i++) {
-			scenes.get(i).update(gc, t);
-		}
-	}
+    // Removes a scene by an specific name
+    public boolean removeScene(String scene) {
+        for (int i = 0; i < scenes.size(); i++) {
+            if (scenes.get(i).toString().equals(scene)) {
+                scenes.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
 
-	// Get a scene by name
-	public Scene getScene(String scene) {
-		for (int i = 0; i < scenes.size(); i++) {
-			if (scenes.get(i).toString().equals(scene)) {
-				return scenes.get(i);
-			}
-		}
-		return null;
-	}
+    // Render all scenes
+    public void render(GameContainer gc, Graphics g) throws SlickException {
+        for (int i = 0; i < scenes.size(); i++) {
+            scenes.get(i).render(gc, g);
+        }
+    }
 
-	// Re-Sort the list
-	public void sort() {
-		Collections.sort(scenes);
-	}
+    // Update all scenes
+    public void update(GameContainer gc, int t) throws SlickException {
+        for (int i = 0; i < scenes.size(); i++) {
+            scenes.get(i).update(gc, t);
+        }
+    }
 
-	// Clear the list
-	public void clear() {
-		scenes = new ArrayList<Scene>();
-	}
+    // Get a scene by name
+    public Scene getScene(String scene) {
+        for (int i = 0; i < scenes.size(); i++) {
+            if (scenes.get(i).toString().equals(scene)) {
+                return scenes.get(i);
+            }
+        }
+        return null;
+    }
+
+    // Re-Sort the list
+    public void sort() {
+        Collections.sort(scenes);
+    }
+
+    // Clear the list
+    public void clear() {
+        scenes = new ArrayList<Scene>();
+    }
 }

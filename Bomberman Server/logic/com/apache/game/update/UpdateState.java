@@ -18,20 +18,19 @@ package com.apache.game.update;
  * @author Juan Ortiz <http://github.org/TheRealJP>
  */
 public enum UpdateState {
-	/**
-	 * F {@link Player} is updating for themself, only relevant for
-	 * {@code Player} updating.
-	 */
-	UPDATE_SELF,
 
-	/**
-	 * F {@link Player} is updating for the {@link Entity}s around them.
-	 */
-	UPDATE_LOCAL,
-
-	/**
-	 * F {@link Player} is adding new {@link Entity}s that have just
-	 * appeared around them.
-	 */
-	ADD_LOCAL
+    /**
+     * F {@link Player} is updating for themself, only relevant for
+     * {@code Player} updating.
+     */
+    UPDATE_SELF,
+    /**
+     * F {@link Player} is updating for the {@link Entity}s around them.
+     */
+    UPDATE_LOCAL,
+    /**
+     * F {@link Player} is adding new {@link Entity}s that have just appeared
+     * around them.
+     */
+    ADD_LOCAL
 }

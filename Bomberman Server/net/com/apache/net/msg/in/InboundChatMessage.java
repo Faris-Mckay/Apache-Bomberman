@@ -30,18 +30,18 @@ import com.apache.net.msg.InboundGameMessage;
  */
 public final class InboundChatMessage extends InboundGameMessage {
 
-	@Override
-	public Event readMessage(Player player, GameMessage msg) throws Exception {
-		int effects = msg.getPayload().get(false);
-		int color = msg.getPayload().get(false);
-		int size = (msg.getSize() - 2);
-		byte[] message = msg.getPayload().getBytesReverse(size, ByteTransform.F);
+    @Override
+    public Event readMessage(Player player, GameMessage msg) throws Exception {
+        int effects = msg.getPayload().get(false);
+        int color = msg.getPayload().get(false);
+        int size = (msg.getSize() - 2);
+        byte[] message = msg.getPayload().getBytesReverse(size, ByteTransform.F);
 
-		checkState(effects >= 0, "invalid effects value");
-		checkState(color >= 0, "invalid color value");
-		checkState(size > 0, "invalid size, not large enough");
+        checkState(effects >= 0, "invalid effects value");
+        checkState(color >= 0, "invalid color value");
+        checkState(size > 0, "invalid size, not large enough");
 
-		player.chat(new Chat(message, color, effects));
-		return new ChatEvent(effects, color, size, message);
-	}
+        player.chat(new Chat(message, color, effects));
+        return new ChatEvent(effects, color, size, message);
+    }
 }

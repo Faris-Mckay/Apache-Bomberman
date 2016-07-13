@@ -18,8 +18,8 @@ package com.apache.util;
  */
 public class Constants {
 
-	public static final int PLAYER_PROCESS_PER_CYCLE = 1;
-	/* Networking */
-	public static final String HOST = "localhost";
-	public static final int PORT_ID = 5555;
+    public static final int PLAYER_PROCESS_PER_CYCLE = 1;
+    /* Networking */
+    public static final String HOST = "localhost";
+    public static final int PORT_ID = 5555;
 }

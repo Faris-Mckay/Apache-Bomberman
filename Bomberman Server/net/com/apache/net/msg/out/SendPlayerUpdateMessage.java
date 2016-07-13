@@ -32,84 +32,79 @@ import com.apache.net.msg.OutboundGameMessage;
  */
 public final class SendPlayerUpdateMessage extends OutboundGameMessage {
 
-	/**
-	 * The {@link UpdateBlockSet} that will manage all of the
-	 * {@link UpdateBlock}s.
-	 */
-	private final UpdateBlockSet<Player> blockSet = new UpdateBlockSet<>();
+    /**
+     * The {@link UpdateBlockSet} that will manage all of the
+     * {@link UpdateBlock}s.
+     */
+    private final UpdateBlockSet<Player> blockSet = new UpdateBlockSet<>();
 
-	{
-		blockSet.add(new PlayerChatUpdateBlock());
+    {
+        blockSet.add(new PlayerChatUpdateBlock());
 
-	}
+    }
 
-	@Override
-	public ByteMessage writeMessage(Player player) {
-		ByteMessage msg = ByteMessage.message(81, MessageType.VARIABLE_SHORT);
-		ByteMessage blockMsg = ByteMessage.message();
+    @Override
+    public ByteMessage writeMessage(Player player) {
+        ByteMessage msg = ByteMessage.message(81, MessageType.VARIABLE_SHORT);
+        ByteMessage blockMsg = ByteMessage.message();
 
-		try {
-			msg.startBitAccess();
+        try {
+            msg.startBitAccess();
 
-			handleMovement(player, msg);
-			blockSet.encodeUpdateBlocks(player, blockMsg, UpdateState.UPDATE_SELF);
+            handleMovement(player, msg);
+            blockSet.encodeUpdateBlocks(player, blockMsg, UpdateState.UPDATE_SELF);
 
-			msg.putBits(8, player.getWorld().getPlayers().size());
-			Iterator<Player> $it = player.getWorld().getPlayers().iterator();
-			while ($it.hasNext()) {
-				Player other = $it.next();
-				handleMovement(other, msg);
-				blockSet.encodeUpdateBlocks(other, blockMsg, UpdateState.UPDATE_LOCAL);
-			}
+            msg.putBits(8, player.getWorld().getPlayers().size());
+            Iterator<Player> $it = player.getWorld().getPlayers().iterator();
+            while ($it.hasNext()) {
+                Player other = $it.next();
+                handleMovement(other, msg);
+                blockSet.encodeUpdateBlocks(other, blockMsg, UpdateState.UPDATE_LOCAL);
+            }
 
-			if (blockMsg.getBuffer().writerIndex() > 0) {
-				msg.putBits(11, 2047);
-				msg.endBitAccess();
-				msg.putBytes(blockMsg);
-			} else {
-				msg.endBitAccess();
-			}
-		} catch (Exception e) {
-			msg.release();
-			throw e;
-		} finally {
-			blockMsg.release();
-		}
-		return msg;
-	}
+            if (blockMsg.getBuffer().writerIndex() > 0) {
+                msg.putBits(11, 2047);
+                msg.endBitAccess();
+                msg.putBytes(blockMsg);
+            } else {
+                msg.endBitAccess();
+            }
+        } catch (Exception e) {
+            msg.release();
+            throw e;
+        } finally {
+            blockMsg.release();
+        }
+        return msg;
+    }
 
-	/**
-	 * Adds {@code addPlayer} in the view of {@code player}.
-	 *
-	 * @param msg
-	 *            The main update message.
-	 * @param player
-	 *            The {@link Player} this update message is being sent for.
-	 * @param addPlayer
-	 *            The {@code Player} being added.
-	 */
-	private void addPlayer(ByteMessage msg, Player player, Player addPlayer) {
-		msg.putBits(11, addPlayer.getId()); // username index of 12 (0-11)
-		msg.putBit(true); // TODO: make use of client caching
-		msg.putBit(true);
+    /**
+     * Adds {@code addPlayer} in the view of {@code player}.
+     *
+     * @param msg The main update message.
+     * @param player The {@link Player} this update message is being sent for.
+     * @param addPlayer The {@code Player} being added.
+     */
+    private void addPlayer(ByteMessage msg, Player player, Player addPlayer) {
+        msg.putBits(11, addPlayer.getId()); // username index of 12 (0-11)
+        msg.putBit(true); // TODO: make use of client caching
+        msg.putBit(true);
 
-		int deltaX = addPlayer.getLocation().getX() - player.getLocation().getX();
-		int deltaY = addPlayer.getLocation().getY() - player.getLocation().getY();
-		msg.putBits(5, deltaY);
-		msg.putBits(5, deltaX);
-	}
+        int deltaX = addPlayer.getLocation().getX() - player.getLocation().getX();
+        int deltaY = addPlayer.getLocation().getY() - player.getLocation().getY();
+        msg.putBits(5, deltaY);
+        msg.putBits(5, deltaX);
+    }
 
-	/**
-	 * Handles running, walking, and teleportation movement for {@code player}.
-	 *
-	 * @param player
-	 *            The {@link Player} to handle running and walking for.
-	 * @param msg
-	 *            The main update message.
-	 */
-	private void handleMovement(Player player, ByteMessage msg) {
-		boolean needsUpdate = !player.getUpdateFlags().isEmpty();
+    /**
+     * Handles running, walking, and teleportation movement for {@code player}.
+     *
+     * @param player The {@link Player} to handle running and walking for.
+     * @param msg The main update message.
+     */
+    private void handleMovement(Player player, ByteMessage msg) {
+        boolean needsUpdate = !player.getUpdateFlags().isEmpty();
 
-		// Logic here
-	}
+        // Logic here
+    }
 }

@@ -45,111 +45,108 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 @Sharable
 public final class ChannelFilter extends ChannelInboundHandlerAdapter {
 
-	/**
-	 * F {@link NewLineParser} implementation that reads banned addresses.
-	 *
-	 * @author Juan Ortiz <http://github.org/TheRealJP>
-	 */
-	private final class IpBanParser extends NewLineParser {
+    /**
+     * F {@link NewLineParser} implementation that reads banned addresses.
+     *
+     * @author Juan Ortiz <http://github.org/TheRealJP>
+     */
+    private final class IpBanParser extends NewLineParser {
 
-		/**
-		 * Creates a new {@link IpBanParser}.
-		 */
-		public IpBanParser() {
-			super("./data/players/ip_banned.txt");
-		}
+        /**
+         * Creates a new {@link IpBanParser}.
+         */
+        public IpBanParser() {
+            super("./data/players/ip_banned.txt");
+        }
 
-		@Override
-		public void readNextLine(String nextLine) throws Exception {
-			bannedAddresses.add(nextLine);
-		}
-	}
+        @Override
+        public void readNextLine(String nextLine) throws Exception {
+            bannedAddresses.add(nextLine);
+        }
+    }
 
-	/**
-	 * F concurrent {@link Multiset} that holds the amount of connections made
-	 * by all active hosts.
-	 */
-	private final Multiset<String> connections = ConcurrentHashMultiset.create();
+    /**
+     * F concurrent {@link Multiset} that holds the amount of connections made
+     * by all active hosts.
+     */
+    private final Multiset<String> connections = ConcurrentHashMultiset.create();
 
-	/**
-	 * F concurrent {@link Set} that holds the banned addresses.
-	 */
-	private final Set<String> bannedAddresses = Sets.newConcurrentHashSet();
+    /**
+     * F concurrent {@link Set} that holds the banned addresses.
+     */
+    private final Set<String> bannedAddresses = Sets.newConcurrentHashSet();
 
-	/**
-	 * The maximum amount of connections that can be made by a single host.
-	 */
-	private final int connectionLimit;
+    /**
+     * The maximum amount of connections that can be made by a single host.
+     */
+    private final int connectionLimit;
 
-	// Parse all of the banned addresses when this class is constructed. This
-	// class should only be constructed once, so
-	// the parser should only run once.
-	{
-		NewLineParser parser = new IpBanParser();
-		parser.run();
-	}
+    // Parse all of the banned addresses when this class is constructed. This
+    // class should only be constructed once, so
+    // the parser should only run once.
+    {
+        NewLineParser parser = new IpBanParser();
+        parser.run();
+    }
 
-	/**
-	 * Creates a new {@link BombermanChannelFilter} with a connection limit of
-	 * {@code CONNECTION_LIMIT}.
-	 */
-	public ChannelFilter() {
-		connectionLimit = NetworkConstants.CONNECTION_LIMIT;
-	}
+    /**
+     * Creates a new {@link BombermanChannelFilter} with a connection limit of
+     * {@code CONNECTION_LIMIT}.
+     */
+    public ChannelFilter() {
+        connectionLimit = NetworkConstants.CONNECTION_LIMIT;
+    }
 
-	@Override
-	public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-		String hostAddress = getAddress(ctx);
-		if (hostAddress.equals("127.0.0.1")) {
-			return;
-		}
-		if (connections.count(hostAddress) >= connectionLimit) {
-			disconnect(ctx, LoginResponse.LOGIN_LIMIT_EXCEEDED);
-			return;
-		}
-		if (bannedAddresses.contains(hostAddress)) {
-			disconnect(ctx, LoginResponse.ACCOUNT_BANNED);
-			return;
-		}
-		connections.add(hostAddress);
-		ctx.fireChannelRegistered();
-	}
+    @Override
+    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+        String hostAddress = getAddress(ctx);
+        if (hostAddress.equals("127.0.0.1")) {
+            return;
+        }
+        if (connections.count(hostAddress) >= connectionLimit) {
+            disconnect(ctx, LoginResponse.LOGIN_LIMIT_EXCEEDED);
+            return;
+        }
+        if (bannedAddresses.contains(hostAddress)) {
+            disconnect(ctx, LoginResponse.ACCOUNT_BANNED);
+            return;
+        }
+        connections.add(hostAddress);
+        ctx.fireChannelRegistered();
+    }
 
-	@Override
-	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-		String hostAddress = getAddress(ctx);
-		if (hostAddress.equals("127.0.0.1")) {
-			return;
-		}
-		connections.remove(hostAddress);
-		ctx.fireChannelUnregistered();
-	}
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        String hostAddress = getAddress(ctx);
+        if (hostAddress.equals("127.0.0.1")) {
+            return;
+        }
+        connections.remove(hostAddress);
+        ctx.fireChannelUnregistered();
+    }
 
-	/**
-	 * Disconnects {@code ctx} with {@code response} as the response code.
-	 *
-	 * @param ctx
-	 *            The channel handler context.
-	 * @param response
-	 *            The response to disconnect with.
-	 */
-	private void disconnect(ChannelHandlerContext ctx, LoginResponse response) {
-		LoginResponseMessage message = new LoginResponseMessage(response);
-		ByteBuf initialMessage = ctx.alloc().buffer(8).writeLong(0);
+    /**
+     * Disconnects {@code ctx} with {@code response} as the response code.
+     *
+     * @param ctx The channel handler context.
+     * @param response The response to disconnect with.
+     */
+    private void disconnect(ChannelHandlerContext ctx, LoginResponse response) {
+        LoginResponseMessage message = new LoginResponseMessage(response);
+        ByteBuf initialMessage = ctx.alloc().buffer(8).writeLong(0);
 
-		ctx.channel().write(initialMessage, ctx.channel().voidPromise());
-		ctx.channel().writeAndFlush(message).addListener(ChannelFutureListener.CLOSE);
-	}
+        ctx.channel().write(initialMessage, ctx.channel().voidPromise());
+        ctx.channel().writeAndFlush(message).addListener(ChannelFutureListener.CLOSE);
+    }
 
-	/**
-	 * Converts {@code ctx} to a {@code String} representation of the host
-	 * address.
-	 *
-	 * @param ctx
-	 *            The channel handler context.
-	 * @return The {@code String} address representation.
-	 */
-	private String getAddress(ChannelHandlerContext ctx) {
-		return ((InetSocketAddress) ctx.channel().remoteAddress()).getAddress().getHostAddress();
-	}
+    /**
+     * Converts {@code ctx} to a {@code String} representation of the host
+     * address.
+     *
+     * @param ctx The channel handler context.
+     * @return The {@code String} address representation.
+     */
+    private String getAddress(ChannelHandlerContext ctx) {
+        return ((InetSocketAddress) ctx.channel().remoteAddress()).getAddress().getHostAddress();
+    }
 }

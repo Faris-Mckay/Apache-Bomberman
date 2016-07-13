@@ -18,18 +18,18 @@ package com.apache.event;
  * @author Juan Ortiz <http://github.org/TheRealJP>
  */
 public class Event {
-	/**
-	 * Determines if this event should be intercepted, when given {@code args}.
-	 * Always returns {@code true} if not overridden regardless of the
-	 * arguments.
-	 *
-	 * @param args
-	 *            The arguments for this event.
-	 * @return {@code true} if this event can be intercepted, {@code false}
-	 *         otherwise.
-	 */
-	public boolean matches(Object... args) {
-		return true;
-	}
+
+    /**
+     * Determines if this event should be intercepted, when given {@code args}.
+     * Always returns {@code true} if not overridden regardless of the
+     * arguments.
+     *
+     * @param args The arguments for this event.
+     * @return {@code true} if this event can be intercepted, {@code false}
+     * otherwise.
+     */
+    public boolean matches(Object... args) {
+        return true;
+    }
 
 }

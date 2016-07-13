@@ -10,7 +10,8 @@
  * Apache-GS (M). In the project license directory.
  * Written by Faris McKay <faris.mckay@hotmail.com>, May 2016
  *
- */package com.apache.game.update;
+ */
+package com.apache.game.update;
 
 import java.util.EnumSet;
 
@@ -22,58 +23,57 @@ import java.util.EnumSet;
  */
 public final class UpdateFlagContainer {
 
-	/**
-	 * An enumerated type that holds all of the values representing update flags
-	 * for {@link Entity}s.
-	 */
-	public enum UpdateFlag {
-		CHAT, GRAPHIC, FACE_POSITION,
-	}
+    /**
+     * An enumerated type that holds all of the values representing update flags
+     * for {@link Entity}s.
+     */
+    public enum UpdateFlag {
 
-	/**
-	 * An {@link EnumSet} that will contain all active {@link UpdateFlag}s.
-	 */
-	private final EnumSet<UpdateFlag> flags = EnumSet.noneOf(UpdateFlag.class);
+        CHAT, GRAPHIC, FACE_POSITION,
+    }
 
-	/**
-	 * Adds {@code flag} to the backing {@link EnumSet}.
-	 *
-	 * @param flag
-	 *            The {@link UpdateFlag} to add.
-	 */
-	public void flag(UpdateFlag flag) {
-		flags.add(flag);
-	}
+    /**
+     * An {@link EnumSet} that will contain all active {@link UpdateFlag}s.
+     */
+    private final EnumSet<UpdateFlag> flags = EnumSet.noneOf(UpdateFlag.class);
 
-	/**
-	 * Removes {@code flag} from the backing {@link EnumSet}.
-	 *
-	 * @param flag
-	 *            The {@link UpdateFlag} to remove.
-	 */
-	public void unflag(UpdateFlag flag) {
-		flags.remove(flag);
-	}
+    /**
+     * Adds {@code flag} to the backing {@link EnumSet}.
+     *
+     * @param flag The {@link UpdateFlag} to add.
+     */
+    public void flag(UpdateFlag flag) {
+        flags.add(flag);
+    }
 
-	/**
-	 * @return {@code true} if the backing {@link EnumSet} contains {@code
-	 * flag}, false otherwise.
-	 */
-	public boolean get(UpdateFlag flag) {
-		return flags.contains(flag);
-	}
+    /**
+     * Removes {@code flag} from the backing {@link EnumSet}.
+     *
+     * @param flag The {@link UpdateFlag} to remove.
+     */
+    public void unflag(UpdateFlag flag) {
+        flags.remove(flag);
+    }
 
-	/**
-	 * @return {@code true} if the backing {@link EnumSet} is empty.
-	 */
-	public boolean isEmpty() {
-		return flags.isEmpty();
-	}
+    /**
+     * @return {@code true} if the backing {@link EnumSet} contains {@code
+     * flag}, false otherwise.
+     */
+    public boolean get(UpdateFlag flag) {
+        return flags.contains(flag);
+    }
 
-	/**
-	 * Clears the backing {@link EnumSet} of all elements.
-	 */
-	public void clear() {
-		flags.clear();
-	}
+    /**
+     * @return {@code true} if the backing {@link EnumSet} is empty.
+     */
+    public boolean isEmpty() {
+        return flags.isEmpty();
+    }
+
+    /**
+     * Clears the backing {@link EnumSet} of all elements.
+     */
+    public void clear() {
+        flags.clear();
+    }
 }

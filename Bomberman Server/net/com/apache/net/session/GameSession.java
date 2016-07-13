@@ -34,108 +34,104 @@ import io.netty.channel.Channel;
  */
 public final class GameSession extends Session {
 
-	/**
-	 * The player assigned to this {@code GameSession}.
-	 */
-	private final Player player;
+    /**
+     * The player assigned to this {@code GameSession}.
+     */
+    private final Player player;
 
-	/**
-	 * The message encryptor.
-	 */
-	private final IsaacCipher encryptor;
+    /**
+     * The message encryptor.
+     */
+    private final IsaacCipher encryptor;
 
-	/**
-	 * The message decryptor.
-	 */
-	private final IsaacCipher decryptor;
+    /**
+     * The message decryptor.
+     */
+    private final IsaacCipher decryptor;
 
-	/**
-	 * The repository containing data for incoming messages.
-	 */
-	private final MessageRepository messageRepository;
+    /**
+     * The repository containing data for incoming messages.
+     */
+    private final MessageRepository messageRepository;
 
-	/**
-	 * F bounded queue of inbound {@link GameMessage}s.
-	 */
-	private final Queue<GameMessage> inboundQueue = new ArrayBlockingQueue<>(NetworkConstants.MESSAGE_LIMIT);
+    /**
+     * F bounded queue of inbound {@link GameMessage}s.
+     */
+    private final Queue<GameMessage> inboundQueue = new ArrayBlockingQueue<>(NetworkConstants.MESSAGE_LIMIT);
 
-	/**
-	 * Creates a new {@link GameSession}.
-	 *
-	 * @param channel
-	 *            The channel for this session.
-	 * @param encryptor
-	 *            The message encryptor.
-	 * @param decryptor
-	 *            The message decryptor.
-	 * @param messageRepository
-	 *            The repository containing data for incoming messages.
-	 */
-	public GameSession(Player player, Channel channel, IsaacCipher encryptor, IsaacCipher decryptor,
-			MessageRepository messageRepository) {
-		super(channel);
-		this.player = player;
-		this.encryptor = encryptor;
-		this.decryptor = decryptor;
-		this.messageRepository = messageRepository;
-	}
+    /**
+     * Creates a new {@link GameSession}.
+     *
+     * @param channel The channel for this session.
+     * @param encryptor The message encryptor.
+     * @param decryptor The message decryptor.
+     * @param messageRepository The repository containing data for incoming
+     * messages.
+     */
+    public GameSession(Player player, Channel channel, IsaacCipher encryptor, IsaacCipher decryptor,
+            MessageRepository messageRepository) {
+        super(channel);
+        this.player = player;
+        this.encryptor = encryptor;
+        this.decryptor = decryptor;
+        this.messageRepository = messageRepository;
+    }
 
-	@Override
-	public void onDispose() {
-		player.getWorld().queueLogout(player);
-		inboundQueue.clear();
-	}
+    @Override
+    public void onDispose() {
+        player.getWorld().queueLogout(player);
+        inboundQueue.clear();
+    }
 
-	@Override
-	public void handleUpstreamMessage(Object msg) {
-		if (msg instanceof GameMessage) {
-			inboundQueue.offer((GameMessage) msg);
-		}
-	}
+    @Override
+    public void handleUpstreamMessage(Object msg) {
+        if (msg instanceof GameMessage) {
+            inboundQueue.offer((GameMessage) msg);
+        }
+    }
 
-	/**
-	 * Writes {@code msg} to the underlying channel; The channel is not flushed.
-	 *
-	 * @param msg
-	 *            The message to queue.
-	 */
-	public void queue(OutboundGameMessage msg) {
-		Channel channel = getChannel();
+    /**
+     * Writes {@code msg} to the underlying channel; The channel is not flushed.
+     *
+     * @param msg The message to queue.
+     */
+    public void queue(OutboundGameMessage msg) {
+        Channel channel = getChannel();
 
-		if (channel.isActive()) {
-			channel.writeAndFlush(msg.toGameMessage(player), channel.voidPromise());
-		}
-	}
+        if (channel.isActive()) {
+            channel.writeAndFlush(msg.toGameMessage(player), channel.voidPromise());
+        }
+    }
 
-	/**
-	 * Dequeues the inbound queue, handling all logic accordingly.
-	 */
-	public void dequeue() {
-		for (;;) {
-			GameMessage msg = inboundQueue.poll();
-			if (msg == null) {
-				break;
-			}
-			try {
-				InboundGameMessage inbound = messageRepository.getHandler(msg.getOpcode());
-				inbound.handleInboundMessage(player, msg);
-			} catch (Exception e) {
-				Utility.log("-> " + e.getCause());
-			}
-		}
-	}
+    /**
+     * Dequeues the inbound queue, handling all logic accordingly.
+     */
+    public void dequeue() {
+        for (;;) {
+            GameMessage msg = inboundQueue.poll();
+            if (msg == null) {
+                break;
+            }
+            try {
+                InboundGameMessage inbound = messageRepository.getHandler(msg.getOpcode());
+                inbound.handleInboundMessage(player, msg);
+            } catch (Exception e) {
+                Utility.log("-> " + e.getCause());
+            }
+        }
+    }
 
-	/**
-	 * @return The message encryptor.
-	 */
-	public IsaacCipher getEncryptor() {
-		return encryptor;
-	}
+    /**
+     * @return The message encryptor.
+     */
+    public IsaacCipher getEncryptor() {
+        return encryptor;
+    }
 
-	/**
-	 * @return The message decryptor.
-	 */
-	public IsaacCipher getDecryptor() {
-		return decryptor;
-	}
+    /**
+     * @return The message decryptor.
+     */
+    public IsaacCipher getDecryptor() {
+        return decryptor;
+    }
 }

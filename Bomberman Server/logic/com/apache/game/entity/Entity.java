@@ -24,118 +24,118 @@ import com.apache.net.BombermanContext;
  * @author Faris <https://github.com/faris-mckay>
  */
 public abstract class Entity {
-	/**
-	 * The {@link BombermanContext} dedicated to this {@code Entity}.
-	 */
-	protected final BombermanContext context;
 
-	/**
-	 * The {@link GameService} dedicated to this {@code Entity}.
-	 */
-	protected final GameService service;
+    /**
+     * The {@link BombermanContext} dedicated to this {@code Entity}.
+     */
+    protected final BombermanContext context;
 
-	/**
-	 * The {@link World} dedicated to this {@code Entity}.
-	 */
-	protected final World world;
+    /**
+     * The {@link GameService} dedicated to this {@code Entity}.
+     */
+    protected final GameService service;
 
-	/**
-	 * An {@link UpdateFlagHolder} instance assigned to this
-	 * {@code MobileEntity}.
-	 */
-	protected final UpdateFlagContainer updateFlags = new UpdateFlagContainer();
+    /**
+     * The {@link World} dedicated to this {@code Entity}.
+     */
+    protected final World world;
 
-	/**
-	 * An {@link AttributeMap} instance assigned to this {@code Entity}.
-	 */
-	public final AttributeMap attributes = new AttributeMap();
+    /**
+     * An {@link UpdateFlagHolder} instance assigned to this
+     * {@code MobileEntity}.
+     */
+    protected final UpdateFlagContainer updateFlags = new UpdateFlagContainer();
 
-	private int id;
-	/**
-	 * The location of this {@code Entity}.
-	 */
-	private Location location;
+    /**
+     * An {@link AttributeMap} instance assigned to this {@code Entity}.
+     */
+    public final AttributeMap attributes = new AttributeMap();
 
-	/**
-	 * Creates a new {@link Entity}.
-	 *
-	 * @param context
-	 *            The context to be managed in.
-	 */
-	public Entity(BombermanContext context) {
-		this.context = context;
-		service = context.getService();
-		world = context.getWorld();
-	}
+    private int id;
+    /**
+     * The location of this {@code Entity}.
+     */
+    private Location location;
 
-	/**
-	 * @return The {@code EntityType} designated for this {@code Entity}.
-	 */
-	public abstract EntityType type();
+    /**
+     * Creates a new {@link Entity}.
+     *
+     * @param context The context to be managed in.
+     */
+    public Entity(BombermanContext context) {
+        this.context = context;
+        service = context.getService();
+        world = context.getWorld();
+    }
 
-	/**
-	 * @return The {@link BombermanContext} dedicated to this {@code Entity}.
-	 */
-	public BombermanContext getContext() {
-		return context;
-	}
+    /**
+     * @return The {@code EntityType} designated for this {@code Entity}.
+     */
+    public abstract EntityType type();
 
-	/**
-	 * @return The {@link GameService} dedicated to this {@code Entity}.
-	 */
-	public final GameService getService() {
-		return service;
-	}
+    /**
+     * @return The {@link BombermanContext} dedicated to this {@code Entity}.
+     */
+    public BombermanContext getContext() {
+        return context;
+    }
 
-	/**
-	 * @return the location
-	 */
-	public Location getLocation() {
-		return location;
-	}
+    /**
+     * @return The {@link GameService} dedicated to this {@code Entity}.
+     */
+    public final GameService getService() {
+        return service;
+    }
 
-	/**
-	 * @param location
-	 *            the location to set
-	 */
-	public void setLocation(Location location) {
-		this.location = location;
-	}
+    /**
+     * @return the location
+     */
+    public Location getLocation() {
+        return location;
+    }
 
-	/**
-	 * @return The {@link AttributeMap} instance assigned to this
-	 *         {@code Entity}.
-	 */
-	public final AttributeMap attr() {
-		return attributes;
-	}
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
-	/**
-	 * @return The {@link UpdateFlagContainer} instance assigned to this
-	 *         {@code Entity}.
-	 */
-	public final UpdateFlagContainer getUpdateFlags() {
-		return updateFlags;
-	}
+    /**
+     * @return The {@link AttributeMap} instance assigned to this
+     * {@code Entity}.
+     */
+    public final AttributeMap attr() {
+        return attributes;
+    }
 
-	/**
-	 * @return The {@link World} dedicated to this {@code Entity}.
-	 */
-	public final World getWorld() {
-		return world;
-	}
+    /**
+     * @return The {@link UpdateFlagContainer} instance assigned to this
+     * {@code Entity}.
+     */
+    public final UpdateFlagContainer getUpdateFlags() {
+        return updateFlags;
+    }
 
-	/** @return the entity's current id */
-	public int getId() {
-		return id;
-	}
+    /**
+     * @return The {@link World} dedicated to this {@code Entity}.
+     */
+    public final World getWorld() {
+        return world;
+    }
 
-	/**
-	 * @param id
-	 *            the entity's id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+    /**
+     * @return the entity's current id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the entity's id to set
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
 
 }

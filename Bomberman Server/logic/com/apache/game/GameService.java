@@ -36,150 +36,145 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
  */
 public final class GameService extends AbstractScheduledService {
 
-	/**
-	 * F cached thread pool that manages the execution of short, low priority,
-	 * asynchronous and concurrent tasks.
-	 */
-	private final ListeningExecutorService executorService = MoreExecutors.listeningDecorator(
-			Executors.newCachedThreadPool(new ThreadFactoryBuilder().setNameFormat("BombermanWorkerThread").build()));
+    /**
+     * F cached thread pool that manages the execution of short, low priority,
+     * asynchronous and concurrent tasks.
+     */
+    private final ListeningExecutorService executorService = MoreExecutors.listeningDecorator(
+            Executors.newCachedThreadPool(new ThreadFactoryBuilder().setNameFormat("BombermanWorkerThread").build()));
 
-	/**
-	 * F queue of synchronization tasks.
-	 */
-	private final Queue<Runnable> syncTasks = new ConcurrentLinkedQueue<>();
+    /**
+     * F queue of synchronization tasks.
+     */
+    private final Queue<Runnable> syncTasks = new ConcurrentLinkedQueue<>();
 
-	/**
-	 * An instance of the {@link BombermanContext}.
-	 */
-	private final BombermanContext context;
+    /**
+     * An instance of the {@link BombermanContext}.
+     */
+    private final BombermanContext context;
 
-	/**
-	 * Creates a new {@link GameService}.
-	 *
-	 * @param context
-	 *            The context this is being managed under.
-	 */
-	public GameService(BombermanContext context) {
-		this.context = context;
-	}
+    /**
+     * Creates a new {@link GameService}.
+     *
+     * @param context The context this is being managed under.
+     */
+    public GameService(BombermanContext context) {
+        this.context = context;
+    }
 
-	@Override
-	protected String serviceName() {
-		return "BombermanGameThread";
-	}
+    @Override
+    protected String serviceName() {
+        return "BombermanGameThread";
+    }
 
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * <p>
-	 * This method should <b>never</b> be invoked unless by the underlying
-	 * {@link AbstractScheduledService}. Illegal invocation of this method will
-	 * lead to serious gameplay timing issues as well as other unexplainable and
-	 * unpredictable issues related to gameplay.
-	 */
-	@Override
-	protected void runOneIteration() throws Exception {
-		try {
-			for (;;) {
-				Runnable t = syncTasks.poll();
-				if (t == null) {
-					break;
-				}
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <p>
+     * This method should <b>never</b> be invoked unless by the underlying
+     * {@link AbstractScheduledService}. Illegal invocation of this method will
+     * lead to serious gameplay timing issues as well as other unexplainable and
+     * unpredictable issues related to gameplay.
+     */
+    @Override
+    protected void runOneIteration() throws Exception {
+        try {
+            for (;;) {
+                Runnable t = syncTasks.poll();
+                if (t == null) {
+                    break;
+                }
 
-				try {
-					t.run();
-				} catch (Exception e) {
-					Utility.log(e.getMessage());
-				}
-			}
+                try {
+                    t.run();
+                } catch (Exception e) {
+                    Utility.log(e.getMessage());
+                }
+            }
 
-			World world = context.getWorld();
-			world.dequeueLogins();
-			world.runGameLoop();
-			world.dequeueLogouts();
-		} catch (Exception e) {
-			Utility.log(e.getMessage());
-		}
-	}
+            World world = context.getWorld();
+            world.dequeueLogins();
+            world.runGameLoop();
+            world.dequeueLogouts();
+        } catch (Exception e) {
+            Utility.log(e.getMessage());
+        }
+    }
 
-	@Override
-	protected Scheduler scheduler() {
-		return Scheduler.newFixedRateSchedule(600, 600, TimeUnit.MILLISECONDS);
-	}
+    @Override
+    protected Scheduler scheduler() {
+        return Scheduler.newFixedRateSchedule(600, 600, TimeUnit.MILLISECONDS);
+    }
 
-	/**
-	 * Prints a message that this service has been terminated, and attempts to
-	 * gracefully exit the application cleaning up resources and ensuring all
-	 * players are logged out. If an exception is thrown during shutdown, the
-	 * shutdown process is aborted completely and the application is exited.
-	 */
-	@Override
-	protected void shutDown() {
-		try {
-			World world = context.getWorld();
+    /**
+     * Prints a message that this service has been terminated, and attempts to
+     * gracefully exit the application cleaning up resources and ensuring all
+     * players are logged out. If an exception is thrown during shutdown, the
+     * shutdown process is aborted completely and the application is exited.
+     */
+    @Override
+    protected void shutDown() {
+        try {
+            World world = context.getWorld();
 
-			Utility.log("The asynchronous game service has been shutdown, exiting...");
-			syncTasks.forEach(Runnable::run);
-			syncTasks.clear();
-			world.getPlayers().clear();
-			executorService.shutdown();
-			executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-		} catch (Exception e) {
-			Utility.log(e.getMessage());
-		}
-		System.exit(0);
-	}
+            Utility.log("The asynchronous game service has been shutdown, exiting...");
+            syncTasks.forEach(Runnable::run);
+            syncTasks.clear();
+            world.getPlayers().clear();
+            executorService.shutdown();
+            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+        } catch (Exception e) {
+            Utility.log(e.getMessage());
+        }
+        System.exit(0);
+    }
 
-	/**
-	 * Queues {@code t} to be executed on this game service thread.
-	 *
-	 * @param t
-	 *            The task to be queued.
-	 */
-	public void sync(Runnable t) {
-		syncTasks.add(t);
-	}
+    /**
+     * Queues {@code t} to be executed on this game service thread.
+     *
+     * @param t The task to be queued.
+     */
+    public void sync(Runnable t) {
+        syncTasks.add(t);
+    }
 
-	/**
-	 * Executes {@code t} using the backing cached thread pool. Tasks submitted
-	 * this way should generally be short and low priority.
-	 *
-	 * @param t
-	 *            The task to execute.
-	 */
-	public void execute(Runnable t) {
-		executorService.execute(t);
-	}
+    /**
+     * Executes {@code t} using the backing cached thread pool. Tasks submitted
+     * this way should generally be short and low priority.
+     *
+     * @param t The task to execute.
+     */
+    public void execute(Runnable t) {
+        executorService.execute(t);
+    }
 
-	/**
-	 * Executes the result-bearing {@code t} using the backing cached thread
-	 * pool. Tasks submitted this way should generally be short and low
-	 * priority.
-	 *
-	 * @param t
-	 *            The task to execute.
-	 * @return The {@link ListenableFuture} to track completion of the task.
-	 */
-	public <T> ListenableFuture<T> submit(Callable<T> t) {
-		return executorService.submit(t);
-	}
+    /**
+     * Executes the result-bearing {@code t} using the backing cached thread
+     * pool. Tasks submitted this way should generally be short and low
+     * priority.
+     *
+     * @param t The task to execute.
+     * @return The {@link ListenableFuture} to track completion of the task.
+     */
+    public <T> ListenableFuture<T> submit(Callable<T> t) {
+        return executorService.submit(t);
+    }
 
-	/**
-	 * Executes {@code t} using the backing cached thread pool. Tasks submitted
-	 * this way should generally be short and low priority.
-	 *
-	 * @param t
-	 *            The task to execute.
-	 * @return The {@link ListenableFuture} to track completion of the task.
-	 */
-	public ListenableFuture<?> submit(Runnable t) {
-		return executorService.submit(t);
-	}
+    /**
+     * Executes {@code t} using the backing cached thread pool. Tasks submitted
+     * this way should generally be short and low priority.
+     *
+     * @param t The task to execute.
+     * @return The {@link ListenableFuture} to track completion of the task.
+     */
+    public ListenableFuture<?> submit(Runnable t) {
+        return executorService.submit(t);
+    }
 
-	/**
-	 * @return An instance of the {@link BombermanContext}.
-	 */
-	public BombermanContext getContext() {
-		return context;
-	}
+    /**
+     * @return An instance of the {@link BombermanContext}.
+     */
+    public BombermanContext getContext() {
+        return context;
+    }
 }

@@ -13,11 +13,13 @@
 package com.apache.net.codec.login;
 
 /**
- * An enumerated type whose elements represent all of the possible login responses.
+ * An enumerated type whose elements represent all of the possible login
+ * responses.
  *
  * @author Juan Ortiz <http://github.com/TheRealJP>
  */
 public enum LoginResponse {
+
     NORMAL(2),
     INVALID_CREDENTIALS(3),
     ACCOUNT_BANNED(4),

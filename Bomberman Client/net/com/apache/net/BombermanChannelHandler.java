@@ -19,39 +19,39 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
  * Handles the channel connectivity.
- * 
+ *
  * @author JP <https://github.com/TheRealJP>
  */
 public class BombermanChannelHandler extends ChannelInboundHandlerAdapter {
 
-	private final ByteBuf firstMessage;
+    private final ByteBuf firstMessage;
 
-	public BombermanChannelHandler() {
-		firstMessage = Unpooled.buffer(256);
-		for (int i = 0; i < firstMessage.capacity(); i++) {
-			firstMessage.writeByte((byte) i);
-		}
-	}
+    public BombermanChannelHandler() {
+        firstMessage = Unpooled.buffer(256);
+        for (int i = 0; i < firstMessage.capacity(); i++) {
+            firstMessage.writeByte((byte) i);
+        }
+    }
 
-	@Override
-	public void channelActive(ChannelHandlerContext ctx) {
-		ctx.writeAndFlush(firstMessage);
-	}
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) {
+        ctx.writeAndFlush(firstMessage);
+    }
 
-	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg) {
-		/*
-		 * Using writeAndFlush so that information is sent immediately instead
-		 * of waiting for the buffer to fill up and then flushing.
-		 */
-		ctx.writeAndFlush(msg);
-		System.out.println("channelRead");
-	}
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        /*
+         * Using writeAndFlush so that information is sent immediately instead
+         * of waiting for the buffer to fill up and then flushing.
+         */
+        ctx.writeAndFlush(msg);
+        System.out.println("channelRead");
+    }
 
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-		cause.printStackTrace();
-		ctx.close();
-	}
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        cause.printStackTrace();
+        ctx.close();
+    }
 
 }

@@ -20,13 +20,13 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 /**
- * the handling of SFX through game client, this is done through the jl 
- * library and loads pre-defined SFX from the data folder to be played upon request
- * 
+ * the handling of SFX through game client, this is done through the jl library
+ * and loads pre-defined SFX from the data folder to be played upon request
+ *
  * @author Faris McKay <https://github.com/faris-mckay>
  */
 public class SFX {
-    
+
     /**
      * Holds the instance for SFX Player
      */
@@ -37,59 +37,60 @@ public class SFX {
             throw new IllegalStateException("Already instantiated");
         }
     }
-    
+
     /**
      * Singleton pattern
+     *
      * @return the instance of this class
      */
     public static SFX getInstance() {
         return INSTANCE;
     }
-    
-    
+
     /**
      * Used to handle music playback should stop or start
      */
     public static boolean musicPlaying;
-    
+
     /**
      * Caches the musicPlayer
      */
-    private Player musicPlayer; 
-    
+    private Player musicPlayer;
+
     /**
      * Locates, stores and plays the sound effect of an action when called
      */
     public void playSound(String soundName) {
-        if(!Settings.SOUND_ENABLED){
+        if (!Settings.SOUND_ENABLED) {
             return;
         }
         musicPlaying = true;
         try {
-            FileInputStream fis = new FileInputStream("./data/sfx/"+soundName+".mp3");
+            FileInputStream fis = new FileInputStream("./data/sfx/" + soundName + ".mp3");
             BufferedInputStream bis = new BufferedInputStream(fis);
             musicPlayer = new Player(bis);
         } catch (Exception e) {
             e.printStackTrace();
-        }  
+        }
         new Thread() {
             @Override
             public void run() {
-                try { 
-                    musicPlayer.play(); 
+                try {
+                    musicPlayer.play();
                 } catch (Exception e) {
-                    System.out.println(e); 
+                    System.out.println(e);
                 }
             }
         }.start();
     }
-    
+
     /**
      * Closes the connection between file and server and ends music playback
+     *
      * @throws javazoom.jl.decoder.JavaLayerException
      */
-    public void close() throws JavaLayerException { 
-        if (musicPlayer != null){
+    public void close() throws JavaLayerException {
+        if (musicPlayer != null) {
             musicPlayer.close();
             musicPlayer = null;
             musicPlaying = false;

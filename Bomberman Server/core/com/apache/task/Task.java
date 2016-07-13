@@ -20,68 +20,70 @@ import java.util.Optional;
  */
 public abstract class Task {
 
-	protected boolean stoppable, shouldStop;
-	private int cycleRate;
+    protected boolean stoppable, shouldStop;
+    private int cycleRate;
 
-	/** An attachment for this {@code Task} instance. */
-	private Optional<Object> key = Optional.empty();
+    /**
+     * An attachment for this {@code Task} instance.
+     */
+    private Optional<Object> key = Optional.empty();
 
-	public Task(boolean stoppable, int cycleRate) {
-		this.stoppable = stoppable;
-		this.cycleRate = cycleRate;
-	}
+    public Task(boolean stoppable, int cycleRate) {
+        this.stoppable = stoppable;
+        this.cycleRate = cycleRate;
+    }
 
-	/**
-	 * Attaches {@code newKey} to this {@code Task}. The equivalent of doing
-	 * {@code Optional.ofNullable(newKey)}.
-	 *
-	 * @param newKey
-	 *            The new key to attach to this {@code Task}.
-	 * @return An instance of this {@code Task} for method chaining.
-	 */
-	public Task attach(Object newKey) {
-		key = Optional.ofNullable(newKey);
-		return this;
-	}
+    /**
+     * Attaches {@code newKey} to this {@code Task}. The equivalent of doing
+     * {@code Optional.ofNullable(newKey)}.
+     *
+     * @param newKey The new key to attach to this {@code Task}.
+     * @return An instance of this {@code Task} for method chaining.
+     */
+    public Task attach(Object newKey) {
+        key = Optional.ofNullable(newKey);
+        return this;
+    }
 
-	public void execution() {
-		execute();
-	}
+    public void execution() {
+        execute();
+    }
 
-	public abstract void execute();
+    public abstract void execute();
 
-	/**
-	 * @return the stoppable
-	 */
-	public boolean isStoppable() {
-		return stoppable;
-	}
+    /**
+     * @return the stoppable
+     */
+    public boolean isStoppable() {
+        return stoppable;
+    }
 
-	/**
-	 * @return the shouldStop
-	 */
-	public boolean shouldStop() {
-		return shouldStop;
-	}
+    /**
+     * @return the shouldStop
+     */
+    public boolean shouldStop() {
+        return shouldStop;
+    }
 
-	/**
-	 * @param shouldStop
-	 *            the shouldStop to set
-	 */
-	public void setShouldStop(boolean shouldStop) {
-		this.shouldStop = shouldStop;
-	}
+    /**
+     * @param shouldStop the shouldStop to set
+     */
+    public void setShouldStop(boolean shouldStop) {
+        this.shouldStop = shouldStop;
+    }
 
-	/**
-	 * @return the cycleRate
-	 */
-	public int getCycleRate() {
-		return cycleRate;
-	}
+    /**
+     * @return the cycleRate
+     */
+    public int getCycleRate() {
+        return cycleRate;
+    }
 
-	/** @return The attachment for this {@code Task} instance. */
-	public Optional<Object> getAttachment() {
-		return key;
-	}
+    /**
+     * @return The attachment for this {@code Task} instance.
+     */
+    public Optional<Object> getAttachment() {
+        return key;
+    }
 
 }

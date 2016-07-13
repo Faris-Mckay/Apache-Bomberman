@@ -30,165 +30,178 @@ import com.apache.util.BlockingExecutorService;
  * F sequential task ran by the {@link #gameExecutor} that executes game related
  * code such as cycled tasks, network events, and the updating of entities every
  * <tt>600</tt>ms.
- * 
+ *
  * @author JP <https://github.com/TheRealJP>
  */
 public final class GameEngine implements Runnable {
 
-	/** F queue that will hold all of the pending tasks. */
-	private final BlockingQueue<Task> tasks = new LinkedBlockingQueue<Task>();
+    /**
+     * F queue that will hold all of the pending tasks.
+     */
+    private final BlockingQueue<Task> tasks = new LinkedBlockingQueue<Task>();
 
-	/** F sequential executor that acts as the main game thread. */
-	private static ScheduledExecutorService logicService = Executors.newScheduledThreadPool(1);
-	/**
-	 * Create a new {@link BlockingThreadPool} with the size equal to how many
-	 * processors are available to the JVM.
-	 */
-	private final BlockingExecutorService taskService = new BlockingExecutorService(
-			Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()));
+    /**
+     * F sequential executor that acts as the main game thread.
+     */
+    private static ScheduledExecutorService logicService = Executors.newScheduledThreadPool(1);
+    /**
+     * Create a new {@link BlockingThreadPool} with the size equal to how many
+     * processors are available to the JVM.
+     */
+    private final BlockingExecutorService taskService = new BlockingExecutorService(
+            Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()));
 
-	private final ExecutorService workService = Executors.newSingleThreadExecutor();
+    private final ExecutorService workService = Executors.newSingleThreadExecutor();
 
-	/** The current state of this engine. */
-	private boolean running = false;
+    /**
+     * The current state of this engine.
+     */
+    private boolean running = false;
 
-	private Thread thread;
+    private Thread thread;
 
-	/**
-	 * In theory, we can access these games by their id without having to worry
-	 * about which thread is being used to create or access them. Some potential
-	 * uses for this could be gathering statistics or viewing these matches in
-	 * real-time.
-	 */
-	private Vector<AtomicInteger> numberOfGamesInProgress = new Vector<AtomicInteger>();
+    /**
+     * In theory, we can access these games by their id without having to worry
+     * about which thread is being used to create or access them. Some potential
+     * uses for this could be gathering statistics or viewing these matches in
+     * real-time.
+     */
+    private Vector<AtomicInteger> numberOfGamesInProgress = new Vector<AtomicInteger>();
 
-	/**
-	 * Adds the argued task to the queue of pending tasks.
-	 * 
-	 * @param task
-	 *            - the task to be queued for execution.
-	 */
-	public void pushTask(Task task) {
-		tasks.offer(task);
-	}
+    /**
+     * Adds the argued task to the queue of pending tasks.
+     *
+     * @param task - the task to be queued for execution.
+     */
+    public void pushTask(Task task) {
+        tasks.offer(task);
+    }
 
-	/**
-	 * Schedule the task that will execute game code at 600ms intervals. This
-	 * method should only be called <b>once</b> when the server is launched.
-	 */
-	public static void init() {
-		logicService.scheduleAtFixedRate(new GameEngine(), 0, 600, TimeUnit.MILLISECONDS);
-	}
+    /**
+     * Schedule the task that will execute game code at 600ms intervals. This
+     * method should only be called <b>once</b> when the server is launched.
+     */
+    public static void init() {
+        logicService.scheduleAtFixedRate(new GameEngine(), 0, 600, TimeUnit.MILLISECONDS);
+    }
 
-	/** The current state of this engine. */
-	public boolean isRunning() {
-		return running;
-	}
+    /**
+     * The current state of this engine.
+     */
+    public boolean isRunning() {
+        return running;
+    }
 
-	/** Starts this game engine. */
-	public void start() {
-		if (running) {
-			throw new IllegalStateException("The engine is already running.");
-		}
-		running = true;
-		thread = new Thread(this);
-		thread.start();
-	}
+    /**
+     * Starts this game engine.
+     */
+    public void start() {
+        if (running) {
+            throw new IllegalStateException("The engine is already running.");
+        }
+        running = true;
+        thread = new Thread(this);
+        thread.start();
+    }
 
-	/** Stops this game engine. */
-	public void stop() {
-		if (!running) {
-			throw new IllegalStateException("The engine is already stopped.");
-		}
-		running = false;
-		thread.interrupt();
-	}
+    /**
+     * Stops this game engine.
+     */
+    public void stop() {
+        if (!running) {
+            throw new IllegalStateException("The engine is already stopped.");
+        }
+        running = false;
+        thread.interrupt();
+    }
 
-	@Override
-	public void run() {
-		try {
-			while (running) {
-				try {
-					final Task task = tasks.take();
-					submitLogic(new Runnable() {
-						@Override
-						public void run() {
-							task.execute();
-						}
-					});
-				} catch (InterruptedException e) {
-					continue;
-				}
-			}
-		} finally {
-			logicService.shutdown();
-			taskService.shutdown();
-			workService.shutdown();
-		}
-	}
+    @Override
+    public void run() {
+        try {
+            while (running) {
+                try {
+                    final Task task = tasks.take();
+                    submitLogic(new Runnable() {
+                        @Override
+                        public void run() {
+                            task.execute();
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    continue;
+                }
+            }
+        } finally {
+            logicService.shutdown();
+            taskService.shutdown();
+            workService.shutdown();
+        }
+    }
 
-	/*
-	 * Events
-	 */
-	public ScheduledFuture<?> scheduleLogic(final Runnable runnable, long delay, TimeUnit unit) {
-		return logicService.schedule(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					runnable.run();
-				} catch (Throwable t) {
-					System.out.println(t);
-				}
-			}
-		}, delay, unit);
-	}
+    /*
+     * Events
+     */
+    public ScheduledFuture<?> scheduleLogic(final Runnable runnable, long delay, TimeUnit unit) {
+        return logicService.schedule(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    runnable.run();
+                } catch (Throwable t) {
+                    System.out.println(t);
+                }
+            }
+        }, delay, unit);
+    }
 
-	public void submitLogic(final Runnable runnable) {
-		logicService.submit(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					runnable.run();
-				} catch (Throwable t) {
-					System.out.println(t);
-				}
-			}
-		});
-	}
+    public void submitLogic(final Runnable runnable) {
+        logicService.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    runnable.run();
+                } catch (Throwable t) {
+                    System.out.println(t);
+                }
+            }
+        });
+    }
 
-	public void submitTask(final Runnable runnable) {
-		taskService.submit(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					runnable.run();
-				} catch (Throwable t) {
-					System.out.println(t);
-				}
-			}
-		});
-	}
+    public void submitTask(final Runnable runnable) {
+        taskService.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    runnable.run();
+                } catch (Throwable t) {
+                    System.out.println(t);
+                }
+            }
+        });
+    }
 
-	public void submitWork(final Runnable runnable) {
-		workService.submit(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					runnable.run();
-				} catch (Throwable t) {
-					System.out.println(t);
-				}
-			}
-		});
-	}
+    public void submitWork(final Runnable runnable) {
+        workService.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    runnable.run();
+                } catch (Throwable t) {
+                    System.out.println(t);
+                }
+            }
+        });
+    }
 
-	public void waitForPendingParallelTasks() throws ExecutionException {
-		taskService.waitForPendingTasks();
-	}
+    public void waitForPendingParallelTasks() throws ExecutionException {
+        taskService.waitForPendingTasks();
+    }
 
-	/** Gets all the games that are currently in progress. */
-	public synchronized Vector<AtomicInteger> getGames() {
-		return numberOfGamesInProgress;
-	}
+    /**
+     * Gets all the games that are currently in progress.
+     */
+    public synchronized Vector<AtomicInteger> getGames() {
+        return numberOfGamesInProgress;
+    }
 
 }

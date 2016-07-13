@@ -20,23 +20,20 @@ package com.apache.net.codec;
  */
 public enum ByteTransform {
 
-	/**
-	 * Do nothing to the value.
-	 */
-	DEFAULT,
-
-	/**
-	 * Add {@code 128} to the value. (Faris)
-	 */
-	F,
-
-	/**
-	 * Invert the sign of the value. (Matt)
-	 */
-	M,
-
-	/**
-	 * Subtract {@code 128} from the value. (Jack)
-	 */
-	J
+    /**
+     * Do nothing to the value.
+     */
+    DEFAULT,
+    /**
+     * Add {@code 128} to the value. (Faris)
+     */
+    F,
+    /**
+     * Invert the sign of the value. (Matt)
+     */
+    M,
+    /**
+     * Subtract {@code 128} from the value. (Jack)
+     */
+    J
 }

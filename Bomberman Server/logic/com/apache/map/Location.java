@@ -17,14 +17,14 @@ package com.apache.map;
  * @author Faris <https://github.com/faris-mckay>
  */
 public class Location {
-    
-    public Location(int x, int y){
+
+    public Location(int x, int y) {
         this.x = x;
         this.y = y;
     }
-    
+
     private int x;
-    
+
     private int y;
 
     /**
@@ -54,5 +54,5 @@ public class Location {
     public void setY(int y) {
         this.y = y;
     }
-    
+
 }

@@ -17,9 +17,8 @@ package com.client;
  * @author Faris <https://github.com/faris-mckay>
  */
 public class package_info {
-    
+
     /**
-     *  Module handles all of the networking aspects of the client
-     */ 
-    
+     * Module handles all of the networking aspects of the client
+     */
 }

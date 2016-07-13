@@ -13,20 +13,23 @@
 package com.apache.net.codec;
 
 /**
- * <p> An implementation of the <a href="http://www.burtleburtle.net/bob/rand/isaacafa.html">ISAAC</a> psuedorandom number
- * generator. </p> <p>
- * <pre>
+ * <p>
+ * An implementation of the
+ * <a href="http://www.burtleburtle.net/bob/rand/isaacafa.html">ISAAC</a>
+ * psuedorandom number generator. </p>
+ * <p>
+ * <
+ * pre>
  * ------------------------------------------------------------------------------
- * Rand.java: By Bob Jenkins.  My random number generator, ISAAC.
- *   rand.init() -- initialize
- *   rand.val()  -- get a random value
- * MODIFIED:
- *   960327: Creation (addition of randinit, really)
- *   970719: use context, not global variables, for internal state
- *   980224: Translate to Java
+ * Rand.java: By Bob Jenkins. My random number generator, ISAAC. rand.init() --
+ * initialize rand.val() -- get a random value MODIFIED: 960327: Creation
+ * (addition of randinit, really) 970719: use context, not global variables, for
+ * internal state 980224: Translate to Java
  * ------------------------------------------------------------------------------
  * </pre>
- * <p> This class has been changed to be more conformant to Java and javadoc conventions. </p>
+ * <p>
+ * This class has been changed to be more conformant to Java and javadoc
+ * conventions. </p>
  *
  * @author Bob Jenkins
  */
@@ -100,7 +103,7 @@ public final class IsaacCipher {
         int i, j, x, y;
 
         last += ++counter;
-        for (i = 0, j = SIZE / 2; i < SIZE / 2; ) {
+        for (i = 0, j = SIZE / 2; i < SIZE / 2;) {
             x = state[i];
             accumulator ^= accumulator << 13;
             accumulator += state[j++];
@@ -126,7 +129,7 @@ public final class IsaacCipher {
             results[i++] = last = state[(y >> LOG_SIZE & MASK) >> 2] + x;
         }
 
-        for (j = 0; j < SIZE / 2; ) {
+        for (j = 0; j < SIZE / 2;) {
             x = state[i];
             accumulator ^= accumulator << 13;
             accumulator += state[j++];
@@ -189,6 +192,7 @@ public final class IsaacCipher {
         }
 
         for (i = 0; i < SIZE; i += 8) { /* fill in mem[] with messy stuff */
+
             a += results[i];
             b += results[i + 1];
             c += results[i + 2];

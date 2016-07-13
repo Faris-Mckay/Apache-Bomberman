@@ -21,18 +21,18 @@ import com.apache.game.entity.powerup.PowerupType;
  * @author Faris <https://github.com/faris-mckay>
  */
 public class Brick {
-    
+
     private Location location;
     private PowerupType type;
-    
-    public Brick(Location location){
+
+    public Brick(Location location) {
         this.setLocation(location);
         addPower();
     }
-    
-    private void addPower(){
+
+    private void addPower() {
         int random = new Random().nextInt(3);
-        switch(random){
+        switch (random) {
             case 0:
                 setType(PowerupType.BOMB);
                 break;
@@ -62,12 +62,12 @@ public class Brick {
         this.type = type;
     }
 
-	public Location getLocation() {
-		return location;
-	}
+    public Location getLocation() {
+        return location;
+    }
 
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-    
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
 }

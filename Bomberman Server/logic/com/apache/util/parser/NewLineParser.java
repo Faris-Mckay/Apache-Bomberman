@@ -26,83 +26,79 @@ import java.util.Scanner;
  */
 public abstract class NewLineParser extends Parser<Scanner, String> {
 
-	/**
-	 * An enumerated type representing the policies for when an empty line is
-	 * encountered.
-	 */
-	public enum EmptyLinePolicy {
+    /**
+     * An enumerated type representing the policies for when an empty line is
+     * encountered.
+     */
+    public enum EmptyLinePolicy {
 
-		/**
-		 * Ignore that the line is empty and treat it as if it was a normal
-		 * line, reading it and forwarding it to the implementing class.
-		 */
-		READ,
+        /**
+         * Ignore that the line is empty and treat it as if it was a normal
+         * line, reading it and forwarding it to the implementing class.
+         */
+        READ,
+        /**
+         * Throw an {@link IllegalStateException} stating that the line was
+         * empty.
+         */
+        EXCEPTION,
+        /**
+         * Skip the line completely without any warning or thrown exception.
+         */
+        SKIP
+    }
 
-		/**
-		 * Throw an {@link IllegalStateException} stating that the line was
-		 * empty.
-		 */
-		EXCEPTION,
+    /**
+     * Creates a new {@link NewLineParser}.
+     *
+     * @param path The path to the file being parsed.
+     */
+    public NewLineParser(String path) {
+        super(path);
+    }
 
-		/**
-		 * Skip the line completely without any warning or thrown exception.
-		 */
-		SKIP
-	}
+    @Override
+    public String doRead(Scanner reader) throws Exception {
+        return reader.nextLine();
+    }
 
-	/**
-	 * Creates a new {@link NewLineParser}.
-	 *
-	 * @param path
-	 *            The path to the file being parsed.
-	 */
-	public NewLineParser(String path) {
-		super(path);
-	}
+    @Override
+    public Scanner getReader(BufferedReader in) throws Exception {
+        return new Scanner(in);
+    }
 
-	@Override
-	public String doRead(Scanner reader) throws Exception {
-		return reader.nextLine();
-	}
+    @Override
+    public boolean canRead(Scanner objectReader) throws Exception {
+        return objectReader.hasNextLine();
+    }
 
-	@Override
-	public Scanner getReader(BufferedReader in) throws Exception {
-		return new Scanner(in);
-	}
+    @Override
+    public void onReadComplete(List<String> readObjects) throws Exception {
+        for (String nextLine : readObjects) {
+            if (nextLine.isEmpty()) {
+                EmptyLinePolicy linePolicy = requireNonNull(emptyLinePolicy(), "emptyLinePolicy == null");
+                if (linePolicy == EmptyLinePolicy.SKIP) {
+                    continue;
+                } else if (linePolicy == EmptyLinePolicy.EXCEPTION) {
+                    throw new IllegalStateException("nextLine.isEmpty()");
+                }
+            }
+            readNextLine(nextLine);
+        }
+    }
 
-	@Override
-	public boolean canRead(Scanner objectReader) throws Exception {
-		return objectReader.hasNextLine();
-	}
+    /**
+     * Reads the next line that was parsed by the {@link Scanner}.
+     *
+     * @param nextLine The line to read.
+     */
+    public abstract void readNextLine(String nextLine) throws Exception;
 
-	@Override
-	public void onReadComplete(List<String> readObjects) throws Exception {
-		for (String nextLine : readObjects) {
-			if (nextLine.isEmpty()) {
-				EmptyLinePolicy linePolicy = requireNonNull(emptyLinePolicy(), "emptyLinePolicy == null");
-				if (linePolicy == EmptyLinePolicy.SKIP) {
-					continue;
-				} else if (linePolicy == EmptyLinePolicy.EXCEPTION) {
-					throw new IllegalStateException("nextLine.isEmpty()");
-				}
-			}
-			readNextLine(nextLine);
-		}
-	}
-
-	/**
-	 * Reads the next line that was parsed by the {@link Scanner}.
-	 *
-	 * @param nextLine
-	 *            The line to read.
-	 */
-	public abstract void readNextLine(String nextLine) throws Exception;
-
-	/**
-	 * @return The {@link EmptyLinePolicy} that determines what happens when an
-	 *         empty line is encountered while parsing various lines of data.
-	 */
-	public EmptyLinePolicy emptyLinePolicy() {
-		return EmptyLinePolicy.SKIP;
-	}
+    /**
+     * @return The {@link EmptyLinePolicy} that determines what happens when an
+     * empty line is encountered while parsing various lines of data.
+     */
+    public EmptyLinePolicy emptyLinePolicy() {
+        return EmptyLinePolicy.SKIP;
+    }
 }

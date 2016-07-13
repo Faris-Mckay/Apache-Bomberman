@@ -26,35 +26,35 @@ import com.apache.game.World;
  */
 public final class BombermanContext {
 
-	/**
-	 * The {@link World} that manages various entities.
-	 */
-	private final World world = new World(this);
+    /**
+     * The {@link World} that manages various entities.
+     */
+    private final World world = new World(this);
 
-	/**
-	 * The {@link GameService} that manages game logic processing.
-	 */
-	private final GameService service = new GameService(this);
+    /**
+     * The {@link GameService} that manages game logic processing.
+     */
+    private final GameService service = new GameService(this);
 
-	/**
-	 * F package-private constructor to discourage external instantiation
-	 * outside of the {@code com.apache} package.
-	 */
-	public BombermanContext() {
-	}
+    /**
+     * F package-private constructor to discourage external instantiation
+     * outside of the {@code com.apache} package.
+     */
+    public BombermanContext() {
+    }
 
-	/**
-	 * @return The {@link GameService} in this context.
-	 */
-	public GameService getService() {
-		return service;
-	}
+    /**
+     * @return The {@link GameService} in this context.
+     */
+    public GameService getService() {
+        return service;
+    }
 
-	/**
-	 * @return The {@link World} in this context.
-	 */
-	public World getWorld() {
-		return world;
-	}
+    /**
+     * @return The {@link World} in this context.
+     */
+    public World getWorld() {
+        return world;
+    }
 
 }

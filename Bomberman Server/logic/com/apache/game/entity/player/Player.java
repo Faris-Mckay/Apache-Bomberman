@@ -29,160 +29,161 @@ import com.apache.net.session.Session;
 import io.netty.channel.Channel;
 
 public class Player extends Entity {
-	private int kills;
 
-	/** The channel this player is connected to. */
-	private Channel channel;
+    private int kills;
 
-	/**
-	 * The credentials of this {@code Player}.
-	 */
-	private final PlayerCredentials credentials;
+    /**
+     * The channel this player is connected to.
+     */
+    private Channel channel;
 
-	/**
-	 * The {@link Chat} message to send during this update block.
-	 */
-	private Chat chat;
+    /**
+     * The credentials of this {@code Player}.
+     */
+    private final PlayerCredentials credentials;
 
-	/**
-	 * The {@link Session} assigned to this {@code Player}.
-	 */
-	private GameSession session;
+    /**
+     * The {@link Chat} message to send during this update block.
+     */
+    private Chat chat;
 
-	/**
-	 * The current cached block for this update cycle.
-	 */
-	private ByteMessage cachedBlock;
+    /**
+     * The {@link Session} assigned to this {@code Player}.
+     */
+    private GameSession session;
 
-	/**
-	 * Creates a new {@link Player}.
-	 *
-	 * @param context
-	 *            The context to be managed in.
-	 */
-	public Player(BombermanContext context, PlayerCredentials credentials) {
-		super(context);
-		this.credentials = credentials;
-	}
+    /**
+     * The current cached block for this update cycle.
+     */
+    private ByteMessage cachedBlock;
 
-	/**
-	 * Send {@code chat} message for this cycle.
-	 *
-	 * @param chat
-	 *            The {@link Chat} message to send during this update block.
-	 */
-	public void chat(Chat chat) {
-		this.chat = requireNonNull(chat);
-		updateFlags.flag(UpdateFlag.CHAT);
-	}
+    /**
+     * Creates a new {@link Player}.
+     *
+     * @param context The context to be managed in.
+     */
+    public Player(BombermanContext context, PlayerCredentials credentials) {
+        super(context);
+        this.credentials = credentials;
+    }
 
-	/**
-	 * F shortcut function to {@link GameSession#queue(OutboundGameMessage)}.
-	 */
-	public void queue(OutboundGameMessage msg) {
-		session.queue(msg);
-	}
+    /**
+     * Send {@code chat} message for this cycle.
+     *
+     * @param chat The {@link Chat} message to send during this update block.
+     */
+    public void chat(Chat chat) {
+        this.chat = requireNonNull(chat);
+        updateFlags.flag(UpdateFlag.CHAT);
+    }
 
-	/**
-	 * Gracefully logs this {@code Player} instance out of the server.
-	 */
-	public void logout() {
-		Channel channel = session.getChannel();
-		if (channel.isActive()) {
-			queue(new SendLogoutMessage());
-		}
-	}
+    /**
+     * F shortcut function to {@link GameSession#queue(OutboundGameMessage)}.
+     */
+    public void queue(OutboundGameMessage msg) {
+        session.queue(msg);
+    }
 
-	/**
-	 * @return the kills
-	 */
-	public int getKills() {
-		return kills;
-	}
+    /**
+     * Gracefully logs this {@code Player} instance out of the server.
+     */
+    public void logout() {
+        Channel channel = session.getChannel();
+        if (channel.isActive()) {
+            queue(new SendLogoutMessage());
+        }
+    }
 
-	/**
-	 * add one to the kills
-	 */
-	public void addKill() {
-		this.kills += 1;
-	}
+    /**
+     * @return the kills
+     */
+    public int getKills() {
+        return kills;
+    }
 
-	public Channel getChannel() {
-		return channel;
-	}
+    /**
+     * add one to the kills
+     */
+    public void addKill() {
+        this.kills += 1;
+    }
 
-	@Override
-	public EntityType type() {
-		return EntityType.PLAYER;
-	}
+    public Channel getChannel() {
+        return channel;
+    }
 
-	/**
-	 * @return The username of this {@code Player}.
-	 */
-	public String getUsername() {
-		return credentials.getUsername();
-	}
+    @Override
+    public EntityType type() {
+        return EntityType.PLAYER;
+    }
 
-	/**
-	 * @return The password of this {@code Player}.
-	 */
-	public String getPassword() {
-		return credentials.getPassword();
-	}
+    /**
+     * @return The username of this {@code Player}.
+     */
+    public String getUsername() {
+        return credentials.getUsername();
+    }
 
-	/**
-	 * @return The username hash of this {@code Player}.
-	 */
-	public long getUsernameHash() {
-		return credentials.getUsernameHash();
-	}
+    /**
+     * @return The password of this {@code Player}.
+     */
+    public String getPassword() {
+        return credentials.getPassword();
+    }
 
-	/**
-	 * @return The {@link Session} assigned to this {@code Player}.
-	 */
-	public GameSession getSession() {
-		return session;
-	}
+    /**
+     * @return The username hash of this {@code Player}.
+     */
+    public long getUsernameHash() {
+        return credentials.getUsernameHash();
+    }
 
-	/**
-	 * Sets the value for {@link #session}.
-	 */
-	public void setSession(GameSession session) {
-		checkState(this.session == null, "session already set!");
-		this.session = session;
-	}
+    /**
+     * @return The {@link Session} assigned to this {@code Player}.
+     */
+    public GameSession getSession() {
+        return session;
+    }
 
-	/**
-	 * @return The {@link Chat} message to send during this update block.
-	 */
-	public Chat getChat() {
-		return chat;
-	}
+    /**
+     * Sets the value for {@link #session}.
+     */
+    public void setSession(GameSession session) {
+        checkState(this.session == null, "session already set!");
+        this.session = session;
+    }
 
-	/**
-	 * @return The current cached block for this update cycle.
-	 */
-	public ByteMessage getCachedBlock() {
-		return cachedBlock;
-	}
+    /**
+     * @return The {@link Chat} message to send during this update block.
+     */
+    public Chat getChat() {
+        return chat;
+    }
 
-	/**
-	 * Sets the value for {@link #cachedBlock}.
-	 */
-	public void setCachedBlock(ByteMessage cachedBlock) {
-		ByteMessage currentBlock = this.cachedBlock;
+    /**
+     * @return The current cached block for this update cycle.
+     */
+    public ByteMessage getCachedBlock() {
+        return cachedBlock;
+    }
 
-		// Release reference to currently cached block, if we have one.
-		if (currentBlock != null) {
-			currentBlock.release();
-		}
+    /**
+     * Sets the value for {@link #cachedBlock}.
+     */
+    public void setCachedBlock(ByteMessage cachedBlock) {
+        ByteMessage currentBlock = this.cachedBlock;
 
-		// If we need to set a new cached block, retain a reference to it.
-		// Otherwise it means that the current block
-		// reference was just being cleared.
-		if (cachedBlock != null) {
-			cachedBlock.retain();
-		}
-		this.cachedBlock = cachedBlock;
-	}
+        // Release reference to currently cached block, if we have one.
+        if (currentBlock != null) {
+            currentBlock.release();
+        }
+
+        // If we need to set a new cached block, retain a reference to it.
+        // Otherwise it means that the current block
+        // reference was just being cleared.
+        if (cachedBlock != null) {
+            cachedBlock.retain();
+        }
+        this.cachedBlock = cachedBlock;
+    }
 }

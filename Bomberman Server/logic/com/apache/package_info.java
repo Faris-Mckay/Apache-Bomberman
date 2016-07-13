@@ -17,9 +17,8 @@ package com.apache;
  * @author Faris <https://github.com/faris-mckay>
  */
 public class package_info {
-    
+
     /**
-     *  Module handles all of the logical and content aspects of the game
-     */ 
-    
+     * Module handles all of the logical and content aspects of the game
+     */
 }

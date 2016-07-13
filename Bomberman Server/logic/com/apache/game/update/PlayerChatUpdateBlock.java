@@ -25,21 +25,20 @@ import com.apache.net.codec.ByteTransform;
  *
  * @author Juan Ortiz <http://github.org/TheRealJP>
  */
-
 public final class PlayerChatUpdateBlock extends PlayerUpdateBlock {
 
-	/**
-	 * Creates a new {@link PlayerChatUpdateBlock}.
-	 */
-	public PlayerChatUpdateBlock() {
-		super(0x80, UpdateFlag.CHAT);
-	}
+    /**
+     * Creates a new {@link PlayerChatUpdateBlock}.
+     */
+    public PlayerChatUpdateBlock() {
+        super(0x80, UpdateFlag.CHAT);
+    }
 
-	@Override
-	public void write(Player mob, ByteMessage msg) {
-		msg.putShort(((mob.getChat().getColor() & 0xff) << 8) + (mob.getChat().getEffects() & 0xff), ByteOrder.LITTLE);
-		msg.put(mob.getChat().getMessage().length, ByteTransform.F);
-		msg.putBytesReverse(mob.getChat().getMessage());
-	}
+    @Override
+    public void write(Player mob, ByteMessage msg) {
+        msg.putShort(((mob.getChat().getColor() & 0xff) << 8) + (mob.getChat().getEffects() & 0xff), ByteOrder.LITTLE);
+        msg.put(mob.getChat().getMessage().length, ByteTransform.F);
+        msg.putBytesReverse(mob.getChat().getMessage());
+    }
 
 }

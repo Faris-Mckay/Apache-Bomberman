@@ -13,32 +13,33 @@
 package com.apache.net.packet;
 
 import io.netty.buffer.ByteBuf;
+
 /**
-*
-* @author JP <https://github.com/TheRealJP>
-*/
+ *
+ * @author JP <https://github.com/TheRealJP>
+ */
 public class Packet {
 
-	private int opcode;
-	private int length;
-	private ByteBuf payload;
+    private int opcode;
+    private int length;
+    private ByteBuf payload;
 
-	public Packet(int opcode, ByteBuf payload) {
-		this.opcode = opcode;
-		this.payload = payload;
-		this.length = payload.readableBytes();
-	}
+    public Packet(int opcode, ByteBuf payload) {
+        this.opcode = opcode;
+        this.payload = payload;
+        this.length = payload.readableBytes();
+    }
 
-	public int getOpcode() {
-		return opcode;
-	}
+    public int getOpcode() {
+        return opcode;
+    }
 
-	public ByteBuf getPayload() {
-		return payload;
-	}
+    public ByteBuf getPayload() {
+        return payload;
+    }
 
-	public int getLength() {
-		return length;
-	}
+    public int getLength() {
+        return length;
+    }
 
 }

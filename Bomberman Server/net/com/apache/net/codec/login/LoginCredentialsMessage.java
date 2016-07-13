@@ -18,7 +18,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelPipeline;
 
 /**
- * An immutable upstream Netty message that contains the decoded data from the login protocol.
+ * An immutable upstream Netty message that contains the decoded data from the
+ * login protocol.
  *
  * @author Juan Ortiz <http://github.org/TheRealJP>
  */
@@ -58,7 +59,7 @@ public final class LoginCredentialsMessage {
      * @param decryptor The decryptor for decrypting game messages.
      */
     public LoginCredentialsMessage(String username, String password, IsaacCipher encryptor, IsaacCipher decryptor,
-        ChannelPipeline pipeline) {
+            ChannelPipeline pipeline) {
         this.username = username;
         this.password = password;
         this.encryptor = encryptor;
